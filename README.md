@@ -383,7 +383,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 1 | [1.10 Process memory layout](phase-01-c-from-zero-to-systems/module-10-process-memory-layout.md) | written | 3 |
 | 1 | [1.11 Undefined behaviour](phase-01-c-from-zero-to-systems/module-11-undefined-behaviour.md) | written | 4 |
 | 1 | [1.12 Preprocessor, compiler and linker](phase-01-c-from-zero-to-systems/module-12-preprocessor-compiler-linker.md) | written | 4 |
-| 1 | [1.13 Multi-file programs, headers and Make](phase-01-c-from-zero-to-systems/module-13-multi-file-programs-and-make.md) | todo | 3 |
+| 1 | [1.13 Multi-file programs, headers and Make](phase-01-c-from-zero-to-systems/module-13-multi-file-programs-and-make.md) | written | 3 |
 | 1 | [1.14 Error handling and ownership contracts in C](phase-01-c-from-zero-to-systems/module-14-error-handling-and-ownership-in-c.md) | todo | 3 |
 | 1 | [1.15 Mini-project: hash map and record parser in C](phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md) | todo | 4 |
 | 1 | Phase 1 revision + quiz | todo | 2 |
