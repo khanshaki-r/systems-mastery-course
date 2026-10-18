@@ -1,0 +1,192 @@
+%==============================================================================
+%  MD SHAKIR KHAN - RESUME  (C / C++ / SYSTEMS)  -- ONE PAGE, GENERIC
+%
+%  Compile:  pdflatex Shakir_Resume_CPP.tex
+%  Overleaf: upload this single file, compiler = pdfLaTeX, Recompile.
+%
+%  VERIFIED ONE PAGE on 2026-10-03 with MiKTeX pdflatex (compiled and page-counted).
+%
+%  !!!! BEFORE YOU SEND THIS - READ !!!!
+%  1. The "tcpkv" project DOES NOT EXIST YET. Do not send this resume until the
+%     repo is public, pinned on your GitHub, CI is green and the README has the
+%     architecture diagram. Build guide: LEARNING_PATH/10_Capstone_Projects/tcpkv/.
+%     Target: end of week 5 (2026-11-09).
+%  2. Linux / CMake / GDB / Docker / GitHub Actions in Skills become true through
+%     LEARNING_PATH/06_Linux_Toolchain_DevOps and the tcpkv build. Until then
+%     they are promises. Do not interview before you can defend them.
+%  3. Oracle and SQL Server: keep ONLY if you used them at work. If not, delete
+%     them. An interviewer who asks one Oracle question you cannot answer will
+%     doubt every other line.
+%  4. Every [METRIC] comment below marks a place where a real number would make
+%     the bullet stronger. Look the number up at work (ticket counts, table
+%     sizes, latency before/after, record counts migrated). Never estimate.
+%
+%  ---- POSITIONING NOTES ---------------------------------------------------
+%  * NEVER change "C, C++" to "C/C++". Recruiter sources name that exact
+%    string as a screening red flag - C has no classes, templates, RAII or
+%    exceptions, so the slash reads as surface knowledge of both. "C, C++"
+%    matches both ATS tokens anyway.
+%  * Experience bullets are language-honest: the Extrieve work was C, and it
+%    says C. The C++ claim lives in Skills, the Summary, and the project.
+%  * Every bullet is "what I did + how + why it mattered". No bullet is a task list.
+%
+%  ---- ONE-PAGE KNOBS (adjust in this order if it overflows) ---------------
+%   1. \geometry margin:  1.2cm (current) -> 1.15cm   (headroom verified down to 1.12cm)
+%   2. \linespread:       0.94 (current) -> 0.93
+%   3. Drop the last bullet of the Stored-Procedure block
+%   4. documentclass:     10pt  -> 9.5pt (needs \usepackage{anyfontsize})
+%
+%  If you UNCOMMENT the second project (minidb), you WILL need knobs 1 and 2.
+%==============================================================================
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{charter}
+\usepackage[margin=1.2cm]{geometry}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\definecolor{accent}{HTML}{1F4E79}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\linespread{0.94}\selectfont
+
+\titleformat{\section}
+  {\large\bfseries\color{accent}}{}{0em}{}
+  [\vspace{-0.75em}\color{accent}\rule{\textwidth}{0.8pt}]
+\titlespacing*{\section}{0pt}{0.55em}{0.3em}
+
+\setlist[itemize]{leftmargin=1.1em, itemsep=0.06em, topsep=0.14em, parsep=0pt}
+
+\newcommand{\role}[3]{\textbf{#1} --- #2 \hfill #3\par\vspace{0.15em}}
+\newcommand{\project}[2]{\vspace{0.28em}\textit{\textbf{#1}}\par
+  {\small\color{gray!80!black}#2}\par\vspace{-0.2em}}
+\newcommand{\skill}[2]{\textbf{#1:} #2\par\vspace{0.1em}}
+
+\begin{document}
+
+%------------------------------------------------------------------ HEADER ----
+\begin{center}
+  {\LARGE\bfseries MD SHAKIR KHAN}\\[0.15em]
+  {\small Software Engineer \ \textbar\ \ C, C++ \ \textbar\
+   \ Systems, Backend \& Databases}\\[0.15em]
+  {\footnotesize +91 7257952695 \ \textbar\ \
+   \href{mailto:shakirkhan4u30@gmail.com}{shakirkhan4u30@gmail.com} \ \textbar\ \
+   \href{https://github.com/khanshaki-r}{github.com/khanshaki-r} \ \textbar\ \
+   \href{https://linkedin.com/in/shakir-khan-24abaa203}{linkedin.com/in/shakir-khan-24abaa203}}
+\end{center}
+
+%----------------------------------------------------------------- SUMMARY ----
+\section{Professional Summary}
+
+Software Engineer with 2.5+ years building and operating \textbf{multithreaded server-side C} for
+core-banking platforms in production at HDFC Bank and Kotak Mahindra Bank. Shipped a \textbf{Berkeley DB
+to YugabyteDB distributed SQL} migration engine with a verified zero-downtime cutover. Owns
+\textbf{production crash-dump analysis} and client-facing RCA under support SLAs. Builds
+\textbf{modern C++17} systems software on \textbf{Linux}: thread pools, RAII, sanitizer-clean concurrency.
+
+%------------------------------------------------------------------ SKILLS ----
+\section{Technical Skills}
+
+\skill{Languages}{C, C++17, SQL, PL/pgSQL, Bash, Python (scripting)}
+\skill{C++ \& Systems}{RAII, smart pointers, move semantics, templates, STL internals, OOP \& design
+  patterns, memory \& ownership design, undefined-behaviour-aware coding, performance optimisation}
+\skill{Concurrency}{Threads, mutexes, \texttt{shared\_mutex}, condition variables, atomics \& memory
+  model, thread pools, lock-free basics; Win32 synchronisation (critical sections, wait objects)}
+\skill{Databases}{PostgreSQL, YugabyteDB, Berkeley DB, Redis, Oracle, SQL Server; storage engines,
+  B-tree indexing, MVCC \& transactions, WAL, query planning (EXPLAIN), caching, replication}
+\skill{Networking \& Distributed}{POSIX sockets, TCP/IP, RPC, HTTP; client-server architecture,
+  distributed SQL, sharding, replication, consensus (Raft), high availability}
+\skill{Debugging \& Reliability}{Crash dump \& core dump analysis (WinDbg, GDB), Valgrind, ASan/TSan,
+  memory corruption \& leak investigation, incident triage, formal RCA}
+\skill{Platforms \& Tools}{Linux, GCC/Clang, CMake, GoogleTest, Git, Docker, GitHub Actions, Azure
+  DevOps; Windows (Win32, MSVC, Visual Studio, MSBuild)}
+
+%-------------------------------------------------------------- EXPERIENCE ----
+\section{Professional Experience}
+
+\role{Extrieve Technologies}{Software Engineer}{Mar 2024 -- Present}
+{\small Server-side C and database engineering for core-banking lending platforms in production at
+HDFC Bank and Kotak Mahindra Bank.}
+
+\project{Database Migration Engine: Key-Value Store to Distributed SQL}{C, Berkeley DB, YugabyteDB, PostgreSQL}
+\begin{itemize}
+  \item Designed and built a standalone \textbf{C migration engine} that streams a live
+        \textbf{Berkeley DB} environment into a \textbf{YugabyteDB} cluster via \textbf{B-tree cursor
+        traversal}, batched write paths and an \textbf{arena allocator} with explicit ownership
+        contracts, making every batch restartable and leak-free.
+        % [METRIC] number of records / GB migrated; throughput (records/sec); number of tables produced
+  \item Designed the \textbf{record-to-relational mapping layer}: decoded packed Berkeley DB
+        key/record layouts and composite keys into a normalised, indexed schema and moved the
+        server from record-level cursor access to \textbf{set-based SQL}.
+        % [METRIC] number of record types decoded; round trips removed per request
+  \item Built an \textbf{automated data-parity regression suite} diffing Berkeley DB against
+        YugabyteDB record by record, which gated a \textbf{zero-downtime cutover} to multi-node
+        production with no data defects reported post-migration.
+        % [METRIC] records verified; defects caught before cutover
+\end{itemize}
+
+\project{Multithreaded Application Server}{C, Multithreading, YugabyteDB, Win32}
+\begin{itemize}
+  \item Own \textbf{production crash-dump and live-incident debugging}: trace memory corruption,
+        leaks and concurrency faults to root cause and deliver \textbf{formal RCA documentation to
+        banking clients} within support SLAs.
+        % [METRIC] number of RCAs delivered; SLA hours; recurrence rate after fixes
+  \item Develop and maintain a \textbf{multithreaded application server} handling transactional
+        loan-origination requests over an \textbf{RPC-over-TCP} client-server transport against a
+        distributed SQL backend.
+        % [METRIC] peak requests/sec or concurrent branch users; thread pool size
+  \item Own the \textbf{thread synchronisation layer} (mutexes, critical sections, wait objects, a
+        \textbf{pooled request model}) and an \textbf{in-memory master-table cache} that removes
+        repeated joins from the hot request path.
+        % [METRIC] latency or DB-load reduction from the cache
+\end{itemize}
+
+\project{Stored-Procedure Layer \& Query Performance}{PL/pgSQL, PostgreSQL, YugabyteDB}
+\begin{itemize}
+  \item Re-engineered legacy C business logic into a modular \textbf{PL/pgSQL} stored-procedure
+        layer that centralises validation, authorisation and workflow rules, cutting
+        application-to-database round trips per transaction.
+        % [METRIC] round trips before/after; number of procedures
+  \item Eliminated the primary \textbf{login-latency bottleneck} by tracing full-table scans on
+        master tables keyed by business codes rather than surrogate IDs; design composite and
+        covering indexes from \textbf{execution plans} across a multi-node cluster.
+        % [METRIC] login latency before/after (e.g. seconds -> milliseconds)
+\end{itemize}
+
+%---------------------------------------------------------------- PROJECTS ----
+% !!!! tcpkv DOES NOT EXIST YET - BUILD IT BEFORE SENDING.
+% !!!! Guide: LEARNING_PATH/10_Capstone_Projects/tcpkv/  Target: 2026-11-09.
+\section{Projects}
+
+\project{tcpkv --- Multithreaded TCP Key-Value Server}{C++17, Linux, CMake, GoogleTest \ \textbar\ \ github.com/khanshaki-r/tcpkv}
+\begin{itemize}
+  \item Concurrent TCP server with a fixed \textbf{thread pool} and a line-based text protocol over
+        an in-memory store guarded by \texttt{shared\_mutex}; \textbf{RAII} socket and
+        file-descriptor wrappers, move-only connection handles, graceful shutdown on signals.
+  \item Builds clean under \texttt{-Wall -Wextra -Werror} with \textbf{CMake}; \textbf{GoogleTest}
+        suite for protocol parsing, store and thread pool; \textbf{Valgrind}, ASan and TSan clean
+        under a concurrent load generator; GitHub Actions CI.
+        % [METRIC] ops/sec and p99 latency from tools/load_gen on your laptop, with thread count
+\end{itemize}
+
+% ---- SECOND PROJECT (optional; uncomment only when built; needs knobs 1+2) ----
+% \project{minidb --- Durable Key-Value Storage Engine}{C++17, Linux, CMake, GoogleTest \ \textbar\ \ github.com/khanshaki-r/minidb}
+% \begin{itemize}
+%   \item Single-file storage engine with 4\,KB pages, a page cache, a \textbf{B+tree} index and a
+%         \textbf{write-ahead log} with checkpoints; crash-recovery test kills the process mid-write
+%         and verifies every committed record survives.
+% \end{itemize}
+
+%--------------------------------------------------------------- EDUCATION ----
+\section{Education}
+
+\textbf{B.Tech, Computer Science \& Engineering} --- Bengal College of Engineering \& Technology
+\hfill 2019 -- 2023 \textbar\ CGPA 8.55/10
+
+\end{document}

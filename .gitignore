@@ -1,0 +1,30 @@
+# Build output
+build/
+out/
+cmake-build-*/
+*.o
+*.obj
+*.a
+*.so
+*.dll
+*.exe
+*.pdb
+*.ilk
+
+# Crash dumps (capstone C6 produces these on purpose; keep them local)
+core
+core.*
+*.dmp
+
+# Editors and OS
+.vscode/
+.vs/
+*.swp
+.DS_Store
+Thumbs.db
+
+# LaTeX build files for the resume
+*.aux
+*.log
+*.out
+*.synctex.gz
