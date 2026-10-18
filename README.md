@@ -387,9 +387,9 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 1 | [1.14 Error handling and ownership contracts in C](phase-01-c-from-zero-to-systems/module-14-error-handling-and-ownership-in-c.md) | todo | 3 |
 | 1 | [1.15 Mini-project: hash map and record parser in C](phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md) | todo | 4 |
 | 1 | Phase 1 revision + quiz | todo | 2 |
-| 2 | [2.01 From C to C++](phase-02-cpp17-from-zero-to-modern/module-01-from-c-to-cpp.md) | todo | 3 |
+| 2 | [2.01 From C to C++](phase-02-cpp17-from-zero-to-modern/module-01-from-c-to-cpp.md) | written | 3 |
 | 2 | [2.02 Classes, constructors and destructors](phase-02-cpp17-from-zero-to-modern/module-02-classes-constructors-destructors.md) | written | 4 |
-| 2 | [2.03 RAII and the rule of 0/3/5](phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md) | todo | 4 |
+| 2 | [2.03 RAII and the rule of 0/3/5](phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md) | written | 4 |
 | 2 | [2.04 Move semantics](phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md) | todo | 5 |
 | 2 | [2.05 Smart pointers and the shared_ptr control block](phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md) | written | 5 |
 | 2 | [2.06 Templates and generic programming](phase-02-cpp17-from-zero-to-modern/module-06-templates.md) | written | 5 |
@@ -400,8 +400,8 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 2 | [2.11 Design patterns used in real systems](phase-02-cpp17-from-zero-to-modern/module-11-design-patterns-in-systems-code.md) | written | 4 |
 | 2 | [2.12 Memory and ownership design](phase-02-cpp17-from-zero-to-modern/module-12-memory-and-ownership-design.md) | written | 4 |
 | 2 | [2.13 Performance optimisation](phase-02-cpp17-from-zero-to-modern/module-13-performance-optimisation.md) | written | 5 |
-| 2 | [2.14 Undefined-behaviour-aware C++](phase-02-cpp17-from-zero-to-modern/module-14-ub-aware-cpp.md) | todo | 3 |
-| 2 | [2.15 C++20 essentials](phase-02-cpp17-from-zero-to-modern/module-15-cpp20-essentials.md) | todo | 4 |
+| 2 | [2.14 Undefined-behaviour-aware C++](phase-02-cpp17-from-zero-to-modern/module-14-ub-aware-cpp.md) | written | 3 |
+| 2 | [2.15 C++20 essentials](phase-02-cpp17-from-zero-to-modern/module-15-cpp20-essentials.md) | written | 4 |
 | 2 | [2.16 Mini-project: tcpkv protocol parser](phase-02-cpp17-from-zero-to-modern/module-16-cpp-mini-project-protocol-parser.md) | written | 4 |
 | 2 | Phase 2 revision + quiz | todo | 2 |
 | 3 | [3.01 Processes](phase-03-os-internals/module-01-processes.md) | written | 4 |
@@ -414,11 +414,11 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 3 | [3.08 File descriptors and the VFS](phase-03-os-internals/module-08-file-descriptors-and-vfs.md) | todo | 4 |
 | 3 | [3.09 Signals](phase-03-os-internals/module-09-signals.md) | todo | 3 |
 | 3 | [3.10 Inter-process communication](phase-03-os-internals/module-10-ipc.md) | written | 4 |
-| 3 | [3.11 I/O models: blocking, non-blocking, select/poll/epoll](phase-03-os-internals/module-11-io-models-blocking-to-epoll.md) | todo | 5 |
+| 3 | [3.11 I/O models: blocking, non-blocking, select/poll/epoll](phase-03-os-internals/module-11-io-models-blocking-to-epoll.md) | written | 5 |
 | 3 | [3.12 io_uring and Windows IOCP](phase-03-os-internals/module-12-io-uring-and-iocp.md) | todo | 3 |
 | 3 | [3.13 Windows internals and the Win32 API](phase-03-os-internals/module-13-windows-internals-and-win32.md) | todo | 4 |
 | 3 | Phase 3 revision + quiz | todo | 2 |
-| 4 | [4.01 Threads in C++](phase-04-concurrency-deep-dive/module-01-threads-in-cpp.md) | todo | 3 |
+| 4 | [4.01 Threads in C++](phase-04-concurrency-deep-dive/module-01-threads-in-cpp.md) | written | 3 |
 | 4 | [4.02 Data races and why they are undefined behaviour](phase-04-concurrency-deep-dive/module-02-data-races.md) | written | 3 |
 | 4 | [4.03 Mutex internals: futex](phase-04-concurrency-deep-dive/module-03-mutex-internals-futex.md) | todo | 4 |
 | 4 | [4.04 Condition variables](phase-04-concurrency-deep-dive/module-04-condition-variables.md) | todo | 4 |
