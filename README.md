@@ -441,7 +441,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 5 | [5.07 RPC and serialization](phase-05-networking-and-servers/module-07-rpc-and-serialization.md) | todo | 5 |
 | 5 | [5.08 HTTP/1.1, HTTP/2 and HTTP/3](phase-05-networking-and-servers/module-08-http.md) | todo | 4 |
 | 5 | [5.09 TLS basics](phase-05-networking-and-servers/module-09-tls-basics.md) | written | 3 |
-| 5 | [5.10 Backpressure, timeouts and flow control](phase-05-networking-and-servers/module-10-backpressure-timeouts-flow-control.md) | todo | 3 |
+| 5 | [5.10 Backpressure, timeouts and flow control](phase-05-networking-and-servers/module-10-backpressure-timeouts-flow-control.md) | written | 3 |
 | 5 | [5.11 Load generator and latency percentiles](phase-05-networking-and-servers/module-11-load-generator-and-latency.md) | todo | 3 |
 | 5 | Phase 5 revision + quiz | todo | 2 |
 | 6 | [6.01 What a database is](phase-06-databases-from-zero-to-internals/module-01-what-a-database-is.md) | todo | 3 |
