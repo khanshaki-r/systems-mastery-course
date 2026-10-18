@@ -390,7 +390,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 2 | [2.01 From C to C++](phase-02-cpp17-from-zero-to-modern/module-01-from-c-to-cpp.md) | written | 3 |
 | 2 | [2.02 Classes, constructors and destructors](phase-02-cpp17-from-zero-to-modern/module-02-classes-constructors-destructors.md) | written | 4 |
 | 2 | [2.03 RAII and the rule of 0/3/5](phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md) | written | 4 |
-| 2 | [2.04 Move semantics](phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md) | todo | 5 |
+| 2 | [2.04 Move semantics](phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md) | written | 5 |
 | 2 | [2.05 Smart pointers and the shared_ptr control block](phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md) | written | 5 |
 | 2 | [2.06 Templates and generic programming](phase-02-cpp17-from-zero-to-modern/module-06-templates.md) | written | 5 |
 | 2 | [2.07 STL containers and their internals](phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md) | written | 6 |
