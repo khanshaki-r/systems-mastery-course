@@ -368,7 +368,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 0 | [0.03 The terminal and Bash basics](phase-00-how-a-computer-runs-a-program/module-03-terminal-and-bash-basics.md) | written | 3 |
 | 0 | [0.04 Linux lab setup](phase-00-how-a-computer-runs-a-program/module-04-linux-lab-setup.md) | written | 4 |
 | 0 | [0.05 Data lab setup](phase-00-how-a-computer-runs-a-program/module-05-data-lab-setup.md) | written | 4 |
-| 0 | [0.06 Windows lab setup](phase-00-how-a-computer-runs-a-program/module-06-windows-lab-setup.md) | todo | 3 |
+| 0 | [0.06 Windows lab setup](phase-00-how-a-computer-runs-a-program/module-06-windows-lab-setup.md) | written | 3 |
 | 0 | [0.07 Git from zero](phase-00-how-a-computer-runs-a-program/module-07-git-from-zero.md) | todo | 3 |
 | 0 | Phase 0 revision + quiz | todo | 2 |
 | 1 | [1.01 Your first C program](phase-01-c-from-zero-to-systems/module-01-first-c-program.md) | written | 3 |
