@@ -399,7 +399,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 2 | [2.10 Inheritance and virtual dispatch](phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md) | todo | 4 |
 | 2 | [2.11 Design patterns used in real systems](phase-02-cpp17-from-zero-to-modern/module-11-design-patterns-in-systems-code.md) | todo | 4 |
 | 2 | [2.12 Memory and ownership design](phase-02-cpp17-from-zero-to-modern/module-12-memory-and-ownership-design.md) | todo | 4 |
-| 2 | [2.13 Performance optimisation](phase-02-cpp17-from-zero-to-modern/module-13-performance-optimisation.md) | todo | 5 |
+| 2 | [2.13 Performance optimisation](phase-02-cpp17-from-zero-to-modern/module-13-performance-optimisation.md) | written | 5 |
 | 2 | [2.14 Undefined-behaviour-aware C++](phase-02-cpp17-from-zero-to-modern/module-14-ub-aware-cpp.md) | todo | 3 |
 | 2 | [2.15 C++20 essentials](phase-02-cpp17-from-zero-to-modern/module-15-cpp20-essentials.md) | todo | 4 |
 | 2 | [2.16 Mini-project: tcpkv protocol parser](phase-02-cpp17-from-zero-to-modern/module-16-cpp-mini-project-protocol-parser.md) | todo | 4 |
