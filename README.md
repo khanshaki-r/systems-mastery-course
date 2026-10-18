@@ -396,7 +396,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 2 | [2.07 STL containers and their internals](phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md) | written | 6 |
 | 2 | [2.08 Iterators, algorithms and lambdas](phase-02-cpp17-from-zero-to-modern/module-08-iterators-algorithms-lambdas.md) | written | 4 |
 | 2 | [2.09 Exceptions vs error codes](phase-02-cpp17-from-zero-to-modern/module-09-exceptions-vs-error-codes.md) | written | 4 |
-| 2 | [2.10 Inheritance and virtual dispatch](phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md) | todo | 4 |
+| 2 | [2.10 Inheritance and virtual dispatch](phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md) | written | 4 |
 | 2 | [2.11 Design patterns used in real systems](phase-02-cpp17-from-zero-to-modern/module-11-design-patterns-in-systems-code.md) | todo | 4 |
 | 2 | [2.12 Memory and ownership design](phase-02-cpp17-from-zero-to-modern/module-12-memory-and-ownership-design.md) | todo | 4 |
 | 2 | [2.13 Performance optimisation](phase-02-cpp17-from-zero-to-modern/module-13-performance-optimisation.md) | written | 5 |
