@@ -411,7 +411,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 3 | [3.05 malloc internals](phase-03-os-internals/module-05-malloc-internals.md) | written | 4 |
 | 3 | [3.06 Custom allocators: arena, pool, slab](phase-03-os-internals/module-06-custom-allocators-arena-pool-slab.md) | written | 6 |
 | 3 | [3.07 System calls](phase-03-os-internals/module-07-system-calls.md) | written | 3 |
-| 3 | [3.08 File descriptors and the VFS](phase-03-os-internals/module-08-file-descriptors-and-vfs.md) | todo | 4 |
+| 3 | [3.08 File descriptors and the VFS](phase-03-os-internals/module-08-file-descriptors-and-vfs.md) | written | 4 |
 | 3 | [3.09 Signals](phase-03-os-internals/module-09-signals.md) | todo | 3 |
 | 3 | [3.10 Inter-process communication](phase-03-os-internals/module-10-ipc.md) | written | 4 |
 | 3 | [3.11 I/O models: blocking, non-blocking, select/poll/epoll](phase-03-os-internals/module-11-io-models-blocking-to-epoll.md) | written | 5 |
