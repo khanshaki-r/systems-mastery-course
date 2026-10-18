@@ -420,7 +420,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 3 | Phase 3 revision + quiz | todo | 2 |
 | 4 | [4.01 Threads in C++](phase-04-concurrency-deep-dive/module-01-threads-in-cpp.md) | written | 3 |
 | 4 | [4.02 Data races and why they are undefined behaviour](phase-04-concurrency-deep-dive/module-02-data-races.md) | written | 3 |
-| 4 | [4.03 Mutex internals: futex](phase-04-concurrency-deep-dive/module-03-mutex-internals-futex.md) | todo | 4 |
+| 4 | [4.03 Mutex internals: futex](phase-04-concurrency-deep-dive/module-03-mutex-internals-futex.md) | written | 4 |
 | 4 | [4.04 Condition variables](phase-04-concurrency-deep-dive/module-04-condition-variables.md) | todo | 4 |
 | 4 | [4.05 shared_mutex and reader-writer locks](phase-04-concurrency-deep-dive/module-05-shared-mutex.md) | written | 3 |
 | 4 | [4.06 Spinlocks and atomics](phase-04-concurrency-deep-dive/module-06-spinlocks-and-atomics.md) | todo | 4 |
