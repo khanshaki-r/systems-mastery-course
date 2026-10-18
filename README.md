@@ -416,7 +416,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 3 | [3.10 Inter-process communication](phase-03-os-internals/module-10-ipc.md) | written | 4 |
 | 3 | [3.11 I/O models: blocking, non-blocking, select/poll/epoll](phase-03-os-internals/module-11-io-models-blocking-to-epoll.md) | written | 5 |
 | 3 | [3.12 io_uring and Windows IOCP](phase-03-os-internals/module-12-io-uring-and-iocp.md) | written | 3 |
-| 3 | [3.13 Windows internals and the Win32 API](phase-03-os-internals/module-13-windows-internals-and-win32.md) | todo | 4 |
+| 3 | [3.13 Windows internals and the Win32 API](phase-03-os-internals/module-13-windows-internals-and-win32.md) | written | 4 |
 | 3 | Phase 3 revision + quiz | todo | 2 |
 | 4 | [4.01 Threads in C++](phase-04-concurrency-deep-dive/module-01-threads-in-cpp.md) | written | 3 |
 | 4 | [4.02 Data races and why they are undefined behaviour](phase-04-concurrency-deep-dive/module-02-data-races.md) | written | 3 |
