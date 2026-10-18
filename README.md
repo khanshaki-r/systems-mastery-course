@@ -375,7 +375,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 1 | [1.02 Variables, types and how numbers live in memory](phase-01-c-from-zero-to-systems/module-02-variables-types-and-memory.md) | written | 3 |
 | 1 | [1.03 Control flow](phase-01-c-from-zero-to-systems/module-03-control-flow.md) | written | 3 |
 | 1 | [1.04 Functions and the call stack](phase-01-c-from-zero-to-systems/module-04-functions-and-the-call-stack.md) | written | 4 |
-| 1 | [1.05 Pointers](phase-01-c-from-zero-to-systems/module-05-pointers.md) | todo | 5 |
+| 1 | [1.05 Pointers](phase-01-c-from-zero-to-systems/module-05-pointers.md) | written | 5 |
 | 1 | [1.06 Arrays and strings](phase-01-c-from-zero-to-systems/module-06-arrays-and-strings.md) | written | 4 |
 | 1 | [1.07 Structs, unions and packed record layouts](phase-01-c-from-zero-to-systems/module-07-structs-unions-packed-layouts.md) | written | 4 |
 | 1 | [1.08 Dynamic memory: malloc and free](phase-01-c-from-zero-to-systems/module-08-dynamic-memory.md) | written | 4 |
