@@ -433,7 +433,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 4 | [4.13 Pooled request model and a concurrent master-table cache](phase-04-concurrency-deep-dive/module-13-pooled-request-model-and-concurrent-cache.md) | todo | 4 |
 | 4 | Phase 4 revision + quiz | todo | 2 |
 | 5 | [5.01 How the internet works](phase-05-networking-and-servers/module-01-how-the-internet-works.md) | written | 3 |
-| 5 | [5.02 TCP](phase-05-networking-and-servers/module-02-tcp.md) | todo | 4 |
+| 5 | [5.02 TCP](phase-05-networking-and-servers/module-02-tcp.md) | written | 4 |
 | 5 | [5.03 POSIX sockets API](phase-05-networking-and-servers/module-03-posix-sockets-api.md) | todo | 5 |
 | 5 | [5.04 TCP internals](phase-05-networking-and-servers/module-04-tcp-internals.md) | todo | 4 |
 | 5 | [5.05 Server architectures](phase-05-networking-and-servers/module-05-server-architectures.md) | todo | 5 |
