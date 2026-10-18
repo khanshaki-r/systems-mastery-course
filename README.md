@@ -363,7 +363,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 
 | Phase | Module | Status | Hours |
 |---|---|---|---|
-| 0 | [0.01 What a computer actually does](phase-00-how-a-computer-runs-a-program/module-01-what-a-computer-does.md) | todo | 2 |
+| 0 | [0.01 What a computer actually does](phase-00-how-a-computer-runs-a-program/module-01-what-a-computer-does.md) | written | 2 |
 | 0 | [0.02 The operating system, processes and files](phase-00-how-a-computer-runs-a-program/module-02-operating-system-processes-files.md) | todo | 2 |
 | 0 | [0.03 The terminal and Bash basics](phase-00-how-a-computer-runs-a-program/module-03-terminal-and-bash-basics.md) | todo | 3 |
 | 0 | [0.04 Linux lab setup](phase-00-how-a-computer-runs-a-program/module-04-linux-lab-setup.md) | todo | 4 |
