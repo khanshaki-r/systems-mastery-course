@@ -419,7 +419,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 3 | [3.13 Windows internals and the Win32 API](phase-03-os-internals/module-13-windows-internals-and-win32.md) | todo | 4 |
 | 3 | Phase 3 revision + quiz | todo | 2 |
 | 4 | [4.01 Threads in C++](phase-04-concurrency-deep-dive/module-01-threads-in-cpp.md) | todo | 3 |
-| 4 | [4.02 Data races and why they are undefined behaviour](phase-04-concurrency-deep-dive/module-02-data-races.md) | todo | 3 |
+| 4 | [4.02 Data races and why they are undefined behaviour](phase-04-concurrency-deep-dive/module-02-data-races.md) | written | 3 |
 | 4 | [4.03 Mutex internals: futex](phase-04-concurrency-deep-dive/module-03-mutex-internals-futex.md) | todo | 4 |
 | 4 | [4.04 Condition variables](phase-04-concurrency-deep-dive/module-04-condition-variables.md) | todo | 4 |
 | 4 | [4.05 shared_mutex and reader-writer locks](phase-04-concurrency-deep-dive/module-05-shared-mutex.md) | todo | 3 |
