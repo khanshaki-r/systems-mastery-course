@@ -371,7 +371,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 0 | [0.06 Windows lab setup](phase-00-how-a-computer-runs-a-program/module-06-windows-lab-setup.md) | todo | 3 |
 | 0 | [0.07 Git from zero](phase-00-how-a-computer-runs-a-program/module-07-git-from-zero.md) | todo | 3 |
 | 0 | Phase 0 revision + quiz | todo | 2 |
-| 1 | [1.01 Your first C program](phase-01-c-from-zero-to-systems/module-01-first-c-program.md) | todo | 3 |
+| 1 | [1.01 Your first C program](phase-01-c-from-zero-to-systems/module-01-first-c-program.md) | written | 3 |
 | 1 | [1.02 Variables, types and how numbers live in memory](phase-01-c-from-zero-to-systems/module-02-variables-types-and-memory.md) | todo | 3 |
 | 1 | [1.03 Control flow](phase-01-c-from-zero-to-systems/module-03-control-flow.md) | todo | 3 |
 | 1 | [1.04 Functions and the call stack](phase-01-c-from-zero-to-systems/module-04-functions-and-the-call-stack.md) | todo | 4 |
