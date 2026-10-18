@@ -388,7 +388,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 1 | [1.15 Mini-project: hash map and record parser in C](phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md) | todo | 4 |
 | 1 | Phase 1 revision + quiz | todo | 2 |
 | 2 | [2.01 From C to C++](phase-02-cpp17-from-zero-to-modern/module-01-from-c-to-cpp.md) | todo | 3 |
-| 2 | [2.02 Classes, constructors and destructors](phase-02-cpp17-from-zero-to-modern/module-02-classes-constructors-destructors.md) | todo | 4 |
+| 2 | [2.02 Classes, constructors and destructors](phase-02-cpp17-from-zero-to-modern/module-02-classes-constructors-destructors.md) | written | 4 |
 | 2 | [2.03 RAII and the rule of 0/3/5](phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md) | todo | 4 |
 | 2 | [2.04 Move semantics](phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md) | todo | 5 |
 | 2 | [2.05 Smart pointers and the shared_ptr control block](phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md) | todo | 5 |
