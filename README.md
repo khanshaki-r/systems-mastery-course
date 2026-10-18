@@ -380,7 +380,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 1 | [1.07 Structs, unions and packed record layouts](phase-01-c-from-zero-to-systems/module-07-structs-unions-packed-layouts.md) | written | 4 |
 | 1 | [1.08 Dynamic memory: malloc and free](phase-01-c-from-zero-to-systems/module-08-dynamic-memory.md) | written | 4 |
 | 1 | [1.09 File I/O and binary files](phase-01-c-from-zero-to-systems/module-09-file-io-and-binary-files.md) | written | 3 |
-| 1 | [1.10 Process memory layout](phase-01-c-from-zero-to-systems/module-10-process-memory-layout.md) | todo | 3 |
+| 1 | [1.10 Process memory layout](phase-01-c-from-zero-to-systems/module-10-process-memory-layout.md) | written | 3 |
 | 1 | [1.11 Undefined behaviour](phase-01-c-from-zero-to-systems/module-11-undefined-behaviour.md) | written | 4 |
 | 1 | [1.12 Preprocessor, compiler and linker](phase-01-c-from-zero-to-systems/module-12-preprocessor-compiler-linker.md) | written | 4 |
 | 1 | [1.13 Multi-file programs, headers and Make](phase-01-c-from-zero-to-systems/module-13-multi-file-programs-and-make.md) | todo | 3 |
