@@ -393,7 +393,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 2 | [2.04 Move semantics](phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md) | todo | 5 |
 | 2 | [2.05 Smart pointers and the shared_ptr control block](phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md) | written | 5 |
 | 2 | [2.06 Templates and generic programming](phase-02-cpp17-from-zero-to-modern/module-06-templates.md) | written | 5 |
-| 2 | [2.07 STL containers and their internals](phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md) | todo | 6 |
+| 2 | [2.07 STL containers and their internals](phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md) | written | 6 |
 | 2 | [2.08 Iterators, algorithms and lambdas](phase-02-cpp17-from-zero-to-modern/module-08-iterators-algorithms-lambdas.md) | todo | 4 |
 | 2 | [2.09 Exceptions vs error codes](phase-02-cpp17-from-zero-to-modern/module-09-exceptions-vs-error-codes.md) | todo | 4 |
 | 2 | [2.10 Inheritance and virtual dispatch](phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md) | todo | 4 |
