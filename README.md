@@ -385,7 +385,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 1 | [1.12 Preprocessor, compiler and linker](phase-01-c-from-zero-to-systems/module-12-preprocessor-compiler-linker.md) | written | 4 |
 | 1 | [1.13 Multi-file programs, headers and Make](phase-01-c-from-zero-to-systems/module-13-multi-file-programs-and-make.md) | written | 3 |
 | 1 | [1.14 Error handling and ownership contracts in C](phase-01-c-from-zero-to-systems/module-14-error-handling-and-ownership-in-c.md) | written | 3 |
-| 1 | [1.15 Mini-project: hash map and record parser in C](phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md) | todo | 4 |
+| 1 | [1.15 Mini-project: hash map and record parser in C](phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md) | written | 4 |
 | 1 | Phase 1 revision + quiz | todo | 2 |
 | 2 | [2.01 From C to C++](phase-02-cpp17-from-zero-to-modern/module-01-from-c-to-cpp.md) | written | 3 |
 | 2 | [2.02 Classes, constructors and destructors](phase-02-cpp17-from-zero-to-modern/module-02-classes-constructors-destructors.md) | written | 4 |
