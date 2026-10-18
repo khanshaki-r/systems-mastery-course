@@ -427,7 +427,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 4 | [4.07 The memory model and memory orders](phase-04-concurrency-deep-dive/module-07-memory-model-and-memory-orders.md) | todo | 6 |
 | 4 | [4.08 Cache coherence and false sharing](phase-04-concurrency-deep-dive/module-08-cache-coherence-and-false-sharing.md) | todo | 4 |
 | 4 | [4.09 Lock-free basics](phase-04-concurrency-deep-dive/module-09-lock-free-basics.md) | todo | 6 |
-| 4 | [4.10 Thread pool design](phase-04-concurrency-deep-dive/module-10-thread-pool-design.md) | todo | 5 |
+| 4 | [4.10 Thread pool design](phase-04-concurrency-deep-dive/module-10-thread-pool-design.md) | written | 5 |
 | 4 | [4.11 Deadlocks, livelocks and lock ordering](phase-04-concurrency-deep-dive/module-11-deadlocks-and-lock-ordering.md) | todo | 4 |
 | 4 | [4.12 Win32 synchronisation](phase-04-concurrency-deep-dive/module-12-win32-synchronisation.md) | todo | 5 |
 | 4 | [4.13 Pooled request model and a concurrent master-table cache](phase-04-concurrency-deep-dive/module-13-pooled-request-model-and-concurrent-cache.md) | todo | 4 |
