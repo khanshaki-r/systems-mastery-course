@@ -443,7 +443,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 5 | [5.09 TLS basics](phase-05-networking-and-servers/module-09-tls-basics.md) | written | 3 |
 | 5 | [5.10 Backpressure, timeouts and flow control](phase-05-networking-and-servers/module-10-backpressure-timeouts-flow-control.md) | written | 3 |
 | 5 | [5.11 Load generator and latency percentiles](phase-05-networking-and-servers/module-11-load-generator-and-latency.md) | written | 3 |
-| 5 | Phase 5 revision + quiz | todo | 2 |
+| 5 | [Phase 5 revision](phase-05-networking-and-servers/revision.md) + [quiz](phase-05-networking-and-servers/quiz.md) | written | 2 |
 | 6 | [6.01 What a database is](phase-06-databases-from-zero-to-internals/module-01-what-a-database-is.md) | todo | 3 |
 | 6 | [6.02 SQL from scratch](phase-06-databases-from-zero-to-internals/module-02-sql-from-scratch.md) | todo | 6 |
 | 6 | [6.03 Data modelling and normalisation](phase-06-databases-from-zero-to-internals/module-03-data-modelling-and-normalisation.md) | todo | 4 |
