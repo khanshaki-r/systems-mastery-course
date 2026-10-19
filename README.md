@@ -489,7 +489,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 9 | [9.04 Sanitizers in CI](phase-09-build-test-delivery/module-04-sanitizers-in-ci.md) | todo | 2 |
 | 9 | [9.05 Docker internals](phase-09-build-test-delivery/module-05-docker-internals.md) | todo | 4 |
 | 9 | [9.06 GitHub Actions](phase-09-build-test-delivery/module-06-github-actions.md) | written | 3 |
-| 9 | [9.07 Azure DevOps pipelines](phase-09-build-test-delivery/module-07-azure-devops-pipelines.md) | todo | 3 |
+| 9 | [9.07 Azure DevOps pipelines](phase-09-build-test-delivery/module-07-azure-devops-pipelines.md) | written | 3 |
 | 9 | [9.08 Bash automation](phase-09-build-test-delivery/module-08-bash-automation.md) | todo | 3 |
 | 9 | [9.09 Python scripting](phase-09-build-test-delivery/module-09-python-scripting.md) | todo | 4 |
 | 9 | [9.10 Cross-platform builds and Git workflows](phase-09-build-test-delivery/module-10-cross-platform-builds-and-git-workflows.md) | todo | 4 |
