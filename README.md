@@ -449,7 +449,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 6 | [6.03 Data modelling and normalisation](phase-06-databases-from-zero-to-internals/module-03-data-modelling-and-normalisation.md) | todo | 4 |
 | 6 | [6.04 Transactions and ACID](phase-06-databases-from-zero-to-internals/module-04-transactions-and-acid.md) | todo | 4 |
 | 6 | [6.05 PostgreSQL storage: pages, tuples and the heap](phase-06-databases-from-zero-to-internals/module-05-postgresql-storage-pages-and-tuples.md) | written | 5 |
-| 6 | [6.06 Buffer pool and write-ahead log](phase-06-databases-from-zero-to-internals/module-06-buffer-pool-and-wal.md) | todo | 5 |
+| 6 | [6.06 Buffer pool and write-ahead log](phase-06-databases-from-zero-to-internals/module-06-buffer-pool-and-wal.md) | written | 5 |
 | 6 | [6.07 MVCC, visibility and vacuum](phase-06-databases-from-zero-to-internals/module-07-mvcc-and-vacuum.md) | todo | 5 |
 | 6 | [6.08 Isolation levels and locking](phase-06-databases-from-zero-to-internals/module-08-isolation-levels-and-locking.md) | todo | 5 |
 | 6 | [6.09 B-tree indexes, composite and covering indexes](phase-06-databases-from-zero-to-internals/module-09-btree-indexes-composite-covering.md) | todo | 5 |
