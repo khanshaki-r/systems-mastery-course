@@ -437,7 +437,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 5 | [5.03 POSIX sockets API](phase-05-networking-and-servers/module-03-posix-sockets-api.md) | written | 5 |
 | 5 | [5.04 TCP internals](phase-05-networking-and-servers/module-04-tcp-internals.md) | written | 4 |
 | 5 | [5.05 Server architectures](phase-05-networking-and-servers/module-05-server-architectures.md) | written | 5 |
-| 5 | [5.06 Wire protocol design](phase-05-networking-and-servers/module-06-wire-protocol-design.md) | todo | 4 |
+| 5 | [5.06 Wire protocol design](phase-05-networking-and-servers/module-06-wire-protocol-design.md) | written | 4 |
 | 5 | [5.07 RPC and serialization](phase-05-networking-and-servers/module-07-rpc-and-serialization.md) | todo | 5 |
 | 5 | [5.08 HTTP/1.1, HTTP/2 and HTTP/3](phase-05-networking-and-servers/module-08-http.md) | todo | 4 |
 | 5 | [5.09 TLS basics](phase-05-networking-and-servers/module-09-tls-basics.md) | written | 3 |
