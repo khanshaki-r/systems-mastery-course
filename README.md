@@ -431,7 +431,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 4 | [4.11 Deadlocks, livelocks and lock ordering](phase-04-concurrency-deep-dive/module-11-deadlocks-and-lock-ordering.md) | written | 4 |
 | 4 | [4.12 Win32 synchronisation](phase-04-concurrency-deep-dive/module-12-win32-synchronisation.md) | written | 5 |
 | 4 | [4.13 Pooled request model and a concurrent master-table cache](phase-04-concurrency-deep-dive/module-13-pooled-request-model-and-concurrent-cache.md) | written | 4 |
-| 4 | Phase 4 revision + quiz | todo | 2 |
+| 4 | [Phase 4 revision](phase-04-concurrency-deep-dive/revision.md) + [quiz](phase-04-concurrency-deep-dive/quiz.md) | written | 2 |
 | 5 | [5.01 How the internet works](phase-05-networking-and-servers/module-01-how-the-internet-works.md) | written | 3 |
 | 5 | [5.02 TCP](phase-05-networking-and-servers/module-02-tcp.md) | written | 4 |
 | 5 | [5.03 POSIX sockets API](phase-05-networking-and-servers/module-03-posix-sockets-api.md) | written | 5 |
