@@ -69,8 +69,9 @@ Two threads can both load the same value, both add one, both store. One incremen
 
 ```cpp
 bool ready = false;                 // not atomic
+unsigned long polls = 0;
 void waiter() {
-    while (!ready) { }              // spin until main sets it
+    while (!ready) { ++polls; }     // spin until main sets it, counting tries
     std::cout << "saw ready\n";
 }
 ```
@@ -87,7 +88,7 @@ waiter():
         ...                         ; print
 ```
 
-The program hangs on every optimised build. The fix is `std::atomic<bool> ready{false};`. Now each `ready.load()` is a real memory read the compiler may not hoist, and the write in the other thread becomes visible. Note what `volatile` does and does not do: it forces the reads to happen, which stops this hoist, but it gives no atomicity and no ordering with other data, and the standard still calls it a data race. Do not use `volatile` for threads.
+The program hangs on every optimised build. One twist you will see if you delete the `++polls;`: with a completely empty body, GCC 13 removes the whole loop instead, because C++ lets the compiler assume a loop with no side effects eventually ends. That build then "works" at `-O2` by a different accident. Both outcomes come from the same undefined behaviour; neither is a correct program. The fix is `std::atomic<bool> ready{false};`. Now each `ready.load()` is a real memory read the compiler may not hoist, and the write in the other thread becomes visible. Note what `volatile` does and does not do: it forces the reads to happen, which stops this hoist, but it gives no atomicity and no ordering with other data, and the standard still calls it a data race. Do not use `volatile` for threads.
 
 **"Benign" races are still UB.** Three examples you will meet in code review:
 
@@ -246,11 +247,13 @@ Program two: the hoisted flag.
 #include <thread>
 
 bool ready = false;                     // the bug: not atomic
+unsigned long polls = 0;                // counts loop iterations
 
 void waiter() {
     while (!ready) {                    // the compiler may load 'ready' once
+        ++polls;                        // gives the loop a body, as real polling code has
     }
-    std::cout << "waiter saw ready\n";
+    std::cout << "waiter saw ready after " << (polls > 0 ? "some" : "no") << " polls\n";
 }
 
 int main() {
@@ -270,7 +273,7 @@ g++ -std=c++17 -Wall -Wextra -Werror -g -O2 -pthread -o flag_O2 hoisted_flag.cpp
 ./flag_O2
 ```
 
-Expected: `flag_O0` prints `waiter saw ready` then `main done`. `flag_O2` prints nothing and never exits; one core sits at 100%. Press `Ctrl+C`. Then change the declaration to `std::atomic<bool> ready{false};` (the `#include <atomic>` is already there), rebuild both, and both print and exit.
+Expected: `flag_O0` prints `waiter saw ready after some polls` then `main done`. `flag_O2` prints nothing and never exits; one core sits at 100%. Press `Ctrl+C`. (Verified with g++ 13.3 on Ubuntu 24.04. If you remove the `++polls;` line, the `-O2` build exits normally instead, because GCC deletes an empty loop; see Layer 2.) Then change the declaration to `std::atomic<bool> ready{false};` (the `#include <atomic>` is already there), rebuild both, and both print and exit.
 
 Program three: TSan on the counter.
 
@@ -308,7 +311,7 @@ The interviewer's follow-up, "but x86 stores are atomic, why did you care?", is 
 
 1. Build `hoisted_flag.cpp` at `-O0` and `-O2` as in section 6. Confirm the `-O2` binary hangs. While it hangs, in another terminal run `top` and note one core at 100%.
 2. Attach the debugger to the hung process: `gdb -p $(pgrep flag_O2)`, then `info threads`, `thread 2`, `bt`, and `x/3i $pc`. Expected: thread 2 is in `waiter()` and the three instructions at `$pc` include a `jmp` to its own address. That is the infinite loop in the flesh. Type `detach` then `quit`, then `kill %1` or `Ctrl+C` in the first terminal.
-3. On godbolt, paste `waiter` with `bool ready` at `-O2` and find the `jmp .L3` to itself. Change to `std::atomic<bool>` and look again: the loop now contains a real `movzx eax, BYTE PTR ready[rip]` on every iteration.
+3. On godbolt, paste `waiter` (with its `++polls;` body) and `bool ready` at `-O2` and find the `jmp` to itself. Then delete `++polls;` and watch the loop disappear completely. Change to `std::atomic<bool>` and look again: the loop now contains a real `movzx eax, BYTE PTR ready[rip]` on every iteration.
 4. Fix the program with `std::atomic<bool>`, rebuild both, confirm both finish.
 
 ### Part C: read a TSan report and fix the race (25 minutes)
