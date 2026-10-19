@@ -423,7 +423,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 4 | [4.03 Mutex internals: futex](phase-04-concurrency-deep-dive/module-03-mutex-internals-futex.md) | written | 4 |
 | 4 | [4.04 Condition variables](phase-04-concurrency-deep-dive/module-04-condition-variables.md) | written | 4 |
 | 4 | [4.05 shared_mutex and reader-writer locks](phase-04-concurrency-deep-dive/module-05-shared-mutex.md) | written | 3 |
-| 4 | [4.06 Spinlocks and atomics](phase-04-concurrency-deep-dive/module-06-spinlocks-and-atomics.md) | todo | 4 |
+| 4 | [4.06 Spinlocks and atomics](phase-04-concurrency-deep-dive/module-06-spinlocks-and-atomics.md) | written | 4 |
 | 4 | [4.07 The memory model and memory orders](phase-04-concurrency-deep-dive/module-07-memory-model-and-memory-orders.md) | todo | 6 |
 | 4 | [4.08 Cache coherence and false sharing](phase-04-concurrency-deep-dive/module-08-cache-coherence-and-false-sharing.md) | todo | 4 |
 | 4 | [4.09 Lock-free basics](phase-04-concurrency-deep-dive/module-09-lock-free-basics.md) | todo | 6 |
