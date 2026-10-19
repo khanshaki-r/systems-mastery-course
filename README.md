@@ -513,7 +513,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 11 | [11.06 How a loan-origination system works end to end](phase-11-security-and-banking-context/module-06-loan-origination-end-to-end.md) | todo | 4 |
 | 11 | Phase 11 revision + quiz | todo | 2 |
 | 12 | [12.01 Resume walk-through and story bank](phase-12-interview-mastery/module-01-resume-walkthrough-and-story-bank.md) | written | 3 |
-| 12 | [12.02 Mock: C++ coding rounds](phase-12-interview-mastery/module-02-mock-cpp-coding-rounds.md) | todo | 6 |
+| 12 | [12.02 Mock: C++ coding rounds](phase-12-interview-mastery/module-02-mock-cpp-coding-rounds.md) | written | 6 |
 | 12 | [12.03 Mock: systems and concurrency rounds](phase-12-interview-mastery/module-03-mock-systems-and-concurrency-rounds.md) | todo | 4 |
 | 12 | [12.04 Mock: database rounds](phase-12-interview-mastery/module-04-mock-database-rounds.md) | todo | 4 |
 | 12 | [12.05 Mock: system design rounds](phase-12-interview-mastery/module-05-mock-system-design-rounds.md) | todo | 6 |
