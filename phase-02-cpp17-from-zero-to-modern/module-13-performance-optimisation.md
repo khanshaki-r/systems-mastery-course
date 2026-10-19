@@ -488,7 +488,7 @@ sudo apt install linux-tools-generic
 perf --version
 ```
 
-In WSL2 the `/usr/bin/perf` wrapper may say `WARNING: perf not found for kernel ...` because the WSL kernel version does not match the Ubuntu package. If so, run the binary directly: `ls /usr/lib/linux-tools/` to see the version folder, then use `/usr/lib/linux-tools/<version>/perf` in place of `perf` below (an alias helps). Also, WSL2 often does not expose hardware counters, so `cache-misses` and `branch-misses` may print `<not supported>`; the software-clock sampling used by `perf record` still works. On a native Linux machine all counters work. If `perf` complains about permissions, run it with `sudo` or lower the restriction with `sudo sysctl kernel.perf_event_paranoid=1`.
+In WSL2 the `/usr/bin/perf` wrapper may say `WARNING: perf not found for kernel ...` because the WSL kernel version does not match the Ubuntu package. If so, run the binary directly: `ls /usr/lib/linux-tools/` to see the version folder, then use `/usr/lib/linux-tools/<version>/perf` in place of `perf` below (an alias helps). Also, WSL2 often does not expose hardware counters, so `cache-misses` and `branch-misses` may print `<not supported>`; the software-clock sampling used by `perf record` still works. On a native Linux machine all counters work. Run `perf record` from a folder in your Linux home such as `~/course`, not under `/mnt/c` or `/mnt/d`: on a Windows drive it fails with `failed to write perf data, error: Bad address`. If `perf` complains about permissions, run it with `sudo` or lower the restriction with `sudo sysctl kernel.perf_event_paranoid=1`.
 
 2. Count events for the whole benchmark:
 
