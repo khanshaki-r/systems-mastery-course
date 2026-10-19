@@ -348,12 +348,6 @@ Expected: `STAT` is `S` (sleeping) and `%CPU` is `0.0`. The `WCHAN` column typic
 1. Open 200 idle connections from one shell:
 
 ```bash
-for i in $(seq 1 200); do nc localhost 5555 < /dev/zero > /dev/null & done 2>/dev/null; sleep 1
-```
-
-Actually `/dev/zero` would flood the server; use a sleeping input instead:
-
-```bash
 for i in $(seq 1 200); do (sleep 300 | nc localhost 5555 > /dev/null) & done
 sleep 2
 ps -o pid,stat,rss,nlwp,pcpu,comm -p $(pgrep epoll_echo)

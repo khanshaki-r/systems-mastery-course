@@ -63,7 +63,7 @@ A first experiment to run in your head: a block you get back from `malloc` is bi
 
 - `prev_size`: the size of the chunk physically before this one, but only meaningful when that previous chunk is free. When the previous chunk is in use, your data is allowed to spill into this field, so no space is wasted.
 - `size`: the size of this chunk in bytes, including the header. Because chunk sizes are always a multiple of 16, the low bits of `size` are always zero, so glibc steals those low 3 bits for **flags**:
-  - bit 0, `PREV_INUSE` (`A`... actually `P`): 1 means the previous chunk is in use.
+  - bit 0, `PREV_INUSE` (`P`): 1 means the previous chunk is in use.
   - bit 1, `IS_MMAPPED` (`M`): 1 means this chunk came from `mmap`, not the main heap.
   - bit 2, `NON_MAIN_ARENA` (`N`): 1 means it belongs to a secondary arena (see below).
 
@@ -224,7 +224,7 @@ Expected output (addresses and exact byte counts vary by machine and glibc build
 
 ```text
 === small chunks live next to each other on the heap ===
-a(24)      ptr=0x5audio...  size_word=0x0000000000000021  chunk_size=32  flags(NMP)=001  usable=24
+a(24)      ptr=0x5...  size_word=0x0000000000000021  chunk_size=32  flags(NMP)=001  usable=24
 b(24)      ptr=0x5...        size_word=0x0000000000000021  chunk_size=32  flags(NMP)=001  usable=24
 b - a = 32 bytes (one chunk apart)
 

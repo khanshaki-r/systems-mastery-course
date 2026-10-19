@@ -192,6 +192,7 @@ size_t arena_capacity(const Arena *a);
 ```c
 /* arena.c  -- see arena.h for the ownership contract. */
 #include "arena.h"
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <assert.h>

@@ -415,7 +415,7 @@ Make each change on its own, compile, read the message, then undo it.
 
 ### Journal
 
-Copy [journal/TEMPLATE.md](../../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-first-c-program.md`. Record: the line count of `hello.i`; the two symbols `nm` showed; the exit code you got from `return 256`; the exact text of one warning and one error from Part C; and one sentence in your own words on what `-Werror` buys you. Then `git add` your source files and the journal entry and commit with the message `Module 1.01: first C program lab`.
+Copy [journal/TEMPLATE.md](../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-first-c-program.md`. Record: the line count of `hello.i`; the two symbols `nm` showed; the exit code you got from `return 256`; the exact text of one warning and one error from Part C; and one sentence in your own words on what `-Werror` buys you. Then `git add` your source files and the journal entry and commit with the message `Module 1.01: first C program lab`.
 
 ## 9. Common mistakes and misconceptions
 
