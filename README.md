@@ -479,7 +479,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 8 | [8.05 How ASan, TSan and UBSan work](phase-08-debugging-performance-reliability/module-05-how-asan-tsan-ubsan-work.md) | todo | 4 |
 | 8 | [8.06 Memory corruption patterns](phase-08-debugging-performance-reliability/module-06-memory-corruption-patterns.md) | written | 5 |
 | 8 | [8.07 Profiling with perf and flamegraphs](phase-08-debugging-performance-reliability/module-07-profiling-perf-and-flamegraphs.md) | written | 4 |
-| 8 | [8.08 Latency percentiles and benchmarking](phase-08-debugging-performance-reliability/module-08-latency-percentiles-and-benchmarking.md) | todo | 3 |
+| 8 | [8.08 Latency percentiles and benchmarking](phase-08-debugging-performance-reliability/module-08-latency-percentiles-and-benchmarking.md) | written | 3 |
 | 8 | [8.09 Incident triage and RCA writing](phase-08-debugging-performance-reliability/module-09-incident-triage-and-rca-writing.md) | todo | 4 |
 | 8 | [8.10 SLAs, SLOs and observability](phase-08-debugging-performance-reliability/module-10-slas-slos-and-observability.md) | todo | 3 |
 | 8 | Phase 8 revision + quiz | todo | 2 |
