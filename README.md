@@ -499,7 +499,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 10 | [10.03 Caching strategies](phase-10-backend-fundamentals-and-system-design/module-03-caching-strategies.md) | todo | 3 |
 | 10 | [10.04 Message queues](phase-10-backend-fundamentals-and-system-design/module-04-message-queues.md) | todo | 3 |
 | 10 | [10.05 Rate limiting and load balancing](phase-10-backend-fundamentals-and-system-design/module-05-rate-limiting-and-load-balancing.md) | todo | 3 |
-| 10 | [10.06 Monolith vs microservices](phase-10-backend-fundamentals-and-system-design/module-06-monolith-vs-microservices.md) | todo | 2 |
+| 10 | [10.06 Monolith vs microservices](phase-10-backend-fundamentals-and-system-design/module-06-monolith-vs-microservices.md) | written | 2 |
 | 10 | [10.07 Design: KV store and log-structured storage engine](phase-10-backend-fundamentals-and-system-design/module-07-design-kv-store-and-log-structured-engine.md) | todo | 5 |
 | 10 | [10.08 Design: thread pool, LRU cache, connection pool](phase-10-backend-fundamentals-and-system-design/module-08-design-thread-pool-lru-cache-connection-pool.md) | todo | 4 |
 | 10 | [10.09 Design: rate limiter, distributed lock, RPC framework](phase-10-backend-fundamentals-and-system-design/module-09-design-rate-limiter-distributed-lock-rpc.md) | todo | 4 |
