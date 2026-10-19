@@ -466,7 +466,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 7 | [7.03 Time and clocks](phase-07-distributed-systems-and-yugabytedb/module-03-time-and-clocks.md) | todo | 3 |
 | 7 | [7.04 Replication](phase-07-distributed-systems-and-yugabytedb/module-04-replication.md) | todo | 4 |
 | 7 | [7.05 Raft consensus](phase-07-distributed-systems-and-yugabytedb/module-05-raft-consensus.md) | todo | 6 |
-| 7 | [7.06 Sharding: hash vs range](phase-07-distributed-systems-and-yugabytedb/module-06-sharding-hash-vs-range.md) | todo | 3 |
+| 7 | [7.06 Sharding: hash vs range](phase-07-distributed-systems-and-yugabytedb/module-06-sharding-hash-vs-range.md) | written | 3 |
 | 7 | [7.07 YugabyteDB architecture](phase-07-distributed-systems-and-yugabytedb/module-07-yugabytedb-architecture.md) | todo | 6 |
 | 7 | [7.08 Distributed transactions in YugabyteDB](phase-07-distributed-systems-and-yugabytedb/module-08-distributed-transactions-in-yugabytedb.md) | todo | 5 |
 | 7 | [7.09 High availability and failover on a 3-node cluster](phase-07-distributed-systems-and-yugabytedb/module-09-ha-failover-3-node-cluster.md) | todo | 4 |
