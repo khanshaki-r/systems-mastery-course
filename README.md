@@ -510,7 +510,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 11 | [11.03 SQL injection and input validation](phase-11-security-and-banking-context/module-03-sql-injection.md) | written | 2 |
 | 11 | [11.04 TLS in practice and secrets management](phase-11-security-and-banking-context/module-04-tls-and-secrets.md) | written | 3 |
 | 11 | [11.05 PCI-DSS awareness](phase-11-security-and-banking-context/module-05-pci-dss-awareness.md) | written | 2 |
-| 11 | [11.06 How a loan-origination system works end to end](phase-11-security-and-banking-context/module-06-loan-origination-end-to-end.md) | todo | 4 |
+| 11 | [11.06 How a loan-origination system works end to end](phase-11-security-and-banking-context/module-06-loan-origination-end-to-end.md) | written | 4 |
 | 11 | Phase 11 revision + quiz | todo | 2 |
 | 12 | [12.01 Resume walk-through and story bank](phase-12-interview-mastery/module-01-resume-walkthrough-and-story-bank.md) | written | 3 |
 | 12 | [12.02 Mock: C++ coding rounds](phase-12-interview-mastery/module-02-mock-cpp-coding-rounds.md) | written | 6 |
