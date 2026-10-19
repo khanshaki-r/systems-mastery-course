@@ -469,7 +469,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 7 | [7.06 Sharding: hash vs range](phase-07-distributed-systems-and-yugabytedb/module-06-sharding-hash-vs-range.md) | written | 3 |
 | 7 | [7.07 YugabyteDB architecture](phase-07-distributed-systems-and-yugabytedb/module-07-yugabytedb-architecture.md) | written | 6 |
 | 7 | [7.08 Distributed transactions in YugabyteDB](phase-07-distributed-systems-and-yugabytedb/module-08-distributed-transactions-in-yugabytedb.md) | written | 5 |
-| 7 | [7.09 High availability and failover on a 3-node cluster](phase-07-distributed-systems-and-yugabytedb/module-09-ha-failover-3-node-cluster.md) | todo | 4 |
+| 7 | [7.09 High availability and failover on a 3-node cluster](phase-07-distributed-systems-and-yugabytedb/module-09-ha-failover-3-node-cluster.md) | written | 4 |
 | 7 | [7.10 Migration strategies](phase-07-distributed-systems-and-yugabytedb/module-10-migration-strategies.md) | todo | 5 |
 | 7 | Phase 7 revision + quiz | todo | 2 |
 | 8 | [8.01 GDB workflow](phase-08-debugging-performance-reliability/module-01-gdb-workflow.md) | todo | 5 |
