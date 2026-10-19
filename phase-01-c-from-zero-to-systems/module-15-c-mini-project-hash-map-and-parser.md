@@ -804,7 +804,7 @@ Copy [journal/TEMPLATE.md](../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-hash-m
 - **Claim H4, "in-memory master-table cache that removes joins from the hot path".** Section 7 is the same decision: a hash map loaded once, lookups by key at tens of nanoseconds instead of a database round trip. The numbers you measure in Part C are the start of that story.
 - **Claim F, "Valgrind, memory corruption and leak investigation".** You have seen three bug signatures: definitely lost with indirectly lost (orphaned structure), definitely lost in exact multiples (missing free in one function), and conditional jump on uninitialised value (missing terminator). Being able to name the likely cause from the report is the skill.
 
-Likely follow-ups: "How does your hash map handle collisions?" (separate chaining, average chain under one at 0.75). "What is the worst case?" (O(N) when all keys collide, shown in Part C step 2). "How would you make it faster?" (power-of-two masking, storing the hash in the node, inline short keys, open addressing for cache locality, which module 2.13 and the STL `unordered_map` internals in module 2.09 cover).
+Likely follow-ups: "How does your hash map handle collisions?" (separate chaining, average chain under one at 0.75). "What is the worst case?" (O(N) when all keys collide, shown in Part C step 2). "How would you make it faster?" (power-of-two masking, storing the hash in the node, inline short keys, open addressing for cache locality, which module 2.13 and the STL `unordered_map` internals in module 2.07 cover).
 
 ## 11. Interview questions
 
