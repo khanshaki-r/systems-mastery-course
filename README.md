@@ -481,7 +481,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 8 | [8.07 Profiling with perf and flamegraphs](phase-08-debugging-performance-reliability/module-07-profiling-perf-and-flamegraphs.md) | written | 4 |
 | 8 | [8.08 Latency percentiles and benchmarking](phase-08-debugging-performance-reliability/module-08-latency-percentiles-and-benchmarking.md) | written | 3 |
 | 8 | [8.09 Incident triage and RCA writing](phase-08-debugging-performance-reliability/module-09-incident-triage-and-rca-writing.md) | written | 4 |
-| 8 | [8.10 SLAs, SLOs and observability](phase-08-debugging-performance-reliability/module-10-slas-slos-and-observability.md) | todo | 3 |
+| 8 | [8.10 SLAs, SLOs and observability](phase-08-debugging-performance-reliability/module-10-slas-slos-and-observability.md) | written | 3 |
 | 8 | Phase 8 revision + quiz | todo | 2 |
 | 9 | [9.01 CMake deep dive](phase-09-build-test-delivery/module-01-cmake-deep-dive.md) | todo | 5 |
 | 9 | [9.02 GoogleTest and GMock](phase-09-build-test-delivery/module-02-googletest-and-gmock.md) | todo | 4 |
