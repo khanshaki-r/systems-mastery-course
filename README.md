@@ -403,7 +403,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 2 | [2.14 Undefined-behaviour-aware C++](phase-02-cpp17-from-zero-to-modern/module-14-ub-aware-cpp.md) | written | 3 |
 | 2 | [2.15 C++20 essentials](phase-02-cpp17-from-zero-to-modern/module-15-cpp20-essentials.md) | written | 4 |
 | 2 | [2.16 Mini-project: tcpkv protocol parser](phase-02-cpp17-from-zero-to-modern/module-16-cpp-mini-project-protocol-parser.md) | written | 4 |
-| 2 | Phase 2 revision + quiz | todo | 2 |
+| 2 | [Phase 2 revision](phase-02-cpp17-from-zero-to-modern/revision.md) + [quiz](phase-02-cpp17-from-zero-to-modern/quiz.md) | written | 2 |
 | 3 | [3.01 Processes](phase-03-os-internals/module-01-processes.md) | written | 4 |
 | 3 | [3.02 Threads vs processes](phase-03-os-internals/module-02-threads-vs-processes.md) | written | 3 |
 | 3 | [3.03 Scheduling](phase-03-os-internals/module-03-scheduling.md) | written | 3 |
