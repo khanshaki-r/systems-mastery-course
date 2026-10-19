@@ -505,7 +505,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 10 | [10.09 Design: rate limiter, distributed lock, RPC framework](phase-10-backend-fundamentals-and-system-design/module-09-design-rate-limiter-distributed-lock-rpc.md) | todo | 4 |
 | 10 | [10.10 Design: banking transaction system](phase-10-backend-fundamentals-and-system-design/module-10-design-banking-transaction-system.md) | todo | 6 |
 | 10 | Phase 10 revision + quiz | todo | 2 |
-| 11 | [11.01 Memory-safety bugs](phase-11-security-and-banking-context/module-01-memory-safety-bugs.md) | todo | 3 |
+| 11 | [11.01 Memory-safety bugs](phase-11-security-and-banking-context/module-01-memory-safety-bugs.md) | written | 3 |
 | 11 | [11.02 ASLR, canaries, NX and secure C/C++ coding](phase-11-security-and-banking-context/module-02-aslr-canaries-nx-secure-coding.md) | todo | 3 |
 | 11 | [11.03 SQL injection and input validation](phase-11-security-and-banking-context/module-03-sql-injection.md) | todo | 2 |
 | 11 | [11.04 TLS in practice and secrets management](phase-11-security-and-banking-context/module-04-tls-and-secrets.md) | todo | 3 |
