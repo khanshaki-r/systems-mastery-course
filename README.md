@@ -425,7 +425,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 4 | [4.05 shared_mutex and reader-writer locks](phase-04-concurrency-deep-dive/module-05-shared-mutex.md) | written | 3 |
 | 4 | [4.06 Spinlocks and atomics](phase-04-concurrency-deep-dive/module-06-spinlocks-and-atomics.md) | written | 4 |
 | 4 | [4.07 The memory model and memory orders](phase-04-concurrency-deep-dive/module-07-memory-model-and-memory-orders.md) | written | 6 |
-| 4 | [4.08 Cache coherence and false sharing](phase-04-concurrency-deep-dive/module-08-cache-coherence-and-false-sharing.md) | todo | 4 |
+| 4 | [4.08 Cache coherence and false sharing](phase-04-concurrency-deep-dive/module-08-cache-coherence-and-false-sharing.md) | written | 4 |
 | 4 | [4.09 Lock-free basics](phase-04-concurrency-deep-dive/module-09-lock-free-basics.md) | todo | 6 |
 | 4 | [4.10 Thread pool design](phase-04-concurrency-deep-dive/module-10-thread-pool-design.md) | written | 5 |
 | 4 | [4.11 Deadlocks, livelocks and lock ordering](phase-04-concurrency-deep-dive/module-11-deadlocks-and-lock-ordering.md) | written | 4 |
