@@ -457,7 +457,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 6 | [6.11 PL/pgSQL](phase-06-databases-from-zero-to-internals/module-11-plpgsql.md) | todo | 6 |
 | 6 | [6.12 Connection pooling and client libraries](phase-06-databases-from-zero-to-internals/module-12-connection-pooling-and-libpq.md) | todo | 4 |
 | 6 | [6.13 Berkeley DB: key-value model and cursors](phase-06-databases-from-zero-to-internals/module-13-berkeley-db.md) | written | 6 |
-| 6 | [6.14 Redis internals and caching strategies](phase-06-databases-from-zero-to-internals/module-14-redis-internals-and-caching.md) | todo | 4 |
+| 6 | [6.14 Redis internals and caching strategies](phase-06-databases-from-zero-to-internals/module-14-redis-internals-and-caching.md) | written | 4 |
 | 6 | [6.15 Oracle and SQL Server differences](phase-06-databases-from-zero-to-internals/module-15-oracle-and-sql-server-differences.md) | todo | 3 |
 | 6 | [6.16 Replication and backup in PostgreSQL](phase-06-databases-from-zero-to-internals/module-16-replication-and-backup.md) | todo | 4 |
 | 6 | Phase 6 revision + quiz | todo | 2 |
