@@ -515,7 +515,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 12 | [12.01 Resume walk-through and story bank](phase-12-interview-mastery/module-01-resume-walkthrough-and-story-bank.md) | written | 3 |
 | 12 | [12.02 Mock: C++ coding rounds](phase-12-interview-mastery/module-02-mock-cpp-coding-rounds.md) | written | 6 |
 | 12 | [12.03 Mock: systems and concurrency rounds](phase-12-interview-mastery/module-03-mock-systems-and-concurrency-rounds.md) | written | 4 |
-| 12 | [12.04 Mock: database rounds](phase-12-interview-mastery/module-04-mock-database-rounds.md) | todo | 4 |
+| 12 | [12.04 Mock: database rounds](phase-12-interview-mastery/module-04-mock-database-rounds.md) | written | 4 |
 | 12 | [12.05 Mock: system design rounds](phase-12-interview-mastery/module-05-mock-system-design-rounds.md) | todo | 6 |
 | 12 | [12.06 Behavioural answers from the journal](phase-12-interview-mastery/module-06-behavioural-answers-from-the-journal.md) | todo | 3 |
 | 12 | [12.07 Resume-line defense: every claim](phase-12-interview-mastery/module-07-resume-line-defense.md) | todo | 4 |
