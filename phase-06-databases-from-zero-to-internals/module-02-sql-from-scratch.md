@@ -20,30 +20,28 @@ SQL is a language for describing the table you want back; the database works out
 
 Go back to the records room and its registrar.
 
-- A **SELECT** is a slip that describes a result, not a procedure: "every customer at MUM01, with name and PAN, oldest first". You never say "open register 3, start at page 1, check each line".
+- A **SELECT** is a slip that describes a result, not a procedure: "every customer at MUM01, name and PAN, oldest first". You never say "open register 3, start at page 1, check each line".
 - **WHERE** is a stencil laid over the register: only lines that show through are kept.
 - A **JOIN** is laying two registers side by side and drawing a line between entries that share a value, such as the same branch code.
-- **GROUP BY** is sorting slips into piles (one pile per branch) and writing one summary card per pile: how many, how much in total.
-- A **subquery** is a slip that needs the answer to another slip first: "applications bigger than the average application".
-- An **UPDATE** with no WHERE is the registrar correcting every line in the register at once. That is either the most efficient thing you can ask for or the worst mistake of your week.
+- **GROUP BY** is sorting slips into piles (one per branch) and writing one summary card per pile: how many, how much.
+- A **subquery** is a slip that needs another slip's answer first: "applications bigger than the average application".
+- An **UPDATE** with no WHERE is the registrar correcting every line in the register at once: either the most efficient request you can make or the worst mistake of your week.
 
 ## 3. Why it exists: the problem it solves
 
-Databases before SQL (the 1960s and 70s network and hierarchical systems, such as CODASYL and IBM's IMS) were navigated by programs: "find the first loan record, follow the pointer to its customer, get next". Every new question was a new program, and changing the storage layout broke every program.
+Databases before SQL (the network and hierarchical systems of the 1960s and 70s, such as CODASYL and IBM's IMS) were navigated by programs: "find the first loan record, follow the pointer to its customer, get next". Every new question was a new program, and changing the storage layout broke every program.
 
-IBM's System R project (1974) produced SEQUEL, later SQL: a declarative language over Codd's relational model. You describe the result; the database's planner chooses the access path. SQL became an ANSI standard in 1986 and every relational database since speaks a dialect of it. PostgreSQL's dialect is very close to the standard.
+IBM's System R project (mid 1970s) produced SEQUEL, later SQL: a declarative language over Codd's relational model. You describe the result; the database's planner chooses the access path. SQL became an ANSI standard in 1986, and PostgreSQL's dialect stays close to the standard.
 
-What breaks without it is exactly what the lending platform lived through before its migration. Data sat in Berkeley DB, which has no query language. Each management report was a C program that opened a cursor, walked records one by one, decoded each one and accumulated totals in memory. Twelve reports, twelve programs, twelve places to fix when the record layout changed. Bulk changes, such as repricing every floating-rate loan, ran as loops that touched one record per call. Resume claim H2 is about replacing that style with set-based SQL, and section 6 measures what that is worth.
+What breaks without it is what the lending platform lived through before its migration. Data sat in Berkeley DB, which has no query language. Each management report was a C program that opened a cursor, walked records one by one, decoded each and summed in memory. Bulk changes, such as repricing every floating-rate loan, were loops touching one record per call. Resume claim H2 is about replacing that style with set-based SQL, and section 6 measures what that is worth.
 
 ## 4. Three layers of depth
 
-Run the setup script from section 6 before reading on. It builds six tables of the lending schema with a small, fixed data set (5 branches, 6 customers, 4 products, 8 applications, 3 loans, 6 repayments), so every output below matches yours exactly. Run each example in `psql -h localhost -U postgres -d lending`.
-
-Money is stored as integer **paise** (1 rupee = 100 paise) in `bigint` columns, and rates as **basis points** (1 bp = 0.01%, so 850 = 8.50%). Module 6.03 explains why.
+Run the setup script from section 6 first. It builds six tables of the lending schema with a small fixed data set (5 branches, 6 customers, 4 products, 8 applications, 3 loans, 6 repayments), so every output below matches yours exactly. Run the examples in `psql -h localhost -U postgres -d lending`. Money is integer **paise** (1 rupee = 100 paise) in `bigint` columns, and rates are **basis points** (850 = 8.50%); module 6.03 explains why.
 
 ### Layer 1 (beginner): reading and changing rows
 
-**The shape of a query.** Clauses always appear in this order; only `SELECT` and `FROM` are needed.
+**The shape of a query.** Clauses appear in this order; only `SELECT` and `FROM` are required.
 
 ```sql
 SELECT   columns or expressions     -- what to show
@@ -53,44 +51,28 @@ ORDER BY column [DESC]              -- sort (ascending by default)
 LIMIT    n;                         -- keep only the first n
 ```
 
-**Filter and sort.**
+The three largest applications that were not rejected:
 
 ```sql
-SELECT branch_code, city, region
-FROM branches
-WHERE region = 'SOUTH'
-ORDER BY branch_code;
-```
-
-```text
- branch_code |   city    | region
--------------+-----------+--------
- BLR01       | Bengaluru | SOUTH
- CHN01       | Chennai   | SOUTH
-(2 rows)
-```
-
-**Top N.** The three largest applications:
-
-```sql
-SELECT application_id, customer_id, amount_paise
+SELECT application_id, branch_code, amount_paise
 FROM loan_applications
+WHERE status <> 'REJECTED'
 ORDER BY amount_paise DESC
 LIMIT 3;
 ```
 
 ```text
- application_id | customer_id | amount_paise
+ application_id | branch_code | amount_paise
 ----------------+-------------+--------------
-           5006 |        1005 |    600000000
-           5001 |        1001 |    450000000
-           5007 |        1001 |    120000000
+           5006 | PUN01       |    600000000
+           5001 | MUM01       |    450000000
+           5007 | MUM01       |    120000000
 (3 rows)
 ```
 
-`LIMIT` without `ORDER BY` gives you "some 3 rows", not "the first 3". There is no first without an order.
+`<>` means "not equal". `LIMIT` without `ORDER BY` gives "some 3 rows", not "the first 3": there is no first without an order.
 
-**Expressions and functions.** A `SELECT` list can compute. `AS` names the result column.
+**Expressions and functions.** A `SELECT` list can compute; `AS` names the result column.
 
 ```sql
 SELECT product_code,
@@ -111,37 +93,20 @@ ORDER BY base_rate_bp;
 (4 rows)
 ```
 
-Two traps hide here. Integer divided by integer is integer division: `7 / 2` is `3`. Write `7 / 2.0` (or `100.0`) to get a `numeric` result, which is exact but can carry many decimal places, hence `round(x, 2)`. The `to_char` pattern puts commas where you place them, so Indian lakh and crore grouping is just a pattern.
+Integer divided by integer is integer division (`7 / 2` is `3`); write `100.0` to get an exact `numeric` result, then `round(x, 2)` because numeric division carries many decimals. `to_char` places commas where the pattern says, so Indian lakh and crore grouping is just a pattern.
 
-Functions you will use constantly:
-
-| Kind | Examples | Result for the example |
+| Kind | Examples | Result |
 |---|---|---|
-| Text | `upper('mum01')`, `length(full_name)`, `left(pan, 5)`, `full_name \|\| ' (' \|\| branch_code \|\| ')'` | `MUM01`, `8`, `ABCPR`, `Asha Rao (MUM01)` |
+| Text | `upper('mum01')`, `length('Asha Rao')`, `left(pan, 5)`, `full_name \|\| ' (' \|\| branch_code \|\| ')'` | `MUM01`, `8`, `ABCPR`, `Asha Rao (MUM01)` |
 | Numbers | `round(8.456, 2)`, `abs(-5)`, `7 % 2`, `greatest(3, 9)` | `8.46`, `5`, `1`, `9` |
 | Dates | `now()`, `current_date`, `date '2026-01-31' + 1`, `age(date '2026-01-01', dob)`, `extract(year FROM dob)` | timestamp, today, `2026-02-01`, an interval, `1988` |
-| NULL helpers | `coalesce(paid_at::text, 'not paid')`, `nullif(x, 0)` | first non-NULL value; NULL if `x = 0` |
+| NULL helpers | `coalesce(a, b)`, `nullif(x, 0)` | first non-NULL argument; NULL if `x = 0` |
 
-**DISTINCT** removes duplicate rows from the result:
+**DISTINCT** removes duplicate result rows: `SELECT DISTINCT status FROM loan_applications ORDER BY status;` returns five rows, `APPROVED`, `DISBURSED`, `DRAFT`, `REJECTED`, `SUBMITTED`, although the table has eight.
 
-```sql
-SELECT DISTINCT status FROM loan_applications ORDER BY status;
-```
+**Conditions.** `=`, `<>`, `<`, `<=`, `>`, `>=`, `AND`, `OR`, `NOT`, and three shortcuts: `status IN ('APPROVED', 'SUBMITTED')`; `amount_paise BETWEEN 100000000 AND 500000000` (inclusive at both ends); `full_name LIKE 'A%'` (`%` matches any run of characters, `_` exactly one; `ILIKE` ignores case).
 
-```text
-  status
------------
- APPROVED
- DISBURSED
- DRAFT
- REJECTED
- SUBMITTED
-(5 rows)
-```
-
-**Conditions.** `=`, `<>` (not equal), `<`, `<=`, `>`, `>=`, `AND`, `OR`, `NOT`, plus three shortcuts: `status IN ('APPROVED', 'SUBMITTED')`, `amount_paise BETWEEN 100000000 AND 500000000` (inclusive at both ends), `full_name LIKE 'A%'` (`%` matches any run of characters, `_` exactly one; `ILIKE` ignores case).
-
-`AND` binds tighter than `OR`, exactly like `*` and `+`. This query was meant to find rejected or draft applications at MUM01:
+`AND` binds tighter than `OR`, like `*` and `+`. This query was meant to find rejected or draft applications at MUM01:
 
 ```sql
 SELECT application_id, branch_code, status
@@ -159,9 +124,9 @@ ORDER BY application_id;
 (3 rows)
 ```
 
-It returned rejected applications from every branch, because it means `REJECTED OR (DRAFT AND MUM01)`. With brackets, `WHERE (status = 'REJECTED' OR status = 'DRAFT') AND branch_code = 'MUM01'`, the answer is one row, 5007. Always bracket a mix of `AND` and `OR`.
+It means `REJECTED OR (DRAFT AND MUM01)`, so it returned rejected applications from every branch. With brackets, `WHERE (status = 'REJECTED' OR status = 'DRAFT') AND branch_code = 'MUM01'`, the answer is one row, 5007. Always bracket a mix of `AND` and `OR`.
 
-**Testing for NULL.** `paid_at` is NULL for unpaid repayments. Watch what `= NULL` does:
+**Testing for NULL.** `paid_at` is NULL for unpaid repayments.
 
 ```sql
 SELECT count(*) AS eq_null FROM repayments WHERE paid_at = NULL;
@@ -181,9 +146,9 @@ SELECT repayment_id, status FROM repayments WHERE paid_at IS NULL ORDER BY repay
 (2 rows)
 ```
 
-`paid_at = NULL` is never true, so it matches nothing, silently. Use `IS NULL` and `IS NOT NULL`. Layer 2 explains why.
+`= NULL` is never true, so it silently matches nothing. Use `IS NULL` / `IS NOT NULL`; Layer 2 explains why.
 
-**INSERT, UPDATE, DELETE with RETURNING.** `RETURNING` hands back the rows you just changed, saving a second query (and a second round trip from your app server).
+**INSERT, UPDATE, DELETE with RETURNING.** `RETURNING` hands back the rows you just changed, which saves a second query and a second round trip from your app server.
 
 ```sql
 INSERT INTO loan_applications
@@ -222,11 +187,11 @@ UPDATE 1
 DELETE 1
 ```
 
-Notice `AND status = 'DRAFT'` in the UPDATE. Run that UPDATE a second time and it prints `UPDATE 0`: the state check makes it safe to repeat. That pattern (put the expected current state in the WHERE, then check the row count) is how a workflow step avoids double-processing, and you will use it for disbursement in module 6.04. An `UPDATE` or `DELETE` without `WHERE` changes every row in the table; `psql` will not ask "are you sure?".
+Note `AND status = 'DRAFT'` in the UPDATE. Run that UPDATE twice and the second prints `UPDATE 0`. Putting the expected current state in the `WHERE` and checking the row count is how a workflow step avoids double-processing; module 6.04 uses it for disbursement. An `UPDATE` or `DELETE` with no `WHERE` changes every row, and `psql` will not ask "are you sure?".
 
 ### Layer 2 (working engineer): joins, groups, subqueries, NULL logic
 
-**Joins with small row tables.** Create a throwaway table of sales targets. `TEMP` tables vanish when you disconnect. HYD01 is deliberately a branch that does not exist.
+**Joins with small row tables.** Make a throwaway table of sales targets (`TEMP` tables vanish when you disconnect). HYD01 is deliberately not a real branch.
 
 ```sql
 CREATE TEMP TABLE targets (branch_code varchar(6), target_paise bigint);
@@ -234,33 +199,26 @@ INSERT INTO targets VALUES ('MUM01', 900000000), ('DEL01', 300000000), ('HYD01',
 ```
 
 ```text
-branches.branch_code      targets.branch_code  target_paise
-MUM01  ---------------->  MUM01                 900000000
-PUN01                     DEL01                 300000000
-DEL01  ---------------->  (DEL01)
-BLR01                     HYD01                 500000000   (no matching branch)
+branches (5 rows)    targets (3 rows)
+MUM01   <-------->   MUM01  900000000
+PUN01                DEL01  300000000
+DEL01   <-------->   (DEL01 above)
+BLR01                HYD01  500000000  (no such branch)
 CHN01
 
-join type     rows   what it keeps
-INNER JOIN       2   only matched pairs: MUM01, DEL01
-LEFT JOIN        5   every branch; target columns NULL where no match
-RIGHT JOIN       3   every target; branch columns NULL for HYD01
-FULL JOIN        6   everything from both sides, NULLs on whichever side is missing
-CROSS JOIN      15   every branch paired with every target (5 x 3), no condition
+join type    rows  keeps
+INNER JOIN      2  matched pairs only: MUM01, DEL01
+LEFT JOIN       5  every branch; target columns NULL where unmatched
+RIGHT JOIN      3  every target; branch columns NULL for HYD01
+FULL JOIN       6  everything from both sides, NULLs where a side is missing
+CROSS JOIN     15  every branch with every target (5 x 3), no condition
 ```
-
-The LEFT and FULL versions, as `psql` prints them:
 
 ```sql
 SELECT b.branch_code, b.city, t.target_paise
 FROM branches b
 LEFT JOIN targets t ON t.branch_code = b.branch_code
 ORDER BY b.branch_code;
-
-SELECT b.branch_code, t.branch_code AS t_code, t.target_paise
-FROM branches b
-FULL JOIN targets t ON t.branch_code = b.branch_code
-ORDER BY coalesce(b.branch_code, t.branch_code);
 ```
 
 ```text
@@ -272,21 +230,11 @@ ORDER BY coalesce(b.branch_code, t.branch_code);
  MUM01       | Mumbai    |    900000000
  PUN01       | Pune      |
 (5 rows)
-
- branch_code | t_code | target_paise
--------------+--------+--------------
- BLR01       |        |
- CHN01       |        |
- DEL01       | DEL01  |    300000000
-             | HYD01  |    500000000
- MUM01       | MUM01  |    900000000
- PUN01       |        |
-(6 rows)
 ```
 
-`b` and `t` are **table aliases**: short names so you can write `b.city`. `JOIN` alone means `INNER JOIN`; `LEFT JOIN` is short for `LEFT OUTER JOIN`. A RIGHT JOIN is a LEFT JOIN with the tables swapped, and most people write it that way. Run the INNER, RIGHT and CROSS versions yourself and check the row counts against the picture.
+`b` and `t` are **table aliases**. `JOIN` alone means `INNER JOIN`; `LEFT JOIN` is short for `LEFT OUTER JOIN`; a RIGHT JOIN is a LEFT JOIN with the tables swapped. Change `LEFT` to `INNER`, `RIGHT`, `FULL` and check the row counts against the table; for `FULL`, order by `coalesce(b.branch_code, t.branch_code)` and see HYD01 appear with an empty branch side. `CROSS JOIN targets` has no `ON` at all.
 
-**A real three-table join.** Applications at MUM01 with customer and product names:
+**A real three-table join.** Applications at MUM01 with names:
 
 ```sql
 SELECT a.application_id, c.full_name, p.name AS product, a.amount_paise / 100 AS rupees, a.status
@@ -306,9 +254,9 @@ ORDER BY a.application_id;
 (3 rows)
 ```
 
-This is the query the app server ran for every request before it cached `products` in memory (claim H4): the join to a master table on every call.
+This is the shape of query the app server ran on every request before it cached `products` in memory (claim H4).
 
-**Finding what is missing (anti-join).** Customers with no application at all: LEFT JOIN, then keep rows where the right side is NULL.
+**Finding what is missing (anti-join).** LEFT JOIN, then keep the rows where the right side is NULL. Customers with no application:
 
 ```sql
 SELECT c.customer_id, c.full_name, c.kyc_status
@@ -343,15 +291,21 @@ GROUP BY b.branch_code ORDER BY b.branch_code;
 (3 rows)
 ```
 
-CHN01 and DEL01 vanished. For CHN01 the LEFT JOIN produced a row with `c.kyc_status` NULL, and `WHERE NULL = 'VERIFIED'` threw it away: the WHERE turned the LEFT JOIN back into an inner join. Move the condition into the `ON` clause (`LEFT JOIN customers c ON c.branch_code = b.branch_code AND c.kyc_status = 'VERIFIED'`, no WHERE) and you get all five branches, with 0 for CHN01 and DEL01. Rule: conditions on the optional side of a LEFT JOIN go in `ON`.
+CHN01 and DEL01 vanished. For CHN01 the LEFT JOIN made a row with `c.kyc_status` NULL, and the `WHERE` threw it away, turning the outer join back into an inner join. Move the condition into `ON` (`LEFT JOIN customers c ON c.branch_code = b.branch_code AND c.kyc_status = 'VERIFIED'`, no `WHERE`) and all five branches appear, CHN01 and DEL01 with 0. Rule: conditions on the optional side of a LEFT JOIN go in `ON`.
 
-**GROUP BY and aggregates.** Aggregates collapse many rows into one value: `count(*)`, `count(col)`, `sum`, `avg`, `min`, `max`. With `GROUP BY` you get one result row per group.
+**GROUP BY and aggregates.** `count(*)`, `count(col)`, `sum`, `avg`, `min`, `max` collapse rows; `GROUP BY` gives one result row per group; `HAVING` filters groups after aggregation, while `WHERE` filters rows before it.
 
 ```sql
 SELECT status, count(*) AS n, sum(amount_paise) AS total_paise
 FROM loan_applications
 GROUP BY status
 ORDER BY n DESC, status;
+
+SELECT branch_code, count(*) AS apps, max(amount_paise) / 100 AS largest_rupees
+FROM loan_applications
+GROUP BY branch_code
+HAVING count(*) >= 2
+ORDER BY branch_code;
 ```
 
 ```text
@@ -363,19 +317,7 @@ ORDER BY n DESC, status;
  DRAFT     | 1 |   120000000
  SUBMITTED | 1 |    20000000
 (5 rows)
-```
 
-`HAVING` filters groups after aggregation; `WHERE` filters rows before it. Branches with at least two applications:
-
-```sql
-SELECT branch_code, count(*) AS apps, max(amount_paise) / 100 AS largest_rupees
-FROM loan_applications
-GROUP BY branch_code
-HAVING count(*) >= 2
-ORDER BY branch_code;
-```
-
-```text
  branch_code | apps | largest_rupees
 -------------+------+----------------
  BLR01       |    2 |         800000
@@ -384,74 +326,34 @@ ORDER BY branch_code;
 (3 rows)
 ```
 
-Every column in the `SELECT` list must either be in `GROUP BY` or inside an aggregate. `count(*)` counts rows; `count(col)` counts non-NULL values of `col`:
+Every `SELECT` column must be in `GROUP BY` or inside an aggregate. `count(*)` counts rows; `count(col)` counts non-NULL values, so on `repayments`, `count(*)` is 6 and `count(paid_at)` is 4. `sum` of a `bigint` returns `numeric`, which cannot overflow even across a whole bank's book.
+
+**Subqueries.** A query inside a query, in four forms:
 
 ```sql
-SELECT count(*) AS all_rows, count(paid_at) AS paid_rows,
-       sum(amount_paise) AS total_paise, round(avg(amount_paise)) AS avg_paise,
-       min(due_date), max(due_date)
-FROM repayments;
-```
+-- Scalar (one value): applications above the average amount. Returns 5001 and 5006.
+SELECT application_id, amount_paise FROM loan_applications
+WHERE amount_paise > (SELECT avg(amount_paise) FROM loan_applications);
 
-```text
- all_rows | paid_rows | total_paise | avg_paise |    min     |    max
-----------+-----------+-------------+-----------+------------+------------
-        6 |         4 |    16045900 |   2674317 | 2025-04-10 | 2025-06-10
-(1 row)
-```
+-- IN (a list): customers holding an ACTIVE loan. Returns 1001 Asha Rao, 1004 Arjun Nair.
+SELECT customer_id, full_name FROM customers
+WHERE customer_id IN (SELECT customer_id FROM loans WHERE status = 'ACTIVE');
 
-`sum` of a `bigint` column returns `numeric`, so it cannot overflow even across a whole bank's book.
+-- EXISTS (any row?): branches with an ACTIVE loan. Returns BLR01, MUM01.
+SELECT b.branch_code FROM branches b
+WHERE EXISTS (SELECT 1 FROM loans l WHERE l.branch_code = b.branch_code AND l.status = 'ACTIVE');
 
-**Subqueries.** A query inside a query. Four forms:
-
-```sql
--- Scalar: returns one value. Applications above the average amount.
-SELECT application_id, amount_paise
-FROM loan_applications
-WHERE amount_paise > (SELECT avg(amount_paise) FROM loan_applications)
-ORDER BY application_id;
-
--- IN: returns a list. Customers who hold an ACTIVE loan.
-SELECT customer_id, full_name
-FROM customers
-WHERE customer_id IN (SELECT customer_id FROM loans WHERE status = 'ACTIVE')
-ORDER BY customer_id;
-
--- EXISTS: true if the inner query finds at least one row.
-SELECT b.branch_code, b.name
-FROM branches b
-WHERE EXISTS (SELECT 1 FROM loans l WHERE l.branch_code = b.branch_code AND l.status = 'ACTIVE')
-ORDER BY b.branch_code;
-
--- Correlated: the inner query refers to the outer row (a.customer_id), so it
--- is logically re-run per outer row. Each customer's largest application.
+-- Correlated (refers to the outer row): each customer's largest application.
 SELECT a.customer_id, a.application_id, a.amount_paise
 FROM loan_applications a
-WHERE a.amount_paise = (SELECT max(a2.amount_paise)
-                        FROM loan_applications a2
+WHERE a.amount_paise = (SELECT max(a2.amount_paise) FROM loan_applications a2
                         WHERE a2.customer_id = a.customer_id)
 ORDER BY a.customer_id;
 ```
 
+The output of the last one:
+
 ```text
- application_id | amount_paise
-----------------+--------------
-           5001 |    450000000
-           5006 |    600000000
-(2 rows)
-
- customer_id | full_name
--------------+------------
-        1001 | Asha Rao
-        1004 | Arjun Nair
-(2 rows)
-
- branch_code |       name
--------------+-------------------
- BLR01       | Bengaluru MG Road
- MUM01       | Mumbai Fort
-(2 rows)
-
  customer_id | application_id | amount_paise
 -------------+----------------+--------------
         1001 |           5001 |    450000000
@@ -462,9 +364,9 @@ ORDER BY a.customer_id;
 (5 rows)
 ```
 
-The EXISTS example also shows why EXISTS is fast: the inner query can stop at the first match.
+A correlated subquery is logically re-run for each outer row; the planner often rewrites it as a join. `EXISTS` can stop at the first matching row, which is why it is cheap.
 
-**CTEs (common table expressions).** `WITH name AS (query)` gives a subquery a name, so a long query reads top to bottom. The active loan book per branch, including empty branches:
+**CTEs (common table expressions).** `WITH name AS (query)` names a subquery so a long query reads top to bottom. Active loan book per branch, including empty branches:
 
 ```sql
 WITH branch_book AS (
@@ -490,7 +392,7 @@ ORDER BY book_paise DESC, b.branch_code;
 (5 rows)
 ```
 
-**CASE** is SQL's if/else, and works anywhere an expression does. Combined with the `FILTER` clause on an aggregate, it builds report columns:
+**CASE** is SQL's if/else and works anywhere an expression does. The first matching `WHEN` wins.
 
 ```sql
 SELECT application_id, amount_paise / 100 AS rupees,
@@ -502,14 +404,6 @@ SELECT application_id, amount_paise / 100 AS rupees,
 FROM loan_applications
 WHERE application_id IN (5001, 5004, 5005)
 ORDER BY application_id;
-
-SELECT branch_code,
-       count(*) FILTER (WHERE status = 'REJECTED') AS rejected,
-       count(*) AS total,
-       round(100.0 * count(*) FILTER (WHERE status = 'REJECTED') / count(*), 1) AS reject_pct
-FROM loan_applications
-GROUP BY branch_code
-ORDER BY branch_code;
 ```
 
 ```text
@@ -519,19 +413,11 @@ ORDER BY branch_code;
            5004 |  800000 | MEDIUM
            5005 |  150000 | SMALL
 (3 rows)
-
- branch_code | rejected | total | reject_pct
--------------+----------+-------+------------
- BLR01       |        1 |     2 |       50.0
- DEL01       |        1 |     2 |       50.0
- MUM01       |        0 |     3 |        0.0
- PUN01       |        0 |     1 |        0.0
-(4 rows)
 ```
 
-The first `CASE` branch that matches wins, so order the `WHEN`s from most to least specific.
+Inside an aggregate, `sum(CASE WHEN status = 'REJECTED' THEN 1 ELSE 0 END)` counts rejected applications per group; PostgreSQL also offers the shorter `count(*) FILTER (WHERE status = 'REJECTED')`.
 
-**UPSERT: insert, or update if it already exists.** `ON CONFLICT` needs a unique constraint or primary key to detect the conflict. `EXCLUDED` is the row you tried to insert.
+**UPSERT: insert, or update if it already exists.** `ON CONFLICT` needs a primary key or unique constraint to detect the conflict; `EXCLUDED` is the row you tried to insert.
 
 ```sql
 INSERT INTO products (product_code, name, min_amount_paise, max_amount_paise, max_tenure_months, base_rate_bp)
@@ -550,9 +436,9 @@ RETURNING product_code, base_rate_bp;
 INSERT 0 1
 ```
 
-PL01 existed, so its rate changed from 1150 to 1099. With a new code such as `EL01` the same statement inserts a fresh row. `ON CONFLICT (product_code) DO NOTHING` skips the row instead and prints `INSERT 0 0`. UPSERT is atomic: two sessions running it at once cannot both insert. Put PL01 back with `UPDATE products SET base_rate_bp = 1150 WHERE product_code = 'PL01';`.
+PL01 existed, so its rate changed from 1150 to 1099; a new code would have been inserted. `ON CONFLICT (product_code) DO NOTHING` skips the row instead (`INSERT 0 0`). UPSERT is atomic: two sessions running it at once cannot both insert. Restore PL01 with `UPDATE products SET base_rate_bp = 1150 WHERE product_code = 'PL01';`.
 
-**NULL and three-valued logic.** Every comparison in SQL returns true, false or **unknown** (NULL). `WHERE` keeps a row only if the condition is true; unknown is thrown away like false.
+**NULL and three-valued logic.** Every comparison returns true, false or **unknown** (NULL). `WHERE` keeps a row only when the condition is true.
 
 | `a` | `b` | `a AND b` | `a OR b` | `NOT a` |
 |---|---|---|---|---|
@@ -573,9 +459,7 @@ SELECT NULL = NULL AS eq, NULL <> 1 AS ne, NULL IS NULL AS is_null,
 (1 row)
 ```
 
-The blanks are NULL (unknown). `IS DISTINCT FROM` treats NULL as an ordinary value and always answers true or false; use it when comparing columns that may be NULL.
-
-The most expensive NULL bug is `NOT IN` with a NULL in the list:
+The blanks are NULL. `IS DISTINCT FROM` treats NULL as an ordinary value and always answers true or false; use it to compare nullable columns. The most expensive NULL bug is `NOT IN` with a NULL in the list:
 
 ```sql
 SELECT count(*) AS not_in_with_null
@@ -590,7 +474,7 @@ WHERE customer_id NOT IN (SELECT 1004 UNION ALL SELECT NULL);
 (1 row)
 ```
 
-Zero customers, although five of the six are not 1004. `x NOT IN (1004, NULL)` means `x <> 1004 AND x <> NULL`, and `x <> NULL` is unknown, so the whole condition is never true. In real code the list is a subquery over a column that is nullable, and one stray NULL row makes a report return nothing. `NOT EXISTS` does not have this problem; prefer it. Other NULL rules: aggregates skip NULLs (`sum`, `avg`, `count(col)`); `ORDER BY` puts NULLs last in ascending order and first in descending order (change with `NULLS FIRST` / `NULLS LAST`); `coalesce(a, b)` returns the first non-NULL argument.
+Zero, although five of the six customers are not 1004. `x NOT IN (1004, NULL)` means `x <> 1004 AND x <> NULL`; the second part is unknown, so the whole condition is never true. In real code the list is a subquery over a nullable column, and one stray NULL row empties a report. `NOT EXISTS` has no such problem; prefer it. Also: aggregates skip NULLs, `ORDER BY` puts NULLs last when ascending and first when descending (`NULLS FIRST` / `NULLS LAST` override), and `coalesce` supplies a default.
 
 **Window functions (preview).** An aggregate collapses rows; a **window function** computes across related rows but keeps every row. `OVER (PARTITION BY ... ORDER BY ...)` defines the window.
 
@@ -600,12 +484,6 @@ SELECT branch_code, application_id, amount_paise,
 FROM loan_applications
 WHERE branch_code IN ('BLR01', 'MUM01')
 ORDER BY branch_code, rank_in_branch;
-
-SELECT loan_id, due_date, amount_paise,
-       sum(amount_paise) OVER (PARTITION BY loan_id ORDER BY due_date) AS running_paise
-FROM repayments
-WHERE loan_id = 7001
-ORDER BY due_date;
 ```
 
 ```text
@@ -617,31 +495,13 @@ ORDER BY due_date;
  MUM01       |           5007 |    120000000 |              2
  MUM01       |           5002 |     30000000 |              3
 (5 rows)
-
- loan_id |  due_date  | amount_paise | running_paise
----------+------------+--------------+---------------
-    7001 | 2025-04-10 |      3905200 |       3905200
-    7001 | 2025-05-10 |      3905200 |       7810400
-    7001 | 2025-06-10 |      3905200 |      11715600
-(3 rows)
 ```
 
-Running balances, "top 3 per branch", and "previous installment's date" (`lag(due_date) OVER (...)`) are all window functions. They replace a lot of application-side looping.
+`sum(amount_paise) OVER (PARTITION BY loan_id ORDER BY due_date)` gives a running total of installments per loan (for loan 7001: 3905200, 7810400, 11715600), and `lag(due_date) OVER (...)` the previous row's value. They replace a lot of application-side looping.
 
 ### Layer 3 (internals): the order SQL really runs in, and why sets win
 
-**Written order is not evaluation order.** The database evaluates a query logically in this order:
-
-1. `FROM` and `JOIN`: build the combined rows.
-2. `WHERE`: drop rows.
-3. `GROUP BY`: form groups.
-4. `HAVING`: drop groups.
-5. `SELECT` list, including window functions: compute output columns and aliases.
-6. `DISTINCT`: drop duplicate output rows.
-7. `ORDER BY`: sort (may use the aliases from step 5).
-8. `LIMIT` / `OFFSET`: cut.
-
-This explains two errors every beginner meets. An alias cannot be used in `WHERE`, because aliases are made in step 5:
+**Written order is not evaluation order.** Logically, a query is evaluated as: 1 `FROM`/`JOIN`, 2 `WHERE`, 3 `GROUP BY`, 4 `HAVING`, 5 the `SELECT` list (including window functions and aliases), 6 `DISTINCT`, 7 `ORDER BY`, 8 `LIMIT`. That explains two classic errors. An alias cannot be used in `WHERE`, because aliases are made in step 5:
 
 ```sql
 SELECT application_id, amount_paise / 100 AS rupees
@@ -655,9 +515,9 @@ LINE 3: WHERE rupees > 1000000;
               ^
 ```
 
-And `WHERE count(*) > 1` fails with `aggregate functions are not allowed in WHERE`, because groups do not exist until step 3; that is what `HAVING` is for. `ORDER BY rupees` works, because sorting happens after step 5.
+And `WHERE count(*) > 1` fails with `aggregate functions are not allowed in WHERE`, because groups do not exist until step 3; that is what `HAVING` is for. `ORDER BY rupees` works, because sorting is step 7.
 
-**What the server actually builds.** The logical order defines the answer, not the work. The planner turns your query into a **plan**: a tree of operators. `EXPLAIN` shows it (`COSTS OFF` hides the numbers, which module 6.10 explains):
+**What the server actually builds.** The logical order defines the answer, not the work. The planner turns the query into a **plan**, a tree of operators. `EXPLAIN` shows it (`COSTS OFF` hides the estimates that module 6.10 explains):
 
 ```sql
 EXPLAIN (COSTS OFF)
@@ -685,110 +545,76 @@ ORDER BY apps DESC;
 (10 rows)
 ```
 
-Read it from the bottom. Scan `customers` and build a hash table on `customer_id` (the same structure as your module 1.15 hash map). Scan `loan_applications`, applying the WHERE as a filter during the scan, and probe the hash table for each row. Group the joined rows in another hash table. Sort the groups. The executor runs this as a pipeline of iterators: each node asks its child "next row, please", processes it and passes results up. Nothing in your SQL said "hash"; the planner chose a **hash join**. With other sizes or indexes it could choose a nested loop or a merge join instead (module 6.10). The correlated subquery earlier is often rewritten by the planner into a join for the same reason: you state the result, the planner picks the algorithm.
+Read from the bottom: scan `customers` and build a hash table on `customer_id` (the structure of your module 1.15 hash map); scan `loan_applications`, applying the `WHERE` during the scan, and probe the hash table for each row; group in another hash table; sort the groups. The executor runs this as a pipeline of iterators, each node asking its child "next row, please". Nothing in your SQL said "hash": the planner chose a **hash join**, and with other sizes or indexes it would choose a nested loop or merge join (module 6.10).
 
-**Why one statement beats a loop of statements.** Suppose the app must update 10,000 loans. Done row by row from a client, each row costs:
+**Why one statement beats a loop of statements.** To update 10,000 loans one row at a time from a client, each row pays:
 
-- a network round trip (psql or the app to the server and back; typically 0.1 to 1 ms, more across machines),
-- parsing and planning the statement,
-- executor start-up and shut-down,
-- and, in autocommit mode, a **commit**, which waits for the write-ahead log to be flushed to disk with `fsync` (module 6.06). On many disks that alone is a millisecond or more.
+- a network round trip (typically 0.1 to 1 ms on one machine, more across machines),
+- parsing and planning the statement, plus executor start-up,
+- and in autocommit mode a **commit**, which waits for the write-ahead log to be flushed to disk with `fsync` (module 6.06), often a millisecond or more by itself.
 
-Done as one `UPDATE ... FROM`, the server pays each of those costs once, then runs a tight C loop over the rows next to the data. The per-row cost drops from milliseconds to microseconds. There are two further wins that matter more in banking than speed:
+One `UPDATE ... FROM` pays those costs once and then runs a tight C loop over the rows next to the data, so per-row cost drops from milliseconds to microseconds. Two more wins matter even more in banking:
 
-- **Atomicity.** One statement either changes all 10,000 rows or none. A loop that dies at row 6,000 leaves 6,000 repriced loans and 4,000 old ones, and someone must work out which.
-- **Consistency of the read.** One statement reads all its input as of one moment. A loop reads the products table 10,000 times, and a rate change halfway through gives half the loans the old rate.
+- **Atomicity.** One statement changes all 10,000 rows or none. A loop that dies at row 6,000 leaves 6,000 repriced loans and 4,000 old ones.
+- **A consistent read.** One statement reads its input as of one moment. A loop reads `products` 10,000 times, and a rate change halfway through gives half the loans the old rate.
 
-`UPDATE target SET ... FROM other WHERE join_condition` is PostgreSQL's syntax for "update using a join". One caution from the documentation: if a target row matches more than one row of `other`, only one of them is used and which one is unpredictable. Make sure the join is on a key.
+One caution from the PostgreSQL documentation on `UPDATE target SET ... FROM other WHERE ...`: if a target row matches more than one row of `other`, only one of them is used, and which one is unpredictable. Join on a key.
 
 ## 5. Architecture diagram
 
 ```mermaid
 flowchart TB
+    SQL["SQL text from the client"] --> PARSER["parser and analyser"] --> PLANNER["planner picks the cheapest plan"]
     subgraph LOGICAL["Logical order: defines the answer"]
         F["1 FROM and JOIN"] --> W["2 WHERE"] --> G["3 GROUP BY"] --> H["4 HAVING"]
-        H --> S["5 SELECT list and window functions"] --> D["6 DISTINCT"] --> O["7 ORDER BY"] --> L["8 LIMIT"]
+        H --> S["5 SELECT list and windows"] --> D["6 DISTINCT"] --> O["7 ORDER BY"] --> L["8 LIMIT"]
     end
     subgraph PHYSICAL["Physical plan: what the executor runs"]
         SORT["Sort"] --> AGG["HashAggregate"] --> HJ["Hash Join"]
         HJ --> SCAN1["Seq Scan loan_applications, filter status"]
         HJ --> HASH["Hash"] --> SCAN2["Seq Scan customers"]
     end
-    SQL["SQL text from client"] --> PARSER["parser and analyser"] --> PLANNER["planner picks cheapest plan"]
-    PLANNER --> PHYSICAL
     LOGICAL -. "same result, any algorithm" .-> PLANNER
+    PLANNER --> PHYSICAL
 ```
 
 ## 6. Code
 
-**The setup script.** Save as `sql02_setup.sql` next to `lending_01.sql`. It drops and recreates six tables in `lending` (the canonical definitions from module 6.03, minus `roles`, `users` and `audit_log`) and loads the small data set used by every example above. Re-run it whenever you want a clean slate.
+**The setup script.** Save as `sql02_setup.sql` next to `lending_01.sql`. It drops and recreates six tables of `lending` with the canonical definitions (module 6.03 explains every column; `roles`, `users` and `audit_log` come there) and loads the data used above. Re-run it whenever you want a clean slate.
 
 ```sql
--- sql02_setup.sql
--- Module 6.02: a small, fixed data set on six tables of the lending schema.
--- Safe to re-run: it drops and recreates the tables (not the database).
--- Run:  psql -h localhost -U postgres -d lending -f sql02_setup.sql
+-- sql02_setup.sql : six tables of the lending schema with a small fixed data set.
+-- Safe to re-run. Run:  psql -h localhost -U postgres -d lending -f sql02_setup.sql
 \set ON_ERROR_STOP on
 SET client_min_messages = warning;      -- hide "table does not exist" notices
 DROP TABLE IF EXISTS repayments, loans, loan_applications, products, customers, branches CASCADE;
 
 CREATE TABLE branches (
-  branch_code  varchar(6) PRIMARY KEY,
-  name         text NOT NULL,
-  city         text NOT NULL,
-  region       text NOT NULL,
-  opened_on    date NOT NULL
-);
+  branch_code varchar(6) PRIMARY KEY, name text NOT NULL, city text NOT NULL,
+  region text NOT NULL, opened_on date NOT NULL);
 CREATE TABLE customers (
-  customer_id  bigint PRIMARY KEY,
-  branch_code  varchar(6) NOT NULL REFERENCES branches,
-  full_name    text NOT NULL,
-  pan          char(10) NOT NULL UNIQUE,
-  dob          date NOT NULL,
-  kyc_status   text NOT NULL,
-  created_at   timestamptz NOT NULL DEFAULT now()
-);
+  customer_id bigint PRIMARY KEY, branch_code varchar(6) NOT NULL REFERENCES branches,
+  full_name text NOT NULL, pan char(10) NOT NULL UNIQUE, dob date NOT NULL,
+  kyc_status text NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
 CREATE TABLE products (
-  product_code      varchar(8) PRIMARY KEY,
-  name              text NOT NULL,
-  min_amount_paise  bigint NOT NULL,
-  max_amount_paise  bigint NOT NULL,
-  max_tenure_months int NOT NULL,
-  base_rate_bp      int NOT NULL,
-  active            boolean NOT NULL DEFAULT true
-);
+  product_code varchar(8) PRIMARY KEY, name text NOT NULL,
+  min_amount_paise bigint NOT NULL, max_amount_paise bigint NOT NULL,
+  max_tenure_months int NOT NULL, base_rate_bp int NOT NULL,
+  active boolean NOT NULL DEFAULT true);
 CREATE TABLE loan_applications (
-  application_id  bigint PRIMARY KEY,
-  branch_code     varchar(6) NOT NULL REFERENCES branches,
-  customer_id     bigint NOT NULL REFERENCES customers,
-  product_code    varchar(8) NOT NULL REFERENCES products,
-  amount_paise    bigint NOT NULL,
-  tenure_months   int NOT NULL,
-  status          text NOT NULL,
-  created_by      varchar(10) NOT NULL,
-  created_at      timestamptz NOT NULL DEFAULT now()
-);
+  application_id bigint PRIMARY KEY, branch_code varchar(6) NOT NULL REFERENCES branches,
+  customer_id bigint NOT NULL REFERENCES customers, product_code varchar(8) NOT NULL REFERENCES products,
+  amount_paise bigint NOT NULL, tenure_months int NOT NULL, status text NOT NULL,
+  created_by varchar(10) NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
 CREATE TABLE loans (
-  loan_id           bigint PRIMARY KEY,
-  application_id    bigint NOT NULL UNIQUE REFERENCES loan_applications,
-  branch_code       varchar(6) NOT NULL REFERENCES branches,
-  customer_id       bigint NOT NULL REFERENCES customers,
-  product_code      varchar(8) NOT NULL REFERENCES products,
-  principal_paise   bigint NOT NULL,
-  outstanding_paise bigint NOT NULL,
-  rate_bp           int NOT NULL,
-  tenure_months     int NOT NULL,
-  disbursed_at      timestamptz,
-  status            text NOT NULL
-);
+  loan_id bigint PRIMARY KEY, application_id bigint NOT NULL UNIQUE REFERENCES loan_applications,
+  branch_code varchar(6) NOT NULL REFERENCES branches, customer_id bigint NOT NULL REFERENCES customers,
+  product_code varchar(8) NOT NULL REFERENCES products, principal_paise bigint NOT NULL,
+  outstanding_paise bigint NOT NULL, rate_bp int NOT NULL, tenure_months int NOT NULL,
+  disbursed_at timestamptz, status text NOT NULL);
 CREATE TABLE repayments (
-  repayment_id  bigint PRIMARY KEY,
-  loan_id       bigint NOT NULL REFERENCES loans,
-  due_date      date NOT NULL,
-  amount_paise  bigint NOT NULL,
-  paid_at       timestamptz,
-  status        text NOT NULL
-);
+  repayment_id bigint PRIMARY KEY, loan_id bigint NOT NULL REFERENCES loans,
+  due_date date NOT NULL, amount_paise bigint NOT NULL, paid_at timestamptz, status text NOT NULL);
 
 INSERT INTO branches VALUES
   ('MUM01', 'Mumbai Fort',           'Mumbai',    'WEST',  '2009-04-01'),
@@ -796,7 +622,6 @@ INSERT INTO branches VALUES
   ('DEL01', 'Delhi Connaught Place', 'Delhi',     'NORTH', '2010-01-11'),
   ('BLR01', 'Bengaluru MG Road',     'Bengaluru', 'SOUTH', '2015-09-01'),
   ('CHN01', 'Chennai Anna Salai',    'Chennai',   'SOUTH', '2018-03-05');
-
 INSERT INTO customers VALUES
   (1001, 'MUM01', 'Asha Rao',    'ABCPR1234K', '1988-02-14', 'VERIFIED', '2025-01-06 10:15+05:30'),
   (1002, 'MUM01', 'Vikram Shah', 'BCDPS2345L', '1979-11-30', 'VERIFIED', '2025-01-20 11:40+05:30'),
@@ -804,14 +629,12 @@ INSERT INTO customers VALUES
   (1004, 'BLR01', 'Arjun Nair',  'DEFPN4567N', '1985-09-21', 'VERIFIED', '2025-02-11 15:30+05:30'),
   (1005, 'PUN01', 'Meera Joshi', 'EFGPJ5678P', '1990-01-09', 'VERIFIED', '2025-03-02 12:00+05:30'),
   (1006, 'DEL01', 'Rohan Mehta', 'FGHPM6789Q', '1996-12-17', 'REJECTED', '2025-03-18 16:45+05:30');
-
--- amounts are in paise: 4500000.00 rupees = 450000000 paise
+-- amounts in paise: Rs 45,00,000 = 450000000 paise
 INSERT INTO products VALUES
   ('HL01', 'Home loan',     50000000, 1000000000, 360,  850, true),
   ('PL01', 'Personal loan',  5000000,  250000000,  60, 1150, true),
   ('AL01', 'Auto loan',     10000000,  200000000,  84,  925, true),
   ('GL01', 'Gold loan',      1000000,   50000000,  24,  975, true);
-
 INSERT INTO loan_applications VALUES
   (5001, 'MUM01', 1001, 'HL01', 450000000, 240, 'DISBURSED', 'U01', '2025-03-01 10:00+05:30'),
   (5002, 'MUM01', 1002, 'PL01',  30000000,  36, 'DISBURSED', 'U01', '2025-03-04 11:30+05:30'),
@@ -821,12 +644,10 @@ INSERT INTO loan_applications VALUES
   (5006, 'PUN01', 1005, 'HL01', 600000000, 300, 'APPROVED',  'U01', '2025-04-07 13:00+05:30'),
   (5007, 'MUM01', 1001, 'AL01', 120000000,  60, 'DRAFT',     'U02', '2025-04-15 17:05+05:30'),
   (5008, 'DEL01', 1003, 'PL01',  10000000,  12, 'REJECTED',  'U01', '2025-04-21 10:30+05:30');
-
 INSERT INTO loans VALUES
   (7001, 5001, 'MUM01', 1001, 'HL01', 450000000, 448559500,  850, 240, '2025-03-10 12:00+05:30', 'ACTIVE'),
   (7002, 5002, 'MUM01', 1002, 'PL01',  30000000,         0, 1150,  36, '2025-03-15 12:00+05:30', 'CLOSED'),
   (7003, 5004, 'BLR01', 1004, 'AL01',  80000000,  78946200,  925,  60, '2025-04-02 12:00+05:30', 'ACTIVE');
-
 INSERT INTO repayments VALUES
   (9001, 7001, '2025-04-10', 3905200, '2025-04-09 18:20+05:30', 'PAID'),
   (9002, 7001, '2025-05-10', 3905200, '2025-05-12 10:05+05:30', 'PAID'),
@@ -847,23 +668,9 @@ UNION ALL SELECT 'repayments', count(*) FROM repayments;
 psql -h localhost -U postgres -d lending -f sql02_setup.sql
 ```
 
-Expected:
+Expected: `SET`, `DROP TABLE`, six `CREATE TABLE` lines, then `INSERT 0 5`, `INSERT 0 6`, `INSERT 0 4`, `INSERT 0 8`, `INSERT 0 3`, `INSERT 0 6`, and finally (`UNION ALL` glues the rows of several queries into one result):
 
 ```text
-SET
-DROP TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-INSERT 0 5
-INSERT 0 6
-INSERT 0 4
-INSERT 0 8
-INSERT 0 3
-INSERT 0 6
         tbl        | count
 -------------------+-------
  branches          |     5
@@ -875,9 +682,9 @@ INSERT 0 6
 (6 rows)
 ```
 
-`UNION ALL` glues the rows of several queries into one result. (If you come back to this module after 6.03, re-run 6.03's `lending_schema.sql` and `lending_seed.sql` when you are done, because this script's `CASCADE` also drops foreign keys that point at these tables from the full schema.)
+If you come back to this module after 6.03, re-run 6.03's `lending_schema.sql` and `lending_seed.sql` afterwards: this script's `CASCADE` also drops the foreign keys that the full schema's other tables have on these six.
 
-**Set-based versus row-by-row.** Three small files. The first builds 10,000 practice loans whose `rate_bp` is 0 and must be set from their product's base rate.
+**Set-based versus row-by-row.** Three small files. The first builds 10,000 practice loans whose `rate_bp` is 0 and must be set from their product.
 
 ```sql
 -- rate_demo_setup.sql: 10,000 practice loans with rate 0, to be repriced from products
@@ -893,7 +700,7 @@ SELECT g, (ARRAY['HL01', 'PL01', 'AL01', 'GL01'])[1 + g % 4], 0
 FROM generate_series(1, 10000) AS g;
 ```
 
-The second does what a cursor-walking client does: fetch the work list, then send one UPDATE per row. `\gexec` is a `psql` command that runs each value of the result as a separate statement, each one a separate round trip.
+The second behaves like a cursor-walking client: fetch the work list, then send one UPDATE per row. `\gexec` is a `psql` command that runs each value of the result as its own statement, each a separate round trip.
 
 ```sql
 -- row_by_row.sql: what a cursor-style client does.
@@ -906,8 +713,6 @@ JOIN products p ON p.product_code = d.product_code
 \gexec
 ```
 
-The third does the same change as one statement:
-
 ```sql
 -- set_based.sql: the same change as one statement.
 UPDATE rate_demo AS d
@@ -916,7 +721,7 @@ FROM   products AS p
 WHERE  p.product_code = d.product_code;
 ```
 
-Run and time them (`-q` hides the 10,000 `UPDATE 1` lines; `time` is the shell's stopwatch):
+Run and time them (`-q` hides the 10,000 `UPDATE 1` tags; `time` is the shell's stopwatch):
 
 ```bash
 psql -h localhost -U postgres -d lending -f rate_demo_setup.sql
@@ -926,7 +731,7 @@ time psql -h localhost -U postgres -d lending -f set_based.sql
 psql -h localhost -U postgres -d lending -c "SELECT product_code, rate_bp, count(*) FROM rate_demo GROUP BY 1, 2 ORDER BY 1;"
 ```
 
-Expected: both methods leave the same final table:
+Both methods leave the same table:
 
 ```text
  product_code | rate_bp | count
@@ -938,50 +743,52 @@ Expected: both methods leave the same final table:
 (4 rows)
 ```
 
-The `real` times are machine-dependent. On the laptop used to check this module (PostgreSQL 16 on Linux, local TCP), the row-by-row run took between 20 and 80 seconds across repeats, and the set-based `UPDATE 10000` about 0.3 seconds including `psql` start-up. The row-by-row time swings so much because it is dominated by 10,000 disk flushes, one per autocommitted statement; Part D of the lab separates that cost from the round trips. Your numbers will differ, especially through Docker's port forwarding. The ratio, typically one hundred times or more, is the lesson.
+The `real` times are machine-dependent. On the laptop used to check this module (PostgreSQL 16 on Linux over local TCP), the row-by-row run took between 20 and 80 seconds across repeats, and the set-based `UPDATE 10000` about 0.3 seconds including `psql` start-up. The row-by-row time swings because it is dominated by 10,000 disk flushes, one per autocommitted statement; lab Part D separates that cost from the round trips. Your numbers will differ, especially through Docker's port forwarding. The ratio, typically a hundred times or more, is the lesson.
 
 ## 7. Use case: core-banking loan-origination platform
 
-Floating-rate home loans are linked to an external benchmark. When the benchmark moves, every active floating-rate loan must be repriced: new `rate_bp` from the product's new base rate plus the loan's spread, then a new EMI. On the pre-migration platform this was a nightly C job over Berkeley DB: open a cursor on the loan database, for each record decode it, look up the product record, compute, write the record back. It touched each loan with several library calls, and after the move to a client-server database a straight port of that loop would have meant several network round trips per loan.
+Floating-rate home loans are linked to an external benchmark rate. When it moves, every active floating-rate loan must be repriced: a new `rate_bp` from the product's new base rate plus the loan's spread, then a new EMI. Before the migration this was a nightly C job over Berkeley DB: open a cursor on the loan database, decode each record, look up its product record, compute, write the record back. A straight port to the client-server database, one `UPDATE` per loan, was measured exactly as in section 6. For a book of a few hundred thousand loans the per-row cost times the row count did not fit the overnight window, and when the job failed partway it left the book half repriced with no record of where it stopped.
 
-A port of the loop to SQL, one `UPDATE` per loan, was tried first and measured, exactly as in section 6. For a book of a few hundred thousand loans, the per-row cost multiplied by the row count did not fit the overnight window, and when the job failed partway it left the book half repriced with no record of where it stopped.
-
-**The decision it drove:** bulk changes are written as set-based statements (`UPDATE loans l SET rate_bp = p.base_rate_bp + spread FROM products p WHERE ...`), each running in one transaction, so a repricing either happens to the whole book or not at all. Where the work was too large for one transaction, it was split into key ranges (`WHERE loan_id BETWEEN x AND y`), each range a set-based statement, with the last finished range recorded so the job could restart. That is the same "restartable batch" idea as claim H1, applied to SQL. Per-row loops in application code were allowed only for work that needed a per-row call to another system.
+**The decision it drove:** bulk changes are written as set-based statements (`UPDATE loans l SET rate_bp = p.base_rate_bp + spread FROM products p WHERE ...`), each in one transaction, so a repricing happens to the whole book or not at all. Where one transaction was too large, the work was split into key ranges (`WHERE loan_id BETWEEN x AND y`), each range one set-based statement, with the last finished range recorded so the job could restart: the "restartable batch" idea of claim H1, applied to SQL. Per-row loops in application code were allowed only where each row needed a call to another system.
 
 ## 8. Lab
 
-Run `sql02_setup.sql` first. Write each query yourself before opening the answer. Parts A and B only read data; Part C changes it, so re-run the setup script afterwards.
+Run `sql02_setup.sql` first. Write each query yourself before opening the answer. Parts A and B only read; Part C changes data, so re-run the setup afterwards.
 
 ### Part A: warm-up (30 minutes)
 
-Type every example from Layer 1 and Layer 2 and compare your output with the text. Then run the INNER, RIGHT and CROSS joins against `targets` and confirm 2, 3 and 15 rows. Then run the LEFT JOIN trap query and fix it by moving the condition into `ON`; confirm five rows with CHN01 and DEL01 at 0.
+Type every example from Layers 1 and 2 and compare with the text. Run the INNER, RIGHT, FULL and CROSS joins against `targets` and confirm 2, 3, 6 and 15 rows. Fix the LEFT JOIN trap by moving the condition into `ON` and confirm five rows, CHN01 and DEL01 at 0.
 
-### Part B: practice queries, reading (75 minutes)
+### Part B: practice queries, reading (90 minutes)
 
 1. Every product with its rate as a percentage with two decimals, cheapest first.
 2. Customers born before 1 January 1990, oldest first.
 3. The number of customers per KYC status.
 4. Every application at DEL01 with the customer's name and the product's name.
-5. Branches that have no customers (use `NOT EXISTS`).
-6. Total principal disbursed per product, from `loans`, showing 0 for products with no loans.
+5. Branches with no customers (use `NOT EXISTS`).
+6. Total principal disbursed per product, from `loans`, with 0 for products that have no loans.
 7. Customers with more than one application.
 8. The single largest application in each branch (hint: PostgreSQL's `DISTINCT ON (col)` keeps the first row per value of `col` in `ORDER BY` order).
 9. Unpaid repayments (`DUE` or `OVERDUE`) with the customer's name and the amount in rupees with two decimals, earliest due date first.
-10. For each loan: the number of paid installments and the paise paid so far (use a LEFT JOIN and `FILTER`).
-11. Customers who hold no loan at all. Use `NOT EXISTS`, then explain why `NOT IN` would be risky.
-12. The number of customers in each age band (`under 30`, `30-44`, `45+`) as of 1 January 2026, using `CASE`.
+10. For each loan: the number of paid installments and the paise paid so far.
+11. Customers who hold no loan. Use `NOT EXISTS`, then explain why `NOT IN` would be risky.
+12. The number of customers per age band (`under 30`, `30-44`, `45+`) as of 1 January 2026, using `CASE`.
 
 <details>
-<summary>Answers 1 to 6</summary>
+<summary>Answers 1 to 7</summary>
 
 ```sql
+-- 1. Expected 4 rows: HL01 8.50, AL01 9.25, GL01 9.75, PL01 11.50
 SELECT product_code, name, round(base_rate_bp / 100.0, 2) AS rate_pct
 FROM products ORDER BY base_rate_bp;
 
+-- 2. Expected 3 rows: Vikram Shah 1979-11-30, Arjun Nair 1985-09-21, Asha Rao 1988-02-14
 SELECT full_name, dob FROM customers WHERE dob < date '1990-01-01' ORDER BY dob;
 
+-- 3. Expected: PENDING 1, REJECTED 1, VERIFIED 4
 SELECT kyc_status, count(*) AS customers FROM customers GROUP BY kyc_status ORDER BY kyc_status;
 
+-- 4. Expected 2 rows: 5003 Neha Gupta Personal loan SUBMITTED, 5008 Neha Gupta Personal loan REJECTED
 SELECT a.application_id, c.full_name, p.name AS product, a.status
 FROM loan_applications a
 JOIN customers c ON c.customer_id = a.customer_id
@@ -989,72 +796,34 @@ JOIN products p  ON p.product_code = a.product_code
 WHERE a.branch_code = 'DEL01'
 ORDER BY a.application_id;
 
+-- 5. Expected 1 row: CHN01 Chennai Anna Salai
 SELECT b.branch_code, b.name FROM branches b
 WHERE NOT EXISTS (SELECT 1 FROM customers c WHERE c.branch_code = b.branch_code);
 
+-- 6. Expected: HL01 450000000, AL01 80000000, PL01 30000000, GL01 0
 SELECT p.product_code, coalesce(sum(l.principal_paise), 0) AS disbursed_paise
 FROM products p
 LEFT JOIN loans l ON l.product_code = p.product_code
 GROUP BY p.product_code
 ORDER BY disbursed_paise DESC, p.product_code;
-```
 
-```text
- product_code |     name      | rate_pct
---------------+---------------+----------
- HL01         | Home loan     |     8.50
- AL01         | Auto loan     |     9.25
- GL01         | Gold loan     |     9.75
- PL01         | Personal loan |    11.50
-(4 rows)
-
-  full_name  |    dob
--------------+------------
- Vikram Shah | 1979-11-30
- Arjun Nair  | 1985-09-21
- Asha Rao    | 1988-02-14
-(3 rows)
-
- kyc_status | customers
-------------+-----------
- PENDING    |         1
- REJECTED   |         1
- VERIFIED   |         4
-(3 rows)
-
- application_id | full_name  |    product    |  status
-----------------+------------+---------------+-----------
-           5003 | Neha Gupta | Personal loan | SUBMITTED
-           5008 | Neha Gupta | Personal loan | REJECTED
-(2 rows)
-
- branch_code |        name
--------------+--------------------
- CHN01       | Chennai Anna Salai
-(1 row)
-
- product_code | disbursed_paise
---------------+-----------------
- HL01         |       450000000
- AL01         |        80000000
- PL01         |        30000000
- GL01         |               0
-(4 rows)
+-- 7. Expected: 1001 2, 1003 2, 1004 2
+SELECT customer_id, count(*) AS applications
+FROM loan_applications GROUP BY customer_id HAVING count(*) > 1 ORDER BY customer_id;
 ```
 
 </details>
 
 <details>
-<summary>Answers 7 to 12</summary>
+<summary>Answers 8 to 12</summary>
 
 ```sql
-SELECT customer_id, count(*) AS applications
-FROM loan_applications GROUP BY customer_id HAVING count(*) > 1 ORDER BY customer_id;
-
+-- 8.
 SELECT DISTINCT ON (branch_code) branch_code, application_id, amount_paise
 FROM loan_applications
 ORDER BY branch_code, amount_paise DESC;
 
+-- 9.
 SELECT r.repayment_id, c.full_name, r.due_date, round(r.amount_paise / 100.0, 2) AS rupees, r.status
 FROM repayments r
 JOIN loans l     ON l.loan_id = r.loan_id
@@ -1062,6 +831,7 @@ JOIN customers c ON c.customer_id = l.customer_id
 WHERE r.status IN ('DUE', 'OVERDUE')
 ORDER BY r.due_date;
 
+-- 10.
 SELECT l.loan_id,
        count(r.repayment_id) FILTER (WHERE r.status = 'PAID') AS paid_installments,
        coalesce(sum(r.amount_paise) FILTER (WHERE r.status = 'PAID'), 0) AS paid_paise
@@ -1069,10 +839,12 @@ FROM loans l
 LEFT JOIN repayments r ON r.loan_id = l.loan_id
 GROUP BY l.loan_id ORDER BY l.loan_id;
 
+-- 11. Expected 3 rows: 1003 Neha Gupta, 1005 Meera Joshi, 1006 Rohan Mehta
 SELECT c.customer_id, c.full_name FROM customers c
 WHERE NOT EXISTS (SELECT 1 FROM loans l WHERE l.customer_id = c.customer_id)
 ORDER BY c.customer_id;
 
+-- 12. Expected: 30-44 4, 45+ 1, under 30 1
 SELECT CASE
          WHEN age(date '2026-01-01', dob) < interval '30 years' THEN 'under 30'
          WHEN age(date '2026-01-01', dob) < interval '45 years' THEN '30-44'
@@ -1083,13 +855,6 @@ FROM customers GROUP BY age_band ORDER BY age_band;
 ```
 
 ```text
- customer_id | applications
--------------+--------------
-        1001 |            2
-        1003 |            2
-        1004 |            2
-(3 rows)
-
  branch_code | application_id | amount_paise
 -------------+----------------+--------------
  BLR01       |           5004 |     80000000
@@ -1110,43 +875,31 @@ FROM customers GROUP BY age_band ORDER BY age_band;
     7002 |                 1 |     989300
     7003 |                 1 |    1670500
 (3 rows)
-
- customer_id |  full_name
--------------+-------------
-        1003 | Neha Gupta
-        1005 | Meera Joshi
-        1006 | Rohan Mehta
-(3 rows)
-
- age_band | customers
-----------+-----------
- 30-44    |         4
- 45+      |         1
- under 30 |         1
-(3 rows)
 ```
 
-On question 11: if `loans.customer_id` could ever be NULL, `customer_id NOT IN (SELECT customer_id FROM loans)` would return no rows at all, as the Layer 2 demonstration showed. Here the column is `NOT NULL`, so it would happen to work, but `NOT EXISTS` is correct regardless of the schema.
+On question 11: if `loans.customer_id` could ever be NULL, `customer_id NOT IN (SELECT customer_id FROM loans)` would return no rows at all, as the Layer 2 demonstration showed. The column is `NOT NULL` here, so it would happen to work, but `NOT EXISTS` is correct whatever the schema.
 
 </details>
 
 ### Part C: practice queries, changing data (30 minutes)
 
-13. Open a new branch HYD01 ("Hyderabad Banjara Hills", Hyderabad, SOUTH, opening 2026-11-01) with an UPSERT that updates `name` and `opened_on` if the code exists. Run it again with the name "Hyderabad Hitec City" and date 2026-12-01. Show the row each time with `RETURNING`.
-14. In one statement, mark repayment 9005 as PAID at `2025-06-02 10:00+05:30` and reduce loan 7003's outstanding by that installment's amount. (Hint: a `WITH` clause can contain an `UPDATE ... RETURNING`, and the outer `UPDATE ... FROM` can use its output.)
-15. In one set-based statement, set every ACTIVE AL01 loan's `rate_bp` to the product's base rate plus 50 bp, returning the loan ids and new rates.
+13. Open branch HYD01 ("Hyderabad Banjara Hills", Hyderabad, SOUTH, opening 2026-11-01) with an UPSERT that updates `name` and `opened_on` if the code exists. Run it again with "Hyderabad Hitec City" and 2026-12-01. Show the row each time with `RETURNING`.
+14. In one statement, mark repayment 9005 as PAID at `2025-06-02 10:00+05:30` and reduce loan 7003's outstanding by that installment's amount. (Hint: a `WITH` clause may contain `UPDATE ... RETURNING`, and an outer `UPDATE ... FROM` can use its output.)
+15. In one set-based statement, set every ACTIVE AL01 loan's `rate_bp` to the product's base rate plus 50 bp, returning loan ids and new rates.
 
 <details>
 <summary>Answers 13 to 15</summary>
 
 ```sql
+-- 13. First run returns HYD01 | Hyderabad Banjara Hills | 2026-11-01 and INSERT 0 1;
+--     the second run returns HYD01 | Hyderabad Hitec City | 2026-12-01 and also INSERT 0 1.
 INSERT INTO branches (branch_code, name, city, region, opened_on)
 VALUES ('HYD01', 'Hyderabad Banjara Hills', 'Hyderabad', 'SOUTH', '2026-11-01')
 ON CONFLICT (branch_code) DO UPDATE
   SET name = EXCLUDED.name, opened_on = EXCLUDED.opened_on
 RETURNING branch_code, name, opened_on;
--- run again with 'Hyderabad Hitec City' and '2026-12-01'
 
+-- 14.
 WITH paid AS (
   UPDATE repayments
   SET status = 'PAID', paid_at = '2025-06-02 10:00+05:30'
@@ -1159,6 +912,7 @@ FROM paid
 WHERE l.loan_id = paid.loan_id
 RETURNING l.loan_id, l.outstanding_paise;
 
+-- 15. Expected: 7003 | 975, then UPDATE 1
 UPDATE loans l
 SET rate_bp = p.base_rate_bp + 50
 FROM products p
@@ -1168,54 +922,38 @@ WHERE p.product_code = l.product_code
 RETURNING l.loan_id, l.rate_bp;
 ```
 
+Expected output of 14:
+
 ```text
- branch_code |          name           | opened_on
--------------+-------------------------+------------
- HYD01       | Hyderabad Banjara Hills | 2026-11-01
-(1 row)
-
-INSERT 0 1
- branch_code |         name         | opened_on
--------------+----------------------+------------
- HYD01       | Hyderabad Hitec City | 2026-12-01
-(1 row)
-
-INSERT 0 1
  loan_id | outstanding_paise
 ---------+-------------------
     7003 |          77275700
 (1 row)
 
 UPDATE 1
- loan_id | rate_bp
----------+---------
-    7003 |     975
-(1 row)
-
-UPDATE 1
 ```
 
-Question 14 is a preview of module 6.04: both changes happen in one statement, so they succeed or fail together. The `status <> 'PAID'` guard means running it twice does not reduce the balance twice (the second run prints `UPDATE 0`). Re-run `sql02_setup.sql` now.
+78946200 - 1670500 = 77275700. Both changes happen in one statement, so they succeed or fail together (a preview of module 6.04), and the `status <> 'PAID'` guard means a second run prints `UPDATE 0` instead of reducing the balance twice. Re-run `sql02_setup.sql` now.
 
 </details>
 
 ### Part D: measure set-based against row-by-row (30 minutes)
 
 1. Run the three scripts from section 6 and record both `real` times.
-2. Separate the two costs inside the row-by-row number. `psql -1` wraps a whole file in one transaction, so the 10,000 UPDATEs still make 10,000 round trips but only one commit:
+2. Separate the two costs inside the row-by-row number. `psql -1` wraps the whole file in one transaction, so the 10,000 UPDATEs still make 10,000 round trips but only one commit:
 
 ```bash
 psql -h localhost -U postgres -d lending -q -f rate_demo_setup.sql
 time psql -h localhost -U postgres -d lending -1 -q -f row_by_row.sql
 ```
 
-On the checking laptop this took about 5.5 seconds: far faster than autocommit (the 10,000 disk flushes are gone), still about 18 times slower than set-based (the round trips, parses and plans remain). Record your three numbers in a table: autocommit loop, single-transaction loop, set-based.
-3. Divide each time by 10,000 to get a per-row cost in microseconds. Compare the single-transaction loop's per-row cost with the round-trip latencies you measured in module 5.11.
-4. Drop the practice table: `DROP TABLE rate_demo;`.
+On the checking laptop this took about 5.5 seconds: much faster than autocommit (the 10,000 disk flushes are gone) and still about 18 times slower than set-based (the round trips, parses and plans remain).
+3. Tabulate your three numbers (autocommit loop, single-transaction loop, set-based) and divide each by 10,000 for a per-row cost in microseconds. Compare the single-transaction loop's per-row cost with the round-trip latencies you measured in module 5.11.
+4. `DROP TABLE rate_demo;`
 
 ### Journal
 
-Copy [journal/TEMPLATE.md](../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-sql-from-scratch.md`. Record: which practice queries you got wrong first and why (the LEFT JOIN trap and `NOT IN` are the usual ones); your three timings from Part D with per-row costs; and one sentence explaining to an interviewer where the time goes in a row-by-row loop.
+Copy [journal/TEMPLATE.md](../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-sql-from-scratch.md`. Record: which practice queries you got wrong first and why (the LEFT JOIN trap and `NOT IN` are the usual ones); your three Part D timings with per-row costs; and one sentence for an interviewer on where the time goes in a row-by-row loop.
 
 ## 9. Common mistakes and misconceptions
 
@@ -1223,21 +961,21 @@ Copy [journal/TEMPLATE.md](../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-sql-fr
 |---|---|---|
 | `WHERE col = NULL` | Comparisons with NULL are unknown, never true | Filters that silently match nothing |
 | `NOT IN (subquery)` on a nullable column | One NULL in the list makes every row unknown | Reports that suddenly return zero rows |
-| Filtering the optional table of a LEFT JOIN in `WHERE` | NULL-extended rows fail the condition and disappear | "Branches with no customers" vanish from the report |
+| Filtering a LEFT JOIN's optional table in `WHERE` | NULL-extended rows fail the condition | "Branches with no customers" vanish from the report |
 | Mixing `AND` and `OR` without brackets | `AND` binds tighter | Rejected applications from every branch in a branch report |
 | `LIMIT` without `ORDER BY` | There is no "first" in an unordered set | Pagination that repeats or skips rows |
-| Integer division `amount / 12` for EMIs | `bigint / int` truncates | Paise lost on every installment |
-| `UPDATE` or `DELETE` without `WHERE` | Applies to every row; no confirmation | A whole table repriced or wiped; restore from backup |
-| Looping over rows in the app for a bulk change | N round trips, N plans, N commits, not atomic | Jobs that take hours and fail half-done |
-| `UPDATE ... FROM` with a join that matches several rows | Only one match is used, unpredictably | Loans repriced from the wrong product version |
+| Integer division in money maths (`amount / 12`) | `bigint / int` truncates | Paise lost on every installment |
+| `UPDATE` or `DELETE` without `WHERE` | Applies to every row, no confirmation | A whole table repriced or wiped |
+| Looping over rows in the app for a bulk change | N round trips, plans and commits; not atomic | Jobs that take hours and fail half-done |
+| `UPDATE ... FROM` with a join matching several rows | Only one match is used, unpredictably | Loans repriced from the wrong row |
 
 ## 10. Resume link
 
-- **Claim A, "SQL".** You can now write joins of all kinds, aggregates with `HAVING`, correlated subqueries, CTEs, UPSERT and window functions, and explain NULL's three-valued logic. Interviewers test exactly these with a whiteboard schema; practise by explaining your Part B answers aloud.
-- **Claim H2, "moving from cursor access to set-based SQL".** Say it with numbers: "Updating 10,000 rows one statement at a time took tens of seconds; one `UPDATE ... FROM` took about 0.3 seconds. Wrapping the loop in one transaction cut it to about 5 seconds, which showed that most of the loop's cost was per-statement commits and the rest was round trips and planning." Use your own Part D numbers.
-- **Claim H4, "master-table cache that removes joins from the hot path".** The three-table join in Layer 2 is the hot-path query the cache removed: the application already holds `products` and `branches` in memory, so it queries only `loan_applications`.
+- **Claim A, "SQL".** You can now write all join types, aggregates with `HAVING`, correlated subqueries, CTEs, UPSERT and window functions, and explain NULL's three-valued logic. Interviewers test exactly these on a whiteboard schema; practise by explaining your Part B answers aloud.
+- **Claim H2, "moving from cursor access to set-based SQL".** Say it with your numbers: "Updating 10,000 rows one statement at a time took tens of seconds; one `UPDATE ... FROM` took about 0.3 seconds. Wrapping the loop in one transaction cut it to about 5 seconds, which showed most of the loop's cost was per-statement commits, and the rest round trips and planning."
+- **Claim H4, "master-table cache that removes joins from the hot path".** The three-table join in Layer 2 is the hot-path query the cache removed: the app already holds `products` and `branches` in memory and queries only `loan_applications`.
 
-Likely follow-up: "When would you still process rows one at a time?" Answer: when each row needs a call to another system (an external credit bureau, a notification service), or when the per-row logic cannot be expressed in SQL; and then you batch (for example 500 rows per round trip) and make each batch restartable.
+Likely follow-up: "When would you still process rows one at a time?" When each row needs a call to another system (a credit bureau, a notification service) or logic SQL cannot express; then batch (for example 500 rows per round trip) and make each batch restartable.
 
 ## 11. Interview questions
 
@@ -1246,7 +984,7 @@ Likely follow-up: "When would you still process rows one at a time?" Answer: whe
 <details>
 <summary>Model answer</summary>
 
-`WHERE` filters individual rows before grouping; it cannot use aggregates. `HAVING` filters groups after `GROUP BY` and aggregation, so it can say `HAVING count(*) > 1`. A condition that does not involve an aggregate belongs in `WHERE`, because removing rows early means less work for the grouping step.
+`WHERE` filters individual rows before grouping and cannot use aggregates. `HAVING` filters groups after `GROUP BY` and aggregation, so it can say `HAVING count(*) > 1`. A condition without an aggregate belongs in `WHERE`, because removing rows early means less work for the grouping step.
 
 </details>
 
@@ -1255,7 +993,7 @@ Likely follow-up: "When would you still process rows one at a time?" Answer: whe
 <details>
 <summary>Model answer</summary>
 
-With branches {MUM01, DEL01, CHN01} and targets {MUM01, HYD01}: an INNER JOIN on branch code returns only matched pairs, so just MUM01. A LEFT JOIN returns every branch, with target columns NULL where there is no match: MUM01 with its target, DEL01 and CHN01 with NULLs. A FULL OUTER JOIN returns matched pairs plus unmatched rows from both sides: MUM01, DEL01 and CHN01 with NULL targets, and HYD01 with NULL branch columns. A RIGHT JOIN is a LEFT JOIN with the sides swapped, and a CROSS JOIN pairs every row with every row (3 x 2 = 6).
+With branches {MUM01, DEL01, CHN01} and targets {MUM01, HYD01}, joined on branch code: INNER returns only matched pairs, so MUM01. LEFT returns every branch, with target columns NULL where unmatched: MUM01 with its target, DEL01 and CHN01 with NULLs. FULL returns matched pairs plus the unmatched rows of both sides: the three branches, plus HYD01 with NULL branch columns. RIGHT is LEFT with the sides swapped, and CROSS pairs every row with every row (3 x 2 = 6).
 
 </details>
 
@@ -1264,31 +1002,31 @@ With branches {MUM01, DEL01, CHN01} and targets {MUM01, HYD01}: an INNER JOIN on
 <details>
 <summary>Model answer</summary>
 
-`x NOT IN (a, b, NULL)` expands to `x <> a AND x <> b AND x <> NULL`. The last comparison is unknown, so the conjunction is never true, and `WHERE` keeps only rows whose condition is true. If the subquery behind `NOT IN` can produce even one NULL, the result is empty. `NOT EXISTS (SELECT 1 FROM t WHERE t.col = outer.col)` does not have this problem because it only asks whether a matching row exists, and the planner turns it into an efficient anti-join. Alternatively filter the NULLs out in the subquery, but `NOT EXISTS` is the robust habit.
+`x NOT IN (a, b, NULL)` expands to `x <> a AND x <> b AND x <> NULL`. The last comparison is unknown, so the conjunction is never true, and `WHERE` keeps only rows whose condition is true. If the subquery behind `NOT IN` yields even one NULL, the result is empty. `NOT EXISTS (SELECT 1 FROM t WHERE t.col = outer.col)` only asks whether a matching row exists, so NULLs do not poison it, and the planner runs it as an efficient anti-join.
 
 </details>
 
-**Q4 (medium). A colleague's report counts verified customers per branch with a LEFT JOIN, but branches with no verified customers are missing. What is wrong?**
+**Q4 (medium). A report counts verified customers per branch with a LEFT JOIN, but branches with none are missing. What is wrong?**
 
 <details>
 <summary>Model answer</summary>
 
-The condition on the right-hand table, `c.kyc_status = 'VERIFIED'`, is in the `WHERE` clause. For a branch with no matching customers the LEFT JOIN produces one row with all customer columns NULL; the `WHERE` then evaluates `NULL = 'VERIFIED'`, which is unknown, and drops the row. The outer join has effectively become an inner join. Moving the condition into the `ON` clause restricts which customers are joined without discarding the branch, and `count(c.customer_id)` then returns 0 for those branches because `count(col)` ignores NULLs.
+The condition on the right-hand table, `c.kyc_status = 'VERIFIED'`, is in `WHERE`. For a branch with no matching customers the LEFT JOIN produces one row with NULL customer columns; `WHERE NULL = 'VERIFIED'` is unknown, so the row is dropped and the outer join has become an inner join. Moving the condition into the `ON` clause restricts which customers join without discarding the branch, and `count(c.customer_id)` returns 0 for it because `count(col)` ignores NULLs.
 
 </details>
 
-**Q5 (hard). You must reprice 2 million loans. A developer proposes a loop in the application that reads each loan and sends an UPDATE. Argue for a set-based approach, and say what you would do if the whole update is too big for one transaction.**
+**Q5 (hard). You must reprice 2 million loans. A developer proposes an application loop that reads each loan and sends an UPDATE. Argue for a set-based approach, and say what you do if the update is too big for one transaction.**
 
 <details>
 <summary>Model answer</summary>
 
-Per row, the loop pays a network round trip, statement parsing and planning, executor start-up, and in autocommit a commit that waits for a WAL flush; that is typically milliseconds per row, so hours for 2 million rows. A single `UPDATE loans l SET rate_bp = ... FROM products p WHERE p.product_code = l.product_code AND ...` pays those fixed costs once and processes rows in a tight loop inside the server, so it is typically one to three orders of magnitude faster; in my lab 10,000 rows went from tens of seconds to about 0.3 seconds. It is also atomic and reads the products table once, so no loan sees a half-applied rate change. If one transaction is too big (long lock holding, a huge burst of WAL, a long rollback if it fails, replication lag), split it into key ranges, each a set-based UPDATE in its own transaction, record the last completed range in a control table in the same transaction, and make each range idempotent with a guard such as `AND rate_bp <> new_rate`, so the job can restart after a failure without double-applying.
+Per row the loop pays a network round trip, parsing and planning, executor start-up, and in autocommit a commit that waits for a WAL flush: typically milliseconds, so hours for 2 million rows. One `UPDATE loans l SET rate_bp = ... FROM products p WHERE p.product_code = l.product_code AND ...` pays those fixed costs once and loops inside the server; in my lab 10,000 rows went from tens of seconds to about 0.3 seconds. It is also atomic and reads `products` once, so no loan sees a half-applied rate change. If one transaction is too big (long-held locks, a burst of WAL, a long rollback on failure, replica lag), split into key ranges, each a set-based UPDATE in its own transaction; record the last completed range in a control table inside the same transaction; and make each range idempotent with a guard such as `AND rate_bp <> new_rate`, so the job restarts after a failure without double-applying.
 
 </details>
 
 ## 12. Revision
 
-- `SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT` is written in that order but evaluated FROM, WHERE, GROUP BY, HAVING, SELECT, DISTINCT, ORDER BY, LIMIT; joins combine tables by matching values (inner, left, right, full, cross); subqueries, CTEs, CASE and window functions build reports without application loops.
+- Clauses are written `SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT` but evaluated FROM, WHERE, GROUP BY, HAVING, SELECT, DISTINCT, ORDER BY, LIMIT; joins match rows by value (inner, left, right, full, cross); subqueries, CTEs, CASE and window functions build reports without application loops.
 - NULL is unknown: use `IS NULL`, prefer `NOT EXISTS` to `NOT IN`, put conditions on a LEFT JOIN's optional side in `ON`, and remember aggregates skip NULLs.
 - Change data with `INSERT`/`UPDATE`/`DELETE ... RETURNING` and UPSERT; do bulk changes as one set-based statement (`UPDATE ... FROM`), which avoids per-row round trips, plans and commits and is atomic.
 
