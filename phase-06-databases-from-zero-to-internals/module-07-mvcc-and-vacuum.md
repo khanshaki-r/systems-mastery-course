@@ -30,7 +30,7 @@ The interest-rate notice board in a branch.
 
 At month end, a batch job updates `outstanding_paise` on every loan. At the same moment, branch officers open loan screens and a regulatory report sums the whole loan book. Without row versions there are two choices, both bad:
 
-1. **Readers lock.** Readers take shared locks and wait for writers; writers wait for readers. A long report blocks the batch, and the batch blocks disbursements. This is how SQL Server behaves by default and how most databases worked before multi-versioning.
+1. **Readers lock.** Readers take shared locks and wait for writers; writers wait for readers. A long report blocks the batch, and the batch blocks disbursements. This is how an on-premises SQL Server behaves by default and how most databases worked before multi-versioning.
 2. **Readers do not lock and read whatever is on the page.** The report then adds some loans before and some after the batch, and may even count amounts from a transaction that later rolls back (a "dirty read").
 
 **MVCC** (multi-version concurrency control) gives a third option. Writers create new versions; each reader sees one consistent picture as of its snapshot; readers never block writers and writers never block readers. Only two writers on the same row wait for each other (module 6.08).
@@ -136,7 +136,7 @@ Defences: `idle_in_transaction_session_timeout` (ends a session that sits idle i
 |---|---|---|---|
 | Where old versions live | In the table, next to the new ones | Undo segments in an undo tablespace | Version store in `tempdb` (or in the database itself with Accelerated Database Recovery, 2019+) |
 | What an UPDATE does | Writes a new tuple; old one stays | Changes the row in place; before-image goes to undo | Changes the row in place; old version copied to the version store, 14-byte pointer added to the row |
-| How a reader gets an older version | Checks `xmin`/`xmax` against its snapshot | Rebuilds a consistent-read copy of the block from undo, using the SCN (Oracle's commit sequence number) | Follows the version chain, but only if `READ_COMMITTED_SNAPSHOT` or `SNAPSHOT` isolation is on; by default readers take shared locks |
+| How a reader gets an older version | Checks `xmin`/`xmax` against its snapshot | Rebuilds a consistent-read copy of the block from undo, using the SCN (system change number, Oracle's logical clock) | Follows the version chain, but only if `READ_COMMITTED_SNAPSHOT` or `SNAPSHOT` isolation is on; by default readers take shared locks |
 | Cleanup | VACUUM and autovacuum | Undo space reused after `undo_retention` | Background version-store cleanup |
 | Signature failure | Table bloat, xid wraparound | `ORA-01555: snapshot too old` | `tempdb` growth, long version chains |
 | Cost of ROLLBACK | Instant: mark the xid aborted | Apply undo, proportional to the work done | Undo from the log, proportional to the work done |
@@ -476,7 +476,7 @@ Expected:
 
 - Fresh table: `all_visible 0, all_frozen 0`, and the plan is an `Index Only Scan using loans_pkey` with `Heap Fetches: 300`: every index entry had to be checked in the heap because no page was known to be all-visible.
 - After `VACUUM`: `12 | 0`, and `Heap Fetches: 0`. Same plan, no heap access.
-- The database ages are small on a fresh container (hundreds to a few thousand); on a busy production server they climb by millions per day. The `relfrozenxid` ages of the three tables are a few dozen.
+- The database ages are small on a lab container: thousands, or tens of thousands if you ran pgbench in module 6.06. On a busy production server they climb by millions per day. The `relfrozenxid` ages of the three tables are a few dozen.
 - After `VACUUM (FREEZE)`: `12 | 12`, the age of `loans` drops to 0, and the infomask of each tuple is `b02`: `0x0800` (no xmax) + `0x0200` + `0x0100` (both together mean frozen) + `0x0002` (has variable-width columns). The `xmin` column still shows the original number; frozen tuples keep it for debugging, but nobody compares it any more.
 
 ### Journal
@@ -548,7 +548,7 @@ Something is holding back the xmin horizon, so VACUUM cannot remove versions del
 <details>
 <summary>Model answer</summary>
 
-Xids are 32 bits and compared modulo 2^32, so each xid sees roughly 2.1 billion xids as past and 2.1 billion as future. Without intervention, a tuple's `xmin` would eventually appear to be in the future and the row would vanish. VACUUM prevents this by freezing tuples older than `vacuum_freeze_min_age`: it sets the frozen infomask bits so the tuple counts as visible to everyone regardless of the xid number. Each table's `relfrozenxid` and each database's `datfrozenxid` record the oldest unfrozen xid, and `age()` measures the distance. Normal vacuums can skip all-visible pages, so at `vacuum_freeze_table_age` VACUUM becomes aggressive and scans every page not marked all-frozen; at `autovacuum_freeze_max_age` (200 million) autovacuum forces an anti-wraparound vacuum even if disabled; at `vacuum_failsafe_age` (1.6 billion) VACUUM drops throttling and index cleanup to finish. If that still fails, the server warns at 40 million xids before wraparound and stops assigning new xids at 3 million, so all writes fail until a manual VACUUM completes. The usual root causes are the same as bloat: long-lived transactions or slots holding the horizon, or autovacuum throttled too hard on very large tables. Multixact IDs have an equivalent mechanism. I monitor `age(datfrozenxid)` and `mxid_age(datminmxid)` per database and alert well before 200 million.
+Xids are 32 bits and compared modulo 2^32, so each xid sees roughly 2.1 billion xids as past and 2.1 billion as future. Without intervention, a tuple's `xmin` would eventually appear to be in the future and the row would vanish. VACUUM prevents this by freezing tuples older than `vacuum_freeze_min_age`: it sets the frozen infomask bits so the tuple counts as visible to everyone regardless of the xid number. Each table's `relfrozenxid` and each database's `datfrozenxid` record the oldest unfrozen xid, and `age()` measures the distance. Normal vacuums can skip all-visible pages, so at `vacuum_freeze_table_age` VACUUM becomes aggressive and scans every page not marked all-frozen; at `autovacuum_freeze_max_age` (200 million) autovacuum forces an anti-wraparound vacuum even if disabled; at `vacuum_failsafe_age` (1.6 billion) VACUUM drops throttling and index cleanup to finish. If that still fails, the server warns at 40 million xids before wraparound and stops assigning new xids at 3 million, so all writes fail until a manual VACUUM completes. The usual root causes are the same as bloat: long-lived transactions or slots holding the horizon, or autovacuum throttled too hard on very large tables. Multixact IDs have an equivalent mechanism. I monitor `age(datfrozenxid)` and `mxid_age(datminmxid)` per database. On a busy server the age normally climbs towards 200 million and drops back after each anti-wraparound vacuum, so I alert when it goes well past that, for example at 500 million, because that means freezing is not keeping up.
 
 </details>
 
