@@ -463,7 +463,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 6 | Phase 6 revision + quiz | todo | 2 |
 | 7 | [7.01 Why distribute; failure models; CAP and PACELC](phase-07-distributed-systems-and-yugabytedb/module-01-why-distribute-cap-pacelc.md) | written | 3 |
 | 7 | [7.02 Consistency models](phase-07-distributed-systems-and-yugabytedb/module-02-consistency-models.md) | written | 4 |
-| 7 | [7.03 Time and clocks](phase-07-distributed-systems-and-yugabytedb/module-03-time-and-clocks.md) | todo | 3 |
+| 7 | [7.03 Time and clocks](phase-07-distributed-systems-and-yugabytedb/module-03-time-and-clocks.md) | written | 3 |
 | 7 | [7.04 Replication](phase-07-distributed-systems-and-yugabytedb/module-04-replication.md) | todo | 4 |
 | 7 | [7.05 Raft consensus](phase-07-distributed-systems-and-yugabytedb/module-05-raft-consensus.md) | todo | 6 |
 | 7 | [7.06 Sharding: hash vs range](phase-07-distributed-systems-and-yugabytedb/module-06-sharding-hash-vs-range.md) | written | 3 |
