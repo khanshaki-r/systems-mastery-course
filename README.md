@@ -452,7 +452,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 6 | [6.06 Buffer pool and write-ahead log](phase-06-databases-from-zero-to-internals/module-06-buffer-pool-and-wal.md) | written | 5 |
 | 6 | [6.07 MVCC, visibility and vacuum](phase-06-databases-from-zero-to-internals/module-07-mvcc-and-vacuum.md) | written | 5 |
 | 6 | [6.08 Isolation levels and locking](phase-06-databases-from-zero-to-internals/module-08-isolation-levels-and-locking.md) | written | 5 |
-| 6 | [6.09 B-tree indexes, composite and covering indexes](phase-06-databases-from-zero-to-internals/module-09-btree-indexes-composite-covering.md) | todo | 5 |
+| 6 | [6.09 B-tree indexes, composite and covering indexes](phase-06-databases-from-zero-to-internals/module-09-btree-indexes-composite-covering.md) | written | 5 |
 | 6 | [6.10 Query planner, EXPLAIN ANALYZE and join algorithms](phase-06-databases-from-zero-to-internals/module-10-planner-explain-analyze-joins.md) | todo | 6 |
 | 6 | [6.11 PL/pgSQL](phase-06-databases-from-zero-to-internals/module-11-plpgsql.md) | todo | 6 |
 | 6 | [6.12 Connection pooling and client libraries](phase-06-databases-from-zero-to-internals/module-12-connection-pooling-and-libpq.md) | todo | 4 |
