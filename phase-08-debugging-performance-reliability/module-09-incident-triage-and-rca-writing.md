@@ -418,7 +418,7 @@ Expected: a complete RCA grounded in your own dump, plus a client-facing summary
 
 ### Journal
 
-The RCA you wrote in Part D *is* your journal entry; save it as above. Additionally, in a short note at the top, record: your triage answers and severity from Part A; your evidence-volatility list from Part B; and your 5-whys chain from Part C. You will reuse this entire exercise in capstone C6, where you write one RCA per incident using the same template.
+The RCA you wrote in Part D *is* your journal entry; save it as above. For the standard course journal, also copy [journal/TEMPLATE.md](../journal/TEMPLATE.md) to `journal/YYYY-MM-DD-incident-triage-and-rca.md` and, in a short note, record: your triage answers and severity from Part A; your evidence-volatility list from Part B; your 5-whys chain from Part C; and a link to the RCA file you wrote in Part D. You will reuse this entire exercise in capstone C6, where you write one RCA per incident using the same template.
 
 ## 9. Common mistakes and misconceptions
 
