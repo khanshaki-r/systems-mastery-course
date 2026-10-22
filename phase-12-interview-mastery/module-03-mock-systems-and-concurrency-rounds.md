@@ -475,7 +475,7 @@ g++ -std=c++17 -O1 -g -fsanitize=thread -pthread -o counter_tsan counter.cpp
 setarch x86_64 -R ./counter_tsan racy 2 100000 2>&1 | grep -E "WARNING|SUMMARY"
 ```
 
-Output from one run on one laptop (Intel Core i5-10210U, 4 vCPUs in WSL2). The `lost` count and all times change on every run and every machine; the pattern is what to expect:
+Output from one run on one laptop (Intel Core i5-10210U, 4 vCPUs in WSL2, which was also running other jobs at the time, so the times are noisier than on an idle machine). The `lost` count and all times change on every run and every machine; the pattern is what to expect:
 
 ```text
 racy     threads=4 expected=40000000 got=21681348 lost=18318652 time=139.6 ms
