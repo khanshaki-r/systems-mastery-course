@@ -462,7 +462,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 6 | [6.16 Replication and backup in PostgreSQL](phase-06-databases-from-zero-to-internals/module-16-replication-and-backup.md) | todo | 4 |
 | 6 | Phase 6 revision + quiz | todo | 2 |
 | 7 | [7.01 Why distribute; failure models; CAP and PACELC](phase-07-distributed-systems-and-yugabytedb/module-01-why-distribute-cap-pacelc.md) | written | 3 |
-| 7 | [7.02 Consistency models](phase-07-distributed-systems-and-yugabytedb/module-02-consistency-models.md) | todo | 4 |
+| 7 | [7.02 Consistency models](phase-07-distributed-systems-and-yugabytedb/module-02-consistency-models.md) | written | 4 |
 | 7 | [7.03 Time and clocks](phase-07-distributed-systems-and-yugabytedb/module-03-time-and-clocks.md) | todo | 3 |
 | 7 | [7.04 Replication](phase-07-distributed-systems-and-yugabytedb/module-04-replication.md) | todo | 4 |
 | 7 | [7.05 Raft consensus](phase-07-distributed-systems-and-yugabytedb/module-05-raft-consensus.md) | todo | 6 |
