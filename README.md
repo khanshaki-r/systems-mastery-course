@@ -495,7 +495,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 9 | [9.10 Cross-platform builds and Git workflows](phase-09-build-test-delivery/module-10-cross-platform-builds-and-git-workflows.md) | todo | 4 |
 | 9 | Phase 9 revision + quiz | todo | 2 |
 | 10 | [10.01 HTTP/REST API design](phase-10-backend-fundamentals-and-system-design/module-01-http-rest-api-design.md) | written | 3 |
-| 10 | [10.02 Authentication and sessions](phase-10-backend-fundamentals-and-system-design/module-02-authentication-and-sessions.md) | todo | 3 |
+| 10 | [10.02 Authentication and sessions](phase-10-backend-fundamentals-and-system-design/module-02-authentication-and-sessions.md) | written | 3 |
 | 10 | [10.03 Caching strategies](phase-10-backend-fundamentals-and-system-design/module-03-caching-strategies.md) | todo | 3 |
 | 10 | [10.04 Message queues](phase-10-backend-fundamentals-and-system-design/module-04-message-queues.md) | todo | 3 |
 | 10 | [10.05 Rate limiting and load balancing](phase-10-backend-fundamentals-and-system-design/module-05-rate-limiting-and-load-balancing.md) | todo | 3 |
