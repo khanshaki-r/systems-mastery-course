@@ -447,7 +447,7 @@ Status values: `todo`, `written`, `in progress` (you are working the lab), `done
 | 6 | [6.01 What a database is](phase-06-databases-from-zero-to-internals/module-01-what-a-database-is.md) | written | 3 |
 | 6 | [6.02 SQL from scratch](phase-06-databases-from-zero-to-internals/module-02-sql-from-scratch.md) | written | 6 |
 | 6 | [6.03 Data modelling and normalisation](phase-06-databases-from-zero-to-internals/module-03-data-modelling-and-normalisation.md) | written | 4 |
-| 6 | [6.04 Transactions and ACID](phase-06-databases-from-zero-to-internals/module-04-transactions-and-acid.md) | todo | 4 |
+| 6 | [6.04 Transactions and ACID](phase-06-databases-from-zero-to-internals/module-04-transactions-and-acid.md) | written | 4 |
 | 6 | [6.05 PostgreSQL storage: pages, tuples and the heap](phase-06-databases-from-zero-to-internals/module-05-postgresql-storage-pages-and-tuples.md) | written | 5 |
 | 6 | [6.06 Buffer pool and write-ahead log](phase-06-databases-from-zero-to-internals/module-06-buffer-pool-and-wal.md) | written | 5 |
 | 6 | [6.07 MVCC, visibility and vacuum](phase-06-databases-from-zero-to-internals/module-07-mvcc-and-vacuum.md) | written | 5 |
