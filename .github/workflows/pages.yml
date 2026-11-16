@@ -36,7 +36,9 @@ jobs:
         run: |
           mkdir -p _site
           # The site reads module Markdown from the repository, so publish the course content next to site/.
-          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'node_modules' ./ _site/
+          # The resume is personal: keep it out of the public site (links to it point at GitHub instead).
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'node_modules' \
+            --exclude 'Shakir_Resume_CPP.*' ./ _site/
           # The repository root opens the site.
           printf '%s\n' '<!doctype html><meta charset="utf-8"><title>Systems Mastery Lab</title>' \
             '<meta http-equiv="refresh" content="0; url=site/">' \
