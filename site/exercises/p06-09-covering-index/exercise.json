@@ -1,0 +1,19 @@
+{
+ "title": "Fix the login query with a covering index",
+ "summary": "Read EXPLAIN, design a composite index with the right leading column, cover the query with INCLUDE.",
+ "module": "phase-06-databases-from-zero-to-internals/module-09-btree-indexes-composite-covering.md",
+ "difficulty": "medium",
+ "lang": "sql",
+ "files": ["tuning.sql"],
+ "setupFile": "setup.sql",
+ "tests": [
+  {"name": "login lookup is an Index Only Scan", "query": "EXPLAIN (COSTS OFF) SELECT user_id, status FROM app_users WHERE branch_code = 'BR007' AND user_code = 'U00042';", "contains": ["Index Only Scan"], "notContains": ["Seq Scan"]},
+  {"name": "branch_code leads the index (branch-only lookups can use it too)", "query": "SELECT bool_or(split_part(split_part(indexdef, '(', 2), ',', 1) = 'branch_code') AS branch_code_leads FROM pg_indexes WHERE tablename = 'app_users' AND indexname <> 'app_users_pkey';"},
+  {"name": "the query still returns the right user", "query": "SELECT user_id, status FROM app_users WHERE branch_code = 'BR007' AND user_code = 'U00042';"}
+ ],
+ "hints": [
+  "Run the starter: the plan says `Seq Scan on app_users` and `Rows Removed by Filter: 39999`. It reads every row to find one.",
+  "A composite B-tree index on `(branch_code, user_code)` turns that into an index lookup. Put `branch_code` first: an index can only be searched efficiently from its leading column.",
+  "To make it an Index Only Scan, the index must also hold the columns the query returns: `INCLUDE (user_id, status)`. Then PostgreSQL never visits the table at all."
+ ]
+}

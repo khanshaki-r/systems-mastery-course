@@ -1,0 +1,18 @@
+{
+ "title": "Print a ledger header",
+ "summary": "printf, format specifiers, and printing money from integer paise.",
+ "module": "phase-01-c-from-zero-to-systems/module-01-first-c-program.md",
+ "difficulty": "easy",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "2500 rupees 75 paise", "stdin": ["250075"], "expected": ["Branch: BR001", "Account: SB-1001", "Balance: 2500.75"]},
+  {"name": "only 5 paise", "stdin": ["5"], "expected": ["Branch: BR001", "Account: SB-1001", "Balance: 0.05"]},
+  {"name": "a round amount", "stdin": ["100000"], "expected": ["Branch: BR001", "Account: SB-1001", "Balance: 1000.00"]}
+ ],
+ "hints": [
+  "`balance_paise / 100` is the rupees part (integer division throws away the remainder). `balance_paise % 100` is the paise part.",
+  "5 paise must print as `0.05`, not `0.5`. The format `%02lld` pads with zeros to at least two digits."
+ ]
+}

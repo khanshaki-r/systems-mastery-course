@@ -1,0 +1,1287 @@
+{
+ "generated": "2026-11-16T06:02:24.856Z",
+ "exercises": [
+  {
+   "title": "Print a ledger header",
+   "summary": "printf, format specifiers, and printing money from integer paise.",
+   "module": "phase-01-c-from-zero-to-systems/module-01-first-c-program.md",
+   "difficulty": "easy",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "2500 rupees 75 paise",
+     "stdin": [
+      "250075"
+     ],
+     "expected": [
+      "Branch: BR001",
+      "Account: SB-1001",
+      "Balance: 2500.75"
+     ]
+    },
+    {
+     "name": "only 5 paise",
+     "stdin": [
+      "5"
+     ],
+     "expected": [
+      "Branch: BR001",
+      "Account: SB-1001",
+      "Balance: 0.05"
+     ]
+    },
+    {
+     "name": "a round amount",
+     "stdin": [
+      "100000"
+     ],
+     "expected": [
+      "Branch: BR001",
+      "Account: SB-1001",
+      "Balance: 1000.00"
+     ]
+    }
+   ],
+   "hints": [
+    "`balance_paise / 100` is the rupees part (integer division throws away the remainder). `balance_paise % 100` is the paise part.",
+    "5 paise must print as `0.05`, not `0.5`. The format `%02lld` pads with zeros to at least two digits."
+   ],
+   "id": "p01-01-ledger-header",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.01: Your first C program"
+  },
+  {
+   "title": "Interest without overflow",
+   "summary": "Integer types, their ranges, and what signed overflow does (UBSan catches it).",
+   "module": "phase-01-c-from-zero-to-systems/module-02-variables-types-and-memory.md",
+   "difficulty": "easy",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "1 lakh at 8.50% for 12 months",
+     "stdin": [
+      "100000 850 12"
+     ],
+     "expected": [
+      "interest = 8500.00 rupees"
+     ]
+    },
+    {
+     "name": "25 lakh home loan at 9.25% for 20 years",
+     "stdin": [
+      "2500000 925 240"
+     ],
+     "expected": [
+      "interest = 4625000.00 rupees"
+     ]
+    },
+    {
+     "name": "rounds down to whole paise",
+     "stdin": [
+      "75000 1099 7"
+     ],
+     "expected": [
+      "interest = 4808.12 rupees"
+     ]
+    },
+    {
+     "name": "tiny amount",
+     "stdin": [
+      "1 1 1"
+     ],
+     "expected": [
+      "interest = 0.00 rupees"
+     ]
+    }
+   ],
+   "hints": [
+    "Run the starter on the first test. UndefinedBehaviorSanitizer stops it with `signed integer overflow`. An `int` holds at most 2,147,483,647.",
+    "`100000 * 100 * 850` is already 8.5 billion. Use `long long` (at least 64 bits) for every variable in the calculation, and `%lld` in scanf and printf.",
+    "Multiply everything first and divide once at the end, so you only lose the final fraction of a paisa."
+   ],
+   "id": "p01-02-interest-overflow",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.02: Variables, types and how numbers live in memory"
+  },
+  {
+   "title": "Classify loan amounts",
+   "summary": "if / else if chains, loops and counters.",
+   "module": "phase-01-c-from-zero-to-systems/module-03-control-flow.md",
+   "difficulty": "easy",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "one of each class",
+     "stdin": [
+      "6",
+      "25000",
+      "50000",
+      "499999",
+      "2500000",
+      "5000000",
+      "-10"
+     ],
+     "expected": [
+      "25000: micro",
+      "50000: small",
+      "499999: small",
+      "2500000: medium",
+      "5000000: large",
+      "-10: invalid",
+      "micro=1 small=2 medium=1 large=1 invalid=1"
+     ]
+    },
+    {
+     "name": "boundaries",
+     "stdin": [
+      "4",
+      "0",
+      "49999",
+      "4999999",
+      "1"
+     ],
+     "expected": [
+      "0: invalid",
+      "49999: micro",
+      "4999999: medium",
+      "1: micro",
+      "micro=2 small=0 medium=1 large=0 invalid=1"
+     ]
+    },
+    {
+     "name": "no amounts",
+     "stdin": [
+      "0"
+     ],
+     "expected": [
+      "micro=0 small=0 medium=0 large=0 invalid=0"
+     ]
+    }
+   ],
+   "hints": [
+    "Test `amount <= 0` first. Then test the upper limits from smallest to largest: `< 50000`, `< 500000`, `< 5000000`, and anything else is large.",
+    "To count, compare the returned string with `strcmp(cls, \"micro\") == 0` (include `<string.h>`), or count inside the same if/else chain."
+   ],
+   "id": "p01-03-classify-loans",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.03: Control flow"
+  },
+  {
+   "title": "Recursive GCD and ratios",
+   "summary": "Functions, recursion and the call stack (watch it grow in Visualize).",
+   "module": "phase-01-c-from-zero-to-systems/module-04-functions-and-the-call-stack.md",
+   "difficulty": "easy",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "three pairs",
+     "stdin": [
+      "84 36",
+      "17 5",
+      "100 0"
+     ],
+     "expected": [
+      "gcd(84, 36) = 12, ratio 7:3",
+      "gcd(17, 5) = 1, ratio 17:5",
+      "gcd(100, 0) = 100, ratio 1:0"
+     ]
+    },
+    {
+     "name": "Euclid's classic",
+     "stdin": [
+      "1071 462"
+     ],
+     "expected": [
+      "gcd(1071, 462) = 21, ratio 51:22"
+     ]
+    },
+    {
+     "name": "zero first",
+     "stdin": [
+      "0 9"
+     ],
+     "expected": [
+      "gcd(0, 9) = 9, ratio 0:1"
+     ]
+    }
+   ],
+   "hints": [
+    "Two lines are enough: `if (b == 0) return a;` then `return gcd(b, a % b);`",
+    "Press Visualize with a small input hard-coded in main (the visualiser has no stdin) to watch one stack frame per recursive call appear and then unwind."
+   ],
+   "id": "p01-04-gcd-ratio",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.04: Functions and the call stack"
+  },
+  {
+   "title": "Out-parameters and pointer-to-pointer",
+   "summary": "Return a status, deliver results through pointers; change which object a pointer points at.",
+   "module": "phase-01-c-from-zero-to-systems/module-05-pointers.md",
+   "difficulty": "medium",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "valid and invalid splits",
+     "stdin": [
+      "100000 3",
+      "10 0",
+      "7 9",
+      "-5 2",
+      "12 4"
+     ],
+     "expected": [
+      "100000 / 3 = 33333 each, remainder 1",
+      "larger of share and remainder: 33333",
+      "invalid: 10 / 0",
+      "7 / 9 = 0 each, remainder 7",
+      "larger of share and remainder: 7",
+      "invalid: -5 / 2",
+      "12 / 4 = 3 each, remainder 0",
+      "larger of share and remainder: 3"
+     ]
+    },
+    {
+     "name": "a tie picks the share",
+     "stdin": [
+      "10 3"
+     ],
+     "expected": [
+      "10 / 3 = 3 each, remainder 1",
+      "larger of share and remainder: 3"
+     ]
+    }
+   ],
+   "hints": [
+    "Inside `divide_paise`, `*share = amount / parts;` writes into the caller's variable. Check the invalid cases first and return -1 before writing anything.",
+    "`point_at_bigger` receives the address of the caller's pointer. Assigning `*biggest = a;` changes what the caller's pointer points at.",
+    "Draw the memory table from module 1.05: `bigger` lives in main's frame, and `biggest` holds its address."
+   ],
+   "id": "p01-05-out-params",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.05: Pointers"
+  },
+  {
+   "title": "Luhn check for card numbers",
+   "summary": "Strings as char arrays, walking an array backwards, validating input.",
+   "module": "phase-01-c-from-zero-to-systems/module-06-arrays-and-strings.md",
+   "difficulty": "medium",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "valid and invalid numbers",
+     "stdin": [
+      "79927398713",
+      "79927398710",
+      "4539 1488 0343 6467"
+     ],
+     "expected": [
+      "79927398713: VALID",
+      "79927398710: INVALID",
+      "4539 1488 0343 6467: VALID"
+     ]
+    },
+    {
+     "name": "bad characters and short input",
+     "stdin": [
+      "12a4",
+      "0",
+      "059",
+      ""
+     ],
+     "expected": [
+      "12a4: INVALID",
+      "0: INVALID",
+      "059: VALID",
+      ": INVALID"
+     ]
+    }
+   ],
+   "hints": [
+    "First copy the digits into an `int digits[128]` array, skipping spaces. Return 0 as soon as you meet any other non-digit.",
+    "Walk from the last digit to the first with a position counter that starts at 0. Double the digit when the position is odd (the 2nd, 4th, ... from the right).",
+    "Guard the array: if there are more than 128 digits, return 0 instead of writing past the end. AddressSanitizer would catch you otherwise."
+   ],
+   "id": "p01-06-luhn-check",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.06: Arrays and strings"
+  },
+  {
+   "title": "Shrink a struct by reordering fields",
+   "summary": "Alignment, padding and sizeof. Use the Layout button to see every byte.",
+   "module": "phase-01-c-from-zero-to-systems/module-07-structs-unions-packed-layouts.md",
+   "difficulty": "medium",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "no padding left",
+     "expected": [
+      "sizeof(struct LoanRecord) = 24",
+      "bytes of real data        = 24",
+      "bytes of padding          = 0",
+      "loan 900001: A H 250000.00 for 240 months at branch 7"
+     ]
+    }
+   ],
+   "hints": [
+    "Press Layout. Each hatched square is a padding byte the compiler inserted so the next field starts at an address that is a multiple of its alignment.",
+    "Order the fields from the largest alignment to the smallest: the two 8-byte fields, then the 4-byte one, then the 2-byte one, then the two 1-byte chars."
+   ],
+   "id": "p01-07-struct-padding",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.07: Structs, unions and packed record layouts"
+  },
+  {
+   "title": "A growable array with realloc",
+   "summary": "malloc/realloc/free, doubling growth, and leak-free ownership (ASan + LeakSanitizer).",
+   "module": "phase-01-c-from-zero-to-systems/module-08-dynamic-memory.md",
+   "difficulty": "medium",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "ten amounts",
+     "stdin": [
+      "120",
+      "5",
+      "99",
+      "3000",
+      "7",
+      "42",
+      "8",
+      "1",
+      "1000",
+      "64"
+     ],
+     "expected": [
+      "count=10 capacity=16 sum=4346 max=3000"
+     ]
+    },
+    {
+     "name": "exactly four",
+     "stdin": [
+      "5",
+      "6",
+      "7",
+      "8"
+     ],
+     "expected": [
+      "count=4 capacity=4 sum=26 max=8"
+     ]
+    },
+    {
+     "name": "empty input",
+     "stdin": [],
+     "expected": [
+      "count=0 capacity=0 sum=0 max=none"
+     ]
+    }
+   ],
+   "hints": [
+    "When `v->len == v->cap`, compute `new_cap = v->cap == 0 ? 4 : v->cap * 2`.",
+    "Never write `v->data = realloc(v->data, ...)`. If realloc fails it returns NULL and you lose the old block (a leak). Store the result in a temporary first.",
+    "`vec_free` must call `free(v->data)` and reset all three fields. LeakSanitizer fails the test if any block is still allocated at exit."
+   ],
+   "id": "p01-08-growable-array",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.08: Dynamic memory: malloc and free"
+  },
+  {
+   "title": "Fix the buffer overflow",
+   "summary": "Undefined behaviour from strcpy, and a bounded copy that always terminates.",
+   "module": "phase-01-c-from-zero-to-systems/module-11-undefined-behaviour.md",
+   "difficulty": "medium",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "fits, too long, empty, exactly cap",
+     "stdin": [
+      "SB-1001",
+      "SB-100234",
+      "",
+      "ABCDEFGH"
+     ],
+     "expected": [
+      "[SB-1001] -> [SB-1001]",
+      "[SB-100234] -> [SB-1002] (truncated)",
+      "[] -> []",
+      "[ABCDEFGH] -> [ABCDEFG] (truncated)",
+      "cap 0 -> -1"
+     ]
+    },
+    {
+     "name": "very long id",
+     "stdin": [
+      "LOAN-ACCOUNT-0000000000000000000000000000000000000001"
+     ],
+     "expected": [
+      "[LOAN-ACCOUNT-0000000000000000000000000000000000000001] -> [LOAN-AC] (truncated)",
+      "cap 0 -> -1"
+     ]
+    }
+   ],
+   "hints": [
+    "Run the starter on the first test. AddressSanitizer reports `stack-buffer-overflow`, the line that wrote out of bounds, and which variable (`id`) was overrun.",
+    "Compute `n = strlen(src)`. If `n > cap - 1`, copy only `cap - 1` bytes. Then write the terminating `'\\0'` yourself at `dst[n]`.",
+    "Handle `cap == 0` first: then there is no room even for the terminator, so return -1 without writing."
+   ],
+   "id": "p01-11-safe-copy",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.11: Undefined behaviour"
+  },
+  {
+   "title": "A chained hash map",
+   "summary": "Linked lists, hashing, ownership of keys, and freeing everything (mini project 1.15).",
+   "module": "phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md",
+   "difficulty": "hard",
+   "lang": "c",
+   "files": [
+    "main.c"
+   ],
+   "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+   "tests": [
+    {
+     "name": "put, update, get, delete",
+     "stdin": [
+      "PUT acct:1001 2500",
+      "PUT acct:1002 990",
+      "GET acct:1001",
+      "PUT acct:1001 3000",
+      "GET acct:1001",
+      "COUNT",
+      "DEL acct:1002",
+      "DEL acct:1002",
+      "GET acct:1002",
+      "COUNT",
+      "HELLO"
+     ],
+     "expected": [
+      "OK",
+      "OK",
+      "2500",
+      "OK",
+      "3000",
+      "2",
+      "1",
+      "0",
+      "(nil)",
+      "1",
+      "ERR"
+     ]
+    },
+    {
+     "name": "20 keys in 16 buckets (collisions)",
+     "stdin": [
+      "PUT k0 0",
+      "PUT k1 10",
+      "PUT k2 20",
+      "PUT k3 30",
+      "PUT k4 40",
+      "PUT k5 50",
+      "PUT k6 60",
+      "PUT k7 70",
+      "PUT k8 80",
+      "PUT k9 90",
+      "PUT k10 100",
+      "PUT k11 110",
+      "PUT k12 120",
+      "PUT k13 130",
+      "PUT k14 140",
+      "PUT k15 150",
+      "PUT k16 160",
+      "PUT k17 170",
+      "PUT k18 180",
+      "PUT k19 190",
+      "GET k7",
+      "GET k19",
+      "GET k20",
+      "DEL k0",
+      "DEL k5",
+      "GET k5",
+      "COUNT"
+     ],
+     "expected": [
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "OK",
+      "70",
+      "190",
+      "(nil)",
+      "1",
+      "1",
+      "(nil)",
+      "18"
+     ]
+    }
+   ],
+   "hints": [
+    "The bucket for a key is `hash(key) % NBUCKETS`. Each bucket is a singly linked list of `Entry`.",
+    "A helper that returns `Entry **` (the address of the link pointing at the entry) makes delete easy: `*link = e->next;` unlinks e wherever it is.",
+    "The map owns its keys: copy each key with `malloc(strlen(key) + 1)` and `memcpy`, and free both the key and the entry on delete and in map_free. (`strdup` is POSIX, not C17.)"
+   ],
+   "id": "p01-15-hash-map",
+   "phaseTitle": "Phase 1: C from zero to systems level",
+   "moduleTitle": "1.15: Mini-project: hash map and record parser in C"
+  },
+  {
+   "title": "RAII: a lease that always gets released",
+   "summary": "Constructors acquire, destructors release, even when an exception is thrown. No copies.",
+   "module": "phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md",
+   "difficulty": "easy",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "release on success, on exception, and in reverse order",
+     "expected": [
+      "acquire LN-1",
+      "processing LN-1",
+      "done LN-1",
+      "release LN-1",
+      "acquire LN-2",
+      "processing LN-2",
+      "release LN-2",
+      "error: validation failed for LN-2",
+      "acquire LN-3",
+      "processing LN-3",
+      "done LN-3",
+      "release LN-3",
+      "acquire batch-A",
+      "acquire batch-B",
+      "two leases held",
+      "release batch-B",
+      "release batch-A",
+      "end"
+     ]
+    }
+   ],
+   "hints": [
+    "The first build fails on purpose: the two static_asserts say Lease must not be copyable. `Lease(const Lease&) = delete;` and `Lease& operator=(const Lease&) = delete;` fix that.",
+    "Look at the expected output for LN-2: `release LN-2` prints BEFORE `error: ...`. While the exception travels up to the catch, C++ destroys every local object it leaves behind (stack unwinding).",
+    "Objects in one scope are destroyed in reverse order of construction. That is why batch-B is released before batch-A."
+   ],
+   "id": "p02-03-raii-lease",
+   "phaseTitle": "Phase 2: C++17 from zero to modern C++",
+   "moduleTitle": "2.03: RAII and the rule of 0/3/5"
+  },
+  {
+   "title": "A move-only buffer (rule of five)",
+   "summary": "Delete copies, write noexcept move constructor and move assignment, keep ownership exact.",
+   "module": "phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md",
+   "difficulty": "medium",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "moves transfer ownership, nothing leaks or double-frees",
+     "expected": [
+      "live after fill: 4",
+      "taken: bbb, pool[1] empty: true",
+      "pool[0]: ccc, pool[2]: (empty), live: 3",
+      "live after clear: 1"
+     ]
+    }
+   ],
+   "hints": [
+    "Move constructor: copy the pointer and size from `other`, then set `other.data_ = nullptr; other.size_ = 0;`. Do not touch `live`: no block was created or destroyed.",
+    "Move assignment: if `this != &other`, release your own block (`if (data_) --live; delete[] data_;`), then steal other's exactly like the move constructor.",
+    "Mark both `noexcept`. std::vector only moves elements when it grows if the move constructor cannot throw; otherwise it copies (and here copying is deleted)."
+   ],
+   "id": "p02-04-move-only-buffer",
+   "phaseTitle": "Phase 2: C++17 from zero to modern C++",
+   "moduleTitle": "2.04: Move semantics"
+  },
+  {
+   "title": "Break a shared_ptr cycle",
+   "summary": "Reference counts, the control block, and why back-pointers must be weak_ptr.",
+   "module": "phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md",
+   "difficulty": "medium",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "everything is destroyed, at the right time",
+     "expected": [
+      "LN-1 belongs to Asha",
+      "customer use_count = 1",
+      "LN-1 use_count = 2",
+      "customer Asha destroyed",
+      "loan LN-2 destroyed",
+      "after scope, LN-1 belongs to (gone)",
+      "end of main",
+      "loan LN-1 destroyed"
+     ]
+    }
+   ],
+   "hints": [
+    "Run the starter. The use_count is 3 and nothing is ever destroyed: Customer holds the Loans, and each Loan holds the Customer. LeakSanitizer reports the leak at exit.",
+    "Make `owner` a `std::weak_ptr<Customer>`. A weak_ptr watches the control block without keeping the object alive.",
+    "To use it: `if (auto c = owner.lock()) return c->name;`. lock() gives a shared_ptr if the object still exists and an empty one if it is gone."
+   ],
+   "id": "p02-05-weak-ptr-cycle",
+   "phaseTitle": "Phase 2: C++17 from zero to modern C++",
+   "moduleTitle": "2.05: Smart pointers and the shared_ptr control block"
+  },
+  {
+   "title": "A fixed-capacity ring buffer template",
+   "summary": "Class templates with a type and a size parameter; modular index arithmetic.",
+   "module": "phase-02-cpp17-from-zero-to-modern/module-06-templates.md",
+   "difficulty": "medium",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "ints overwrite the oldest, strings too",
+     "expected": [
+      "after 10: [10] size=1 full=no",
+      "after 20: [10, 20] size=2 full=no",
+      "after 30: [10, 20, 30] size=3 full=yes",
+      "after 40: [20, 30, 40] size=3 full=yes",
+      "after 50: [30, 40, 50] size=3 full=yes",
+      "errors: [refused, reset]"
+     ]
+    }
+   ],
+   "hints": [
+    "Keep two numbers: `head_` (where the oldest item is) and `count_` (how many are stored). The next free slot is `(head_ + count_) % N`.",
+    "When full, overwrite `items_[head_]` and move head forward: `head_ = (head_ + 1) % N`. count_ stays N.",
+    "`operator[](i)` returns `items_[(head_ + i) % N]`."
+   ],
+   "id": "p02-06-ring-buffer",
+   "phaseTitle": "Phase 2: C++17 from zero to modern C++",
+   "moduleTitle": "2.06: Templates and generic programming"
+  },
+  {
+   "title": "Top-K words with unordered_map and sort",
+   "summary": "Hash maps, copying into a vector, and sorting with a two-key comparator.",
+   "module": "phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md",
+   "difficulty": "medium",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "ties broken alphabetically",
+     "stdin": [
+      "3",
+      "The loan was approved. The LOAN amount: 500000.",
+      "Approved loans: the best loans!"
+     ],
+     "expected": [
+      "the 3",
+      "approved 2",
+      "loan 2"
+     ]
+    },
+    {
+     "name": "k larger than the number of words",
+     "stdin": [
+      "10",
+      "a b a"
+     ],
+     "expected": [
+      "a 2",
+      "b 1"
+     ]
+    },
+    {
+     "name": "no words at all",
+     "stdin": [
+      "5",
+      "12345 ... !!!"
+     ],
+     "expected": []
+    }
+   ],
+   "hints": [
+    "Build each word character by character: if `std::isalpha((unsigned char)c)`, append `std::tolower` of it; otherwise, if the current word is not empty, count it and clear it. Do not forget the last word on the line.",
+    "Copy the map into `std::vector<std::pair<std::string, int>>` and sort with a lambda: `a.second != b.second ? a.second > b.second : a.first < b.first`.",
+    "unordered_map has no order at all. Iterating it directly would give a different order on another standard library."
+   ],
+   "id": "p02-07-word-frequency",
+   "phaseTitle": "Phase 2: C++17 from zero to modern C++",
+   "moduleTitle": "2.07: STL containers and their internals"
+  },
+  {
+   "title": "Virtual functions for loan products",
+   "summary": "virtual, override, virtual destructors and dispatch through a base pointer.",
+   "module": "phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md",
+   "difficulty": "easy",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "each product uses its own rate",
+     "stdin": [
+      "home 2500000",
+      "personal 300000",
+      "gold 150000",
+      "car 100000"
+     ],
+     "expected": [
+      "home 2500000: 850 bps, yearly interest 212500",
+      "personal 300000: 1399 bps, yearly interest 41970",
+      "gold 150000: 920 bps, yearly interest 13800",
+      "unknown loan type: car",
+      "total yearly interest: 268270"
+     ]
+    }
+   ],
+   "hints": [
+    "Run the starter: every loan says `generic` and 1200 bps. Without `virtual`, a call through a `Loan*` is bound at compile time to Loan's version.",
+    "Add `virtual` in the base class and `override` in each derived class. `override` makes the compiler check that you really override something.",
+    "`yearly_interest()` is not virtual, yet it starts returning the right number. It calls `rate_bps()`, and that call now goes through the vtable."
+   ],
+   "id": "p02-10-virtual-dispatch",
+   "phaseTitle": "Phase 2: C++17 from zero to modern C++",
+   "moduleTitle": "2.10: Inheritance and virtual dispatch"
+  },
+  {
+   "title": "Fix the data race",
+   "summary": "Shared counters across threads; ThreadSanitizer finds the race, atomics or a mutex fix it.",
+   "module": "phase-04-concurrency-deep-dive/module-02-data-races.md",
+   "difficulty": "easy",
+   "lang": "cpp",
+   "compiler": "g152",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=thread -pthread",
+   "tests": [
+    {
+     "name": "exact totals and no race reported",
+     "expected": [
+      "approved = 80000",
+      "total_paise = 200000"
+     ]
+    }
+   ],
+   "hints": [
+    "Run the starter. ThreadSanitizer prints `WARNING: ThreadSanitizer: data race` with the two conflicting accesses and the threads that made them, then exits with code 66.",
+    "`++approved` is three steps: load, add, store. Two threads can both load 41, both store 42, and one increment is lost.",
+    "Either make both counters `std::atomic<long long>`, or protect both updates with one `std::mutex`. A mutex is the better choice when two values must change together."
+   ],
+   "id": "p04-02-data-race",
+   "phaseTitle": "Phase 4: Concurrency deep dive",
+   "moduleTitle": "4.02: Data races and why they are undefined behaviour"
+  },
+  {
+   "title": "A blocking bounded queue",
+   "summary": "mutex + two condition variables, wait with a predicate, and clean shutdown with close().",
+   "module": "phase-04-concurrency-deep-dive/module-04-condition-variables.md",
+   "difficulty": "hard",
+   "lang": "cpp",
+   "compiler": "g152",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=thread -pthread",
+   "tests": [
+    {
+     "name": "2 producers, 3 consumers, capacity 8",
+     "expected": [
+      "consumed 2000 items, sum = 1001000",
+      "queue never exceeded capacity: yes"
+     ]
+    }
+   ],
+   "hints": [
+    "push: `std::unique_lock<std::mutex> lk(m_); not_full_.wait(lk, [&]{ return closed_ || q_.size() < cap_; });`. The predicate form handles spurious wake-ups for you.",
+    "pop: wait on `not_empty_` until `closed_ || !q_.empty()`. If the queue is still empty after waking, it was closed and drained: return std::nullopt.",
+    "After push adds an item, `not_empty_.notify_one()`. After pop removes one, `not_full_.notify_one()`. close() must `notify_all()` on both, or sleeping threads never wake."
+   ],
+   "id": "p04-04-bounded-queue",
+   "phaseTitle": "Phase 4: Concurrency deep dive",
+   "moduleTitle": "4.04: Condition variables"
+  },
+  {
+   "title": "A reader-writer store with shared_mutex",
+   "summary": "Many readers at once, one writer at a time: the tcpkv store's locking.",
+   "module": "phase-04-concurrency-deep-dive/module-05-shared-mutex.md",
+   "difficulty": "medium",
+   "lang": "cpp",
+   "compiler": "g152",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=thread -pthread",
+   "tests": [
+    {
+     "name": "2 writers + 4 readers, no race",
+     "expected": [
+      "size = 1000",
+      "acct:1:499 = 499",
+      "missing = (nil)",
+      "reads done = 8000"
+     ]
+    }
+   ],
+   "hints": [
+    "Readers: `std::shared_lock<std::shared_mutex> lk(m_);`. Many threads can hold a shared lock at the same time.",
+    "Writers: `std::unique_lock<std::shared_mutex> lk(m_);`. This waits until no reader or writer holds the lock.",
+    "`m_` is declared `mutable` so that const member functions like get() and size() can still lock it."
+   ],
+   "id": "p04-05-shared-mutex-store",
+   "phaseTitle": "Phase 4: Concurrency deep dive",
+   "moduleTitle": "4.05: shared_mutex and reader-writer locks"
+  },
+  {
+   "title": "Parse the tcpkv line protocol",
+   "summary": "Request parsing, argument validation, error replies and CRLF handling.",
+   "module": "phase-05-networking-and-servers/module-06-wire-protocol-design.md",
+   "difficulty": "medium",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "a full session",
+     "stdin": [
+      "PING",
+      "SET acct:1 balance 2500 INR",
+      "GET acct:1",
+      "get acct:1",
+      "GET acct:2",
+      "SET acct:2 990",
+      "KEYS",
+      "DEL acct:1",
+      "DEL acct:1",
+      "KEYS",
+      "FLY away",
+      "GET",
+      "GET a b",
+      "SET onlykey",
+      "",
+      "PING\r"
+     ],
+     "expected": [
+      "PONG",
+      "OK",
+      "balance 2500 INR",
+      "balance 2500 INR",
+      "NOT_FOUND",
+      "OK",
+      "2 acct:1 acct:2",
+      "DELETED",
+      "NOT_FOUND",
+      "1 acct:2",
+      "ERR unknown command 'FLY'",
+      "ERR wrong number of arguments for 'GET'",
+      "ERR wrong number of arguments for 'GET'",
+      "ERR wrong number of arguments for 'SET'",
+      "PONG"
+     ]
+    },
+    {
+     "name": "empty store",
+     "stdin": [
+      "KEYS",
+      "DEL nothing",
+      "ping"
+     ],
+     "expected": [
+      "0",
+      "NOT_FOUND",
+      "PONG"
+     ]
+    }
+   ],
+   "hints": [
+    "Strip one trailing `\\r` first: telnet and many clients send CRLF line endings.",
+    "Read the command and the arguments with a `std::istringstream`. Upper-case the command for matching, but quote the original spelling in `ERR unknown command`.",
+    "For SET, the value is everything after the key, spaces included. Find where the key ends in the original line and take the rest."
+   ],
+   "id": "p05-06-line-protocol",
+   "phaseTitle": "Phase 5: Networking and servers",
+   "moduleTitle": "5.06: Wire protocol design"
+  },
+  {
+   "title": "Find large approved loans",
+   "summary": "SELECT, JOIN, WHERE with two conditions, ORDER BY with a tie-breaker.",
+   "module": "phase-06-databases-from-zero-to-internals/module-02-sql-from-scratch.md",
+   "difficulty": "easy",
+   "lang": "sql",
+   "files": [
+    "query.sql"
+   ],
+   "setupFile": "setup.sql",
+   "tests": [
+    {
+     "name": "right rows, right columns, right order"
+    }
+   ],
+   "hints": [
+    "Join the tables on the column they share: `FROM loans l JOIN customers c ON c.customer_id = l.customer_id`.",
+    "Two loans have exactly 5,00,000. Without a second ORDER BY key their order is not defined, and PostgreSQL may return either one first. Add `l.loan_id` as the tie-breaker."
+   ],
+   "id": "p06-02-approved-loans",
+   "phaseTitle": "Phase 6: Databases from zero to internals",
+   "moduleTitle": "6.02: SQL from scratch"
+  },
+  {
+   "title": "Branch totals with GROUP BY and HAVING",
+   "summary": "Aggregate per group, filter rows with WHERE and groups with HAVING.",
+   "module": "phase-06-databases-from-zero-to-internals/module-03-data-modelling-and-normalisation.md",
+   "difficulty": "medium",
+   "lang": "sql",
+   "files": [
+    "query.sql"
+   ],
+   "setupFile": "setup.sql",
+   "tests": [
+    {
+     "name": "only live loans, only busy branches"
+    }
+   ],
+   "hints": [
+    "WHERE runs before grouping (it removes rows). HAVING runs after grouping (it removes whole groups). The status filter is a WHERE; the 'at least 3 loans' rule is a HAVING.",
+    "`WHERE status IN ('APPROVED', 'DISBURSED')`, `GROUP BY branch_code`, `HAVING count(*) >= 3`.",
+    "Keep `sum(amount)` as it is. Casting it changes how the numbers print, and the check compares them exactly."
+   ],
+   "id": "p06-03-branch-totals",
+   "phaseTitle": "Phase 6: Databases from zero to internals",
+   "moduleTitle": "6.03: Data modelling and normalisation"
+  },
+  {
+   "title": "Fix the login query with a covering index",
+   "summary": "Read EXPLAIN, design a composite index with the right leading column, cover the query with INCLUDE.",
+   "module": "phase-06-databases-from-zero-to-internals/module-09-btree-indexes-composite-covering.md",
+   "difficulty": "medium",
+   "lang": "sql",
+   "files": [
+    "tuning.sql"
+   ],
+   "setupFile": "setup.sql",
+   "tests": [
+    {
+     "name": "login lookup is an Index Only Scan",
+     "query": "EXPLAIN (COSTS OFF) SELECT user_id, status FROM app_users WHERE branch_code = 'BR007' AND user_code = 'U00042';",
+     "contains": [
+      "Index Only Scan"
+     ],
+     "notContains": [
+      "Seq Scan"
+     ]
+    },
+    {
+     "name": "branch_code leads the index (branch-only lookups can use it too)",
+     "query": "SELECT bool_or(split_part(split_part(indexdef, '(', 2), ',', 1) = 'branch_code') AS branch_code_leads FROM pg_indexes WHERE tablename = 'app_users' AND indexname <> 'app_users_pkey';"
+    },
+    {
+     "name": "the query still returns the right user",
+     "query": "SELECT user_id, status FROM app_users WHERE branch_code = 'BR007' AND user_code = 'U00042';"
+    }
+   ],
+   "hints": [
+    "Run the starter: the plan says `Seq Scan on app_users` and `Rows Removed by Filter: 39999`. It reads every row to find one.",
+    "A composite B-tree index on `(branch_code, user_code)` turns that into an index lookup. Put `branch_code` first: an index can only be searched efficiently from its leading column.",
+    "To make it an Index Only Scan, the index must also hold the columns the query returns: `INCLUDE (user_id, status)`. Then PostgreSQL never visits the table at all."
+   ],
+   "id": "p06-09-covering-index",
+   "phaseTitle": "Phase 6: Databases from zero to internals",
+   "moduleTitle": "6.09: B-tree indexes, composite and covering indexes"
+  },
+  {
+   "title": "Loan validation in PL/pgSQL",
+   "summary": "A stored function with SELECT INTO, FOUND, IF/RETURN and an aggregate check.",
+   "phase": 6,
+   "difficulty": "medium",
+   "lang": "sql",
+   "files": [
+    "validate.sql"
+   ],
+   "setupFile": "setup.sql",
+   "tests": [
+    {
+     "name": "every rule, in order",
+     "query": "SELECT t.case_no, validate_loan(t.cust, t.amt, t.term) AS verdict FROM (VALUES (1, 999::bigint, 100000::numeric, 60), (2, 3, 100000, 60), (3, 1, 5000, 60), (4, 1, 100000, 400), (5, 2, 900000, 120), (6, 1, 200000, 120), (7, 1, 5000001, 120), (8, 4, 300000, 6), (9, 4, 300001, 360), (10, 3, 1, 1)) AS t(case_no, cust, amt, term) ORDER BY t.case_no;"
+    },
+    {
+     "name": "written in PL/pgSQL",
+     "query": "SELECT l.lanname FROM pg_proc p JOIN pg_language l ON l.oid = p.prolang WHERE p.proname = 'validate_loan';"
+    }
+   ],
+   "hints": [
+    "`SELECT * INTO v_customer FROM customers WHERE customer_id = p_customer_id;` then `IF NOT FOUND THEN RETURN 'NO_CUSTOMER'; END IF;`.",
+    "The rules are checked in order and the first one that fails wins. A blocked customer asking for 1 rupee is BLOCKED, not AMOUNT_OUT_OF_RANGE.",
+    "A customer with no loans has `sum(amount) = NULL`, and `NULL + amount > limit` is NULL, which IF treats as false. Use `COALESCE(sum(amount), 0)`. Case 9 tests exactly this."
+   ],
+   "id": "p06-11-plpgsql-validation",
+   "phaseTitle": "Phase 6: Databases from zero to internals",
+   "moduleTitle": null
+  },
+  {
+   "title": "Latency percentiles from raw samples",
+   "summary": "Nearest-rank p50/p90/p99 with integer rank maths, in Python.",
+   "module": "phase-08-debugging-performance-reliability/module-08-latency-percentiles-and-benchmarking.md",
+   "difficulty": "easy",
+   "lang": "python",
+   "files": [
+    "main.py"
+   ],
+   "tests": [
+    {
+     "name": "ten samples with a long tail",
+     "stdin": [
+      "12",
+      "15",
+      "11",
+      "240",
+      "14",
+      "13",
+      "16",
+      "12",
+      "18",
+      "900"
+     ],
+     "expected": [
+      "count = 10",
+      "min = 11.0 ms",
+      "p50 = 14.0 ms",
+      "p90 = 240.0 ms",
+      "p99 = 900.0 ms",
+      "max = 900.0 ms",
+      "mean = 125.1 ms"
+     ]
+    },
+    {
+     "name": "a single sample",
+     "stdin": [
+      "5"
+     ],
+     "expected": [
+      "count = 1",
+      "min = 5.0 ms",
+      "p50 = 5.0 ms",
+      "p90 = 5.0 ms",
+      "p99 = 5.0 ms",
+      "max = 5.0 ms",
+      "mean = 5.0 ms"
+     ]
+    },
+    {
+     "name": "no samples",
+     "stdin": [],
+     "expected": [
+      "no samples"
+     ]
+    }
+   ],
+   "hints": [
+    "Nearest rank: rank = ceil(p * n / 100), counting from 1. In integers, `-(-p * n // 100)` is the ceiling without any floating-point surprises.",
+    "Look at the first test: the mean is 125.1 ms but p50 is 14 ms. One slow request in ten ruins the average, which is why latency is reported as percentiles."
+   ],
+   "id": "p08-08-latency-percentiles",
+   "phaseTitle": "Phase 8: Debugging, performance and reliability",
+   "moduleTitle": "8.08: Latency percentiles and benchmarking"
+  },
+  {
+   "title": "Triage a log file",
+   "summary": "Parse structured log lines, count by level, find the noisiest service.",
+   "module": "phase-08-debugging-performance-reliability/module-09-incident-triage-and-rca-writing.md",
+   "difficulty": "easy",
+   "lang": "python",
+   "files": [
+    "main.py"
+   ],
+   "tests": [
+    {
+     "name": "mixed log with junk lines",
+     "stdin": [
+      "2026-11-16T10:00:01Z INFO auth-svc login ok user=U1",
+      "2026-11-16T10:00:02Z ERROR loan-svc timeout calling cbs",
+      "2026-11-16T10:00:03Z WARN loan-svc slow query 1800ms",
+      "garbage line",
+      "2026-11-16T10:00:04Z ERROR auth-svc db pool exhausted",
+      "2026-11-16T10:00:05Z ERROR loan-svc timeout calling cbs",
+      "2026-11-16T10:00:06Z DEBUG loan-svc noisy"
+     ],
+     "expected": [
+      "ERROR 3",
+      "WARN 1",
+      "INFO 1",
+      "skipped 2",
+      "top error service: loan-svc (2)",
+      "first error: 2026-11-16T10:00:02Z loan-svc timeout calling cbs"
+     ]
+    },
+    {
+     "name": "a quiet day",
+     "stdin": [
+      "2026-11-16T10:00:01Z INFO api ok",
+      "",
+      "2026-11-16T10:00:02Z INFO api ok"
+     ],
+     "expected": [
+      "ERROR 0",
+      "WARN 0",
+      "INFO 2",
+      "skipped 0",
+      "top error service: none",
+      "first error: none"
+     ]
+    },
+    {
+     "name": "tie on error count",
+     "stdin": [
+      "t1 ERROR zeta-svc boom",
+      "t2 ERROR alpha-svc boom"
+     ],
+     "expected": [
+      "ERROR 2",
+      "WARN 0",
+      "INFO 0",
+      "skipped 0",
+      "top error service: alpha-svc (1)",
+      "first error: t1 zeta-svc boom"
+     ]
+    }
+   ],
+   "hints": [
+    "`line.split(maxsplit=3)` gives at most 4 parts: timestamp, level, service and the rest of the message.",
+    "`collections.Counter` counts for you. Missing keys read as 0, so `counts['WARN']` is safe.",
+    "For the top service, pick the highest count and break ties alphabetically: `min(c.items(), key=lambda kv: (-kv[1], kv[0]))`."
+   ],
+   "id": "p08-09-log-triage",
+   "phaseTitle": "Phase 8: Debugging, performance and reliability",
+   "moduleTitle": "8.09: Incident triage and RCA writing"
+  },
+  {
+   "title": "An O(1) LRU cache",
+   "summary": "std::list + unordered_map of iterators, splice to move to front, evict from the back.",
+   "module": "phase-10-backend-fundamentals-and-system-design/module-08-design-thread-pool-lru-cache-connection-pool.md",
+   "difficulty": "hard",
+   "lang": "cpp",
+   "files": [
+    "main.cpp"
+   ],
+   "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+   "tests": [
+    {
+     "name": "capacity 2: recency decides eviction",
+     "stdin": [
+      "2",
+      "PUT a 1",
+      "PUT b 2",
+      "GET a",
+      "PUT c 3",
+      "GET b",
+      "GET c",
+      "PUT a 10",
+      "GET a",
+      "PUT d 4"
+     ],
+     "expected": [
+      "OK",
+      "OK",
+      "1",
+      "OK (evicted b)",
+      "-1",
+      "3",
+      "OK",
+      "10",
+      "OK (evicted c)",
+      "keys (most recent first): d a"
+     ]
+    },
+    {
+     "name": "capacity 1",
+     "stdin": [
+      "1",
+      "GET x",
+      "PUT x 5",
+      "PUT y 6",
+      "GET x",
+      "GET y"
+     ],
+     "expected": [
+      "-1",
+      "OK",
+      "OK (evicted x)",
+      "-1",
+      "6",
+      "keys (most recent first): y"
+     ]
+    }
+   ],
+   "hints": [
+    "The list holds (key, value) from most recent (front) to least recent (back). The map stores, for each key, an iterator to its list node.",
+    "`list_.splice(list_.begin(), list_, it)` moves one node to the front in O(1) without copying, and every iterator stays valid.",
+    "Updating an existing key never evicts. Only a NEW key into a full cache evicts `list_.back()`; erase it from the map before you pop it."
+   ],
+   "id": "p10-08-lru-cache",
+   "phaseTitle": "Phase 10: Backend fundamentals and system design",
+   "moduleTitle": "10.08: Design: thread pool, LRU cache, connection pool"
+  }
+ ]
+}

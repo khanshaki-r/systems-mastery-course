@@ -28,3 +28,6 @@ Thumbs.db
 *.log
 *.out
 *.synctex.gz
+
+# Node tooling for site/tools (npm install @electric-sql/pglite)
+node_modules/

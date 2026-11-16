@@ -1,0 +1,17 @@
+{
+ "title": "RAII: a lease that always gets released",
+ "summary": "Constructors acquire, destructors release, even when an exception is thrown. No copies.",
+ "module": "phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md",
+ "difficulty": "easy",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "release on success, on exception, and in reverse order", "expected": ["acquire LN-1", "processing LN-1", "done LN-1", "release LN-1", "acquire LN-2", "processing LN-2", "release LN-2", "error: validation failed for LN-2", "acquire LN-3", "processing LN-3", "done LN-3", "release LN-3", "acquire batch-A", "acquire batch-B", "two leases held", "release batch-B", "release batch-A", "end"]}
+ ],
+ "hints": [
+  "The first build fails on purpose: the two static_asserts say Lease must not be copyable. `Lease(const Lease&) = delete;` and `Lease& operator=(const Lease&) = delete;` fix that.",
+  "Look at the expected output for LN-2: `release LN-2` prints BEFORE `error: ...`. While the exception travels up to the catch, C++ destroys every local object it leaves behind (stack unwinding).",
+  "Objects in one scope are destroyed in reverse order of construction. That is why batch-B is released before batch-A."
+ ]
+}

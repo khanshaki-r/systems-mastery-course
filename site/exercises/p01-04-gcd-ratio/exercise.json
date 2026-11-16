@@ -1,0 +1,18 @@
+{
+ "title": "Recursive GCD and ratios",
+ "summary": "Functions, recursion and the call stack (watch it grow in Visualize).",
+ "module": "phase-01-c-from-zero-to-systems/module-04-functions-and-the-call-stack.md",
+ "difficulty": "easy",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "three pairs", "stdin": ["84 36", "17 5", "100 0"], "expected": ["gcd(84, 36) = 12, ratio 7:3", "gcd(17, 5) = 1, ratio 17:5", "gcd(100, 0) = 100, ratio 1:0"]},
+  {"name": "Euclid's classic", "stdin": ["1071 462"], "expected": ["gcd(1071, 462) = 21, ratio 51:22"]},
+  {"name": "zero first", "stdin": ["0 9"], "expected": ["gcd(0, 9) = 9, ratio 0:1"]}
+ ],
+ "hints": [
+  "Two lines are enough: `if (b == 0) return a;` then `return gcd(b, a % b);`",
+  "Press Visualize with a small input hard-coded in main (the visualiser has no stdin) to watch one stack frame per recursive call appear and then unwind."
+ ]
+}

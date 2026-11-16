@@ -1,0 +1,26 @@
+{
+ "title": "Fix the data race",
+ "summary": "Shared counters across threads; ThreadSanitizer finds the race, atomics or a mutex fix it.",
+ "module": "phase-04-concurrency-deep-dive/module-02-data-races.md",
+ "difficulty": "easy",
+ "lang": "cpp",
+ "compiler": "g152",
+ "files": [
+  "main.cpp"
+ ],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=thread -pthread",
+ "tests": [
+  {
+   "name": "exact totals and no race reported",
+   "expected": [
+    "approved = 80000",
+    "total_paise = 200000"
+   ]
+  }
+ ],
+ "hints": [
+  "Run the starter. ThreadSanitizer prints `WARNING: ThreadSanitizer: data race` with the two conflicting accesses and the threads that made them, then exits with code 66.",
+  "`++approved` is three steps: load, add, store. Two threads can both load 41, both store 42, and one increment is lost.",
+  "Either make both counters `std::atomic<long long>`, or protect both updates with one `std::mutex`. A mutex is the better choice when two values must change together."
+ ]
+}

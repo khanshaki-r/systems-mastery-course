@@ -1,0 +1,17 @@
+{
+ "title": "A fixed-capacity ring buffer template",
+ "summary": "Class templates with a type and a size parameter; modular index arithmetic.",
+ "module": "phase-02-cpp17-from-zero-to-modern/module-06-templates.md",
+ "difficulty": "medium",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "ints overwrite the oldest, strings too", "expected": ["after 10: [10] size=1 full=no", "after 20: [10, 20] size=2 full=no", "after 30: [10, 20, 30] size=3 full=yes", "after 40: [20, 30, 40] size=3 full=yes", "after 50: [30, 40, 50] size=3 full=yes", "errors: [refused, reset]"]}
+ ],
+ "hints": [
+  "Keep two numbers: `head_` (where the oldest item is) and `count_` (how many are stored). The next free slot is `(head_ + count_) % N`.",
+  "When full, overwrite `items_[head_]` and move head forward: `head_ = (head_ + 1) % N`. count_ stays N.",
+  "`operator[](i)` returns `items_[(head_ + i) % N]`."
+ ]
+}

@@ -1,0 +1,896 @@
+{
+ "generated": "2026-11-16T06:02:24.856Z",
+ "phases": [
+  {
+   "num": 0,
+   "dir": "phase-00-how-a-computer-runs-a-program",
+   "title": "How a computer runs a program + lab setup",
+   "modules": [
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-01-what-a-computer-does.md",
+     "num": "0.01",
+     "name": "What a computer actually does",
+     "hours": 2
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-02-operating-system-processes-files.md",
+     "num": "0.02",
+     "name": "The operating system, processes and files",
+     "hours": 2
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-03-terminal-and-bash-basics.md",
+     "num": "0.03",
+     "name": "The terminal and Bash basics",
+     "hours": 3
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-04-linux-lab-setup.md",
+     "num": "0.04",
+     "name": "Linux lab setup",
+     "hours": 4
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-05-data-lab-setup.md",
+     "num": "0.05",
+     "name": "Data lab setup",
+     "hours": 4
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-06-windows-lab-setup.md",
+     "num": "0.06",
+     "name": "Windows lab setup",
+     "hours": 3
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/module-07-git-from-zero.md",
+     "num": "0.07",
+     "name": "Git from zero",
+     "hours": 3
+    }
+   ],
+   "extras": [
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/revision.md",
+     "name": "Revision sheet",
+     "icon": "R"
+    },
+    {
+     "path": "phase-00-how-a-computer-runs-a-program/quiz.md",
+     "name": "Quiz",
+     "icon": "Q"
+    }
+   ]
+  },
+  {
+   "num": 1,
+   "dir": "phase-01-c-from-zero-to-systems",
+   "title": "C from zero to systems level",
+   "modules": [
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-01-first-c-program.md",
+     "num": "1.01",
+     "name": "Your first C program",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-02-variables-types-and-memory.md",
+     "num": "1.02",
+     "name": "Variables, types and how numbers live in memory",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-03-control-flow.md",
+     "num": "1.03",
+     "name": "Control flow",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-04-functions-and-the-call-stack.md",
+     "num": "1.04",
+     "name": "Functions and the call stack",
+     "hours": 4
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-05-pointers.md",
+     "num": "1.05",
+     "name": "Pointers",
+     "hours": 5
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-06-arrays-and-strings.md",
+     "num": "1.06",
+     "name": "Arrays and strings",
+     "hours": 4
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-07-structs-unions-packed-layouts.md",
+     "num": "1.07",
+     "name": "Structs, unions and packed record layouts",
+     "hours": 4
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-08-dynamic-memory.md",
+     "num": "1.08",
+     "name": "Dynamic memory: malloc and free",
+     "hours": 4
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-09-file-io-and-binary-files.md",
+     "num": "1.09",
+     "name": "File I/O and binary files",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-10-process-memory-layout.md",
+     "num": "1.10",
+     "name": "Process memory layout",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-11-undefined-behaviour.md",
+     "num": "1.11",
+     "name": "Undefined behaviour",
+     "hours": 4
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-12-preprocessor-compiler-linker.md",
+     "num": "1.12",
+     "name": "Preprocessor, compiler and linker",
+     "hours": 4
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-13-multi-file-programs-and-make.md",
+     "num": "1.13",
+     "name": "Multi-file programs, headers and Make",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-14-error-handling-and-ownership-in-c.md",
+     "num": "1.14",
+     "name": "Error handling and ownership contracts in C",
+     "hours": 3
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/module-15-c-mini-project-hash-map-and-parser.md",
+     "num": "1.15",
+     "name": "Mini-project: hash map and record parser in C",
+     "hours": 4
+    }
+   ],
+   "extras": [
+    {
+     "path": "phase-01-c-from-zero-to-systems/revision.md",
+     "name": "Revision sheet",
+     "icon": "R"
+    },
+    {
+     "path": "phase-01-c-from-zero-to-systems/quiz.md",
+     "name": "Quiz",
+     "icon": "Q"
+    }
+   ]
+  },
+  {
+   "num": 2,
+   "dir": "phase-02-cpp17-from-zero-to-modern",
+   "title": "C++17 from zero to modern C++",
+   "modules": [
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-01-from-c-to-cpp.md",
+     "num": "2.01",
+     "name": "From C to C++",
+     "hours": 3
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-02-classes-constructors-destructors.md",
+     "num": "2.02",
+     "name": "Classes, constructors and destructors",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-03-raii-and-rule-of-0-3-5.md",
+     "num": "2.03",
+     "name": "RAII and the rule of 0/3/5",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md",
+     "num": "2.04",
+     "name": "Move semantics",
+     "hours": 5
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md",
+     "num": "2.05",
+     "name": "Smart pointers and the shared_ptr control block",
+     "hours": 5
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-06-templates.md",
+     "num": "2.06",
+     "name": "Templates and generic programming",
+     "hours": 5
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md",
+     "num": "2.07",
+     "name": "STL containers and their internals",
+     "hours": 6
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-08-iterators-algorithms-lambdas.md",
+     "num": "2.08",
+     "name": "Iterators, algorithms and lambdas",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-09-exceptions-vs-error-codes.md",
+     "num": "2.09",
+     "name": "Exceptions vs error codes",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md",
+     "num": "2.10",
+     "name": "Inheritance and virtual dispatch",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-11-design-patterns-in-systems-code.md",
+     "num": "2.11",
+     "name": "Design patterns used in real systems",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-12-memory-and-ownership-design.md",
+     "num": "2.12",
+     "name": "Memory and ownership design",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-13-performance-optimisation.md",
+     "num": "2.13",
+     "name": "Performance optimisation",
+     "hours": 5
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-14-ub-aware-cpp.md",
+     "num": "2.14",
+     "name": "Undefined-behaviour-aware C++",
+     "hours": 3
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-15-cpp20-essentials.md",
+     "num": "2.15",
+     "name": "C++20 essentials",
+     "hours": 4
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/module-16-cpp-mini-project-protocol-parser.md",
+     "num": "2.16",
+     "name": "Mini-project: tcpkv protocol parser",
+     "hours": 4
+    }
+   ],
+   "extras": [
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/revision.md",
+     "name": "Revision sheet",
+     "icon": "R"
+    },
+    {
+     "path": "phase-02-cpp17-from-zero-to-modern/quiz.md",
+     "name": "Quiz",
+     "icon": "Q"
+    }
+   ]
+  },
+  {
+   "num": 3,
+   "dir": "phase-03-os-internals",
+   "title": "OS internals (Linux and Windows)",
+   "modules": [
+    {
+     "path": "phase-03-os-internals/module-01-processes.md",
+     "num": "3.01",
+     "name": "Processes",
+     "hours": 4
+    },
+    {
+     "path": "phase-03-os-internals/module-02-threads-vs-processes.md",
+     "num": "3.02",
+     "name": "Threads vs processes",
+     "hours": 3
+    },
+    {
+     "path": "phase-03-os-internals/module-03-scheduling.md",
+     "num": "3.03",
+     "name": "Scheduling",
+     "hours": 3
+    },
+    {
+     "path": "phase-03-os-internals/module-04-virtual-memory-and-paging.md",
+     "num": "3.04",
+     "name": "Virtual memory and paging",
+     "hours": 5
+    },
+    {
+     "path": "phase-03-os-internals/module-05-malloc-internals.md",
+     "num": "3.05",
+     "name": "malloc internals",
+     "hours": 4
+    },
+    {
+     "path": "phase-03-os-internals/module-06-custom-allocators-arena-pool-slab.md",
+     "num": "3.06",
+     "name": "Custom allocators: arena, pool, slab",
+     "hours": 6
+    },
+    {
+     "path": "phase-03-os-internals/module-07-system-calls.md",
+     "num": "3.07",
+     "name": "System calls",
+     "hours": 3
+    },
+    {
+     "path": "phase-03-os-internals/module-08-file-descriptors-and-vfs.md",
+     "num": "3.08",
+     "name": "File descriptors and the VFS",
+     "hours": 4
+    },
+    {
+     "path": "phase-03-os-internals/module-09-signals.md",
+     "num": "3.09",
+     "name": "Signals",
+     "hours": 3
+    },
+    {
+     "path": "phase-03-os-internals/module-10-ipc.md",
+     "num": "3.10",
+     "name": "Inter-process communication",
+     "hours": 4
+    },
+    {
+     "path": "phase-03-os-internals/module-11-io-models-blocking-to-epoll.md",
+     "num": "3.11",
+     "name": "I/O models: blocking, non-blocking, select/poll/epoll",
+     "hours": 5
+    },
+    {
+     "path": "phase-03-os-internals/module-12-io-uring-and-iocp.md",
+     "num": "3.12",
+     "name": "io_uring and Windows IOCP",
+     "hours": 3
+    },
+    {
+     "path": "phase-03-os-internals/module-13-windows-internals-and-win32.md",
+     "num": "3.13",
+     "name": "Windows internals and the Win32 API",
+     "hours": 4
+    }
+   ],
+   "extras": [
+    {
+     "path": "phase-03-os-internals/revision.md",
+     "name": "Revision sheet",
+     "icon": "R"
+    },
+    {
+     "path": "phase-03-os-internals/quiz.md",
+     "name": "Quiz",
+     "icon": "Q"
+    }
+   ]
+  },
+  {
+   "num": 4,
+   "dir": "phase-04-concurrency-deep-dive",
+   "title": "Concurrency deep dive",
+   "modules": [
+    {
+     "path": "phase-04-concurrency-deep-dive/module-01-threads-in-cpp.md",
+     "num": "4.01",
+     "name": "Threads in C++",
+     "hours": 3
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-02-data-races.md",
+     "num": "4.02",
+     "name": "Data races and why they are undefined behaviour",
+     "hours": 3
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-03-mutex-internals-futex.md",
+     "num": "4.03",
+     "name": "Mutex internals: futex",
+     "hours": 4
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-04-condition-variables.md",
+     "num": "4.04",
+     "name": "Condition variables",
+     "hours": 4
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-05-shared-mutex.md",
+     "num": "4.05",
+     "name": "shared_mutex and reader-writer locks",
+     "hours": 3
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-06-spinlocks-and-atomics.md",
+     "num": "4.06",
+     "name": "Spinlocks and atomics",
+     "hours": 4
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-07-memory-model-and-memory-orders.md",
+     "num": "4.07",
+     "name": "The memory model and memory orders",
+     "hours": 6
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-08-cache-coherence-and-false-sharing.md",
+     "num": "4.08",
+     "name": "Cache coherence and false sharing",
+     "hours": 4
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-09-lock-free-basics.md",
+     "num": "4.09",
+     "name": "Lock-free basics",
+     "hours": 6
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-10-thread-pool-design.md",
+     "num": "4.10",
+     "name": "Thread pool design",
+     "hours": 5
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-11-deadlocks-and-lock-ordering.md",
+     "num": "4.11",
+     "name": "Deadlocks, livelocks and lock ordering",
+     "hours": 4
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-12-win32-synchronisation.md",
+     "num": "4.12",
+     "name": "Win32 synchronisation",
+     "hours": 5
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/module-13-pooled-request-model-and-concurrent-cache.md",
+     "num": "4.13",
+     "name": "Pooled request model and a concurrent master-table cache",
+     "hours": 4
+    }
+   ],
+   "extras": [
+    {
+     "path": "phase-04-concurrency-deep-dive/revision.md",
+     "name": "Revision sheet",
+     "icon": "R"
+    },
+    {
+     "path": "phase-04-concurrency-deep-dive/quiz.md",
+     "name": "Quiz",
+     "icon": "Q"
+    }
+   ]
+  },
+  {
+   "num": 5,
+   "dir": "phase-05-networking-and-servers",
+   "title": "Networking and servers",
+   "modules": [
+    {
+     "path": "phase-05-networking-and-servers/module-01-how-the-internet-works.md",
+     "num": "5.01",
+     "name": "How the internet works",
+     "hours": 3
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-02-tcp.md",
+     "num": "5.02",
+     "name": "TCP",
+     "hours": 4
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-03-posix-sockets-api.md",
+     "num": "5.03",
+     "name": "POSIX sockets API",
+     "hours": 5
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-04-tcp-internals.md",
+     "num": "5.04",
+     "name": "TCP internals",
+     "hours": 4
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-05-server-architectures.md",
+     "num": "5.05",
+     "name": "Server architectures",
+     "hours": 5
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-06-wire-protocol-design.md",
+     "num": "5.06",
+     "name": "Wire protocol design",
+     "hours": 4
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-07-rpc-and-serialization.md",
+     "num": "5.07",
+     "name": "RPC and serialization",
+     "hours": 5
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-08-http.md",
+     "num": "5.08",
+     "name": "HTTP/1.1, HTTP/2 and HTTP/3",
+     "hours": 4
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-09-tls-basics.md",
+     "num": "5.09",
+     "name": "TLS basics",
+     "hours": 3
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-10-backpressure-timeouts-flow-control.md",
+     "num": "5.10",
+     "name": "Backpressure, timeouts and flow control",
+     "hours": 3
+    },
+    {
+     "path": "phase-05-networking-and-servers/module-11-load-generator-and-latency.md",
+     "num": "5.11",
+     "name": "Load generator and latency percentiles",
+     "hours": 3
+    }
+   ],
+   "extras": [
+    {
+     "path": "phase-05-networking-and-servers/revision.md",
+     "name": "Revision sheet",
+     "icon": "R"
+    },
+    {
+     "path": "phase-05-networking-and-servers/quiz.md",
+     "name": "Quiz",
+     "icon": "Q"
+    }
+   ]
+  },
+  {
+   "num": 6,
+   "dir": "phase-06-databases-from-zero-to-internals",
+   "title": "Databases from zero to internals",
+   "modules": [
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-01-what-a-database-is.md",
+     "num": "6.01",
+     "name": "What a database is",
+     "hours": 3
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-02-sql-from-scratch.md",
+     "num": "6.02",
+     "name": "SQL from scratch",
+     "hours": 6
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-03-data-modelling-and-normalisation.md",
+     "num": "6.03",
+     "name": "Data modelling and normalisation",
+     "hours": 4
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-04-transactions-and-acid.md",
+     "num": "6.04",
+     "name": "Transactions and ACID",
+     "hours": 4
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-05-postgresql-storage-pages-and-tuples.md",
+     "num": "6.05",
+     "name": "PostgreSQL storage: pages, tuples and the heap",
+     "hours": 5
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-06-buffer-pool-and-wal.md",
+     "num": "6.06",
+     "name": "Buffer pool and write-ahead log",
+     "hours": 5
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-07-mvcc-and-vacuum.md",
+     "num": "6.07",
+     "name": "MVCC, visibility and vacuum",
+     "hours": 5
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-08-isolation-levels-and-locking.md",
+     "num": "6.08",
+     "name": "Isolation levels and locking",
+     "hours": 5
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-09-btree-indexes-composite-covering.md",
+     "num": "6.09",
+     "name": "B-tree indexes, composite and covering indexes",
+     "hours": 5
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-10-planner-explain-analyze-joins.md",
+     "num": "6.10",
+     "name": "Query planner, EXPLAIN ANALYZE and join algorithms",
+     "hours": 6
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-13-berkeley-db.md",
+     "num": "6.13",
+     "name": "Berkeley DB: key-value model and cursors",
+     "hours": 6
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-14-redis-internals-and-caching.md",
+     "num": "6.14",
+     "name": "Redis internals and caching strategies",
+     "hours": 4
+    },
+    {
+     "path": "phase-06-databases-from-zero-to-internals/module-15-oracle-and-sql-server-differences.md",
+     "num": "6.15",
+     "name": "Oracle and SQL Server differences",
+     "hours": 3
+    }
+   ],
+   "extras": []
+  },
+  {
+   "num": 7,
+   "dir": "phase-07-distributed-systems-and-yugabytedb",
+   "title": "Distributed systems and YugabyteDB",
+   "modules": [
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-01-why-distribute-cap-pacelc.md",
+     "num": "7.01",
+     "name": "Why distribute; failure models; CAP and PACELC",
+     "hours": 3
+    },
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-02-consistency-models.md",
+     "num": "7.02",
+     "name": "Consistency models",
+     "hours": 4
+    },
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-03-time-and-clocks.md",
+     "num": "7.03",
+     "name": "Time and clocks",
+     "hours": 3
+    },
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-06-sharding-hash-vs-range.md",
+     "num": "7.06",
+     "name": "Sharding: hash vs range",
+     "hours": 3
+    },
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-07-yugabytedb-architecture.md",
+     "num": "7.07",
+     "name": "YugabyteDB architecture",
+     "hours": 6
+    },
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-08-distributed-transactions-in-yugabytedb.md",
+     "num": "7.08",
+     "name": "Distributed transactions in YugabyteDB",
+     "hours": 5
+    },
+    {
+     "path": "phase-07-distributed-systems-and-yugabytedb/module-09-ha-failover-3-node-cluster.md",
+     "num": "7.09",
+     "name": "High availability and failover on a 3-node cluster",
+     "hours": 4
+    }
+   ],
+   "extras": []
+  },
+  {
+   "num": 8,
+   "dir": "phase-08-debugging-performance-reliability",
+   "title": "Debugging, performance and reliability",
+   "modules": [
+    {
+     "path": "phase-08-debugging-performance-reliability/module-06-memory-corruption-patterns.md",
+     "num": "8.06",
+     "name": "Memory corruption patterns",
+     "hours": 5
+    },
+    {
+     "path": "phase-08-debugging-performance-reliability/module-07-profiling-perf-and-flamegraphs.md",
+     "num": "8.07",
+     "name": "Profiling with perf and flamegraphs",
+     "hours": 4
+    },
+    {
+     "path": "phase-08-debugging-performance-reliability/module-08-latency-percentiles-and-benchmarking.md",
+     "num": "8.08",
+     "name": "Latency percentiles and benchmarking",
+     "hours": 3
+    },
+    {
+     "path": "phase-08-debugging-performance-reliability/module-09-incident-triage-and-rca-writing.md",
+     "num": "8.09",
+     "name": "Incident triage and RCA writing",
+     "hours": 4
+    },
+    {
+     "path": "phase-08-debugging-performance-reliability/module-10-slas-slos-and-observability.md",
+     "num": "8.10",
+     "name": "SLAs, SLOs and observability",
+     "hours": 3
+    }
+   ],
+   "extras": []
+  },
+  {
+   "num": 9,
+   "dir": "phase-09-build-test-delivery",
+   "title": "Build, test and delivery",
+   "modules": [
+    {
+     "path": "phase-09-build-test-delivery/module-06-github-actions.md",
+     "num": "9.06",
+     "name": "GitHub Actions",
+     "hours": 3
+    },
+    {
+     "path": "phase-09-build-test-delivery/module-07-azure-devops-pipelines.md",
+     "num": "9.07",
+     "name": "Azure DevOps pipelines",
+     "hours": 3
+    },
+    {
+     "path": "phase-09-build-test-delivery/module-08-bash-automation.md",
+     "num": "9.08",
+     "name": "Bash automation",
+     "hours": 3
+    }
+   ],
+   "extras": []
+  },
+  {
+   "num": 10,
+   "dir": "phase-10-backend-fundamentals-and-system-design",
+   "title": "Backend fundamentals and system design",
+   "modules": [
+    {
+     "path": "phase-10-backend-fundamentals-and-system-design/module-01-http-rest-api-design.md",
+     "num": "10.01",
+     "name": "HTTP/REST API design",
+     "hours": 3
+    },
+    {
+     "path": "phase-10-backend-fundamentals-and-system-design/module-02-authentication-and-sessions.md",
+     "num": "10.02",
+     "name": "Authentication and sessions",
+     "hours": 3
+    },
+    {
+     "path": "phase-10-backend-fundamentals-and-system-design/module-06-monolith-vs-microservices.md",
+     "num": "10.06",
+     "name": "Monolith vs microservices",
+     "hours": 2
+    },
+    {
+     "path": "phase-10-backend-fundamentals-and-system-design/module-07-design-kv-store-and-log-structured-engine.md",
+     "num": "10.07",
+     "name": "Design: KV store and log-structured storage engine",
+     "hours": 5
+    },
+    {
+     "path": "phase-10-backend-fundamentals-and-system-design/module-08-design-thread-pool-lru-cache-connection-pool.md",
+     "num": "10.08",
+     "name": "Design: thread pool, LRU cache, connection pool",
+     "hours": 4
+    }
+   ],
+   "extras": []
+  },
+  {
+   "num": 11,
+   "dir": "phase-11-security-and-banking-context",
+   "title": "Security and banking context",
+   "modules": [
+    {
+     "path": "phase-11-security-and-banking-context/module-01-memory-safety-bugs.md",
+     "num": "11.01",
+     "name": "Memory-safety bugs",
+     "hours": 3
+    },
+    {
+     "path": "phase-11-security-and-banking-context/module-02-aslr-canaries-nx-secure-coding.md",
+     "num": "11.02",
+     "name": "ASLR, canaries, NX and secure C/C++ coding",
+     "hours": 3
+    },
+    {
+     "path": "phase-11-security-and-banking-context/module-03-sql-injection.md",
+     "num": "11.03",
+     "name": "SQL injection and input validation",
+     "hours": 2
+    },
+    {
+     "path": "phase-11-security-and-banking-context/module-04-tls-and-secrets.md",
+     "num": "11.04",
+     "name": "TLS in practice and secrets management",
+     "hours": 3
+    },
+    {
+     "path": "phase-11-security-and-banking-context/module-05-pci-dss-awareness.md",
+     "num": "11.05",
+     "name": "PCI-DSS awareness",
+     "hours": 2
+    },
+    {
+     "path": "phase-11-security-and-banking-context/module-06-loan-origination-end-to-end.md",
+     "num": "11.06",
+     "name": "How a loan-origination system works end to end",
+     "hours": 4
+    }
+   ],
+   "extras": []
+  },
+  {
+   "num": 12,
+   "dir": "phase-12-interview-mastery",
+   "title": "Interview mastery",
+   "modules": [
+    {
+     "path": "phase-12-interview-mastery/module-01-resume-walkthrough-and-story-bank.md",
+     "num": "12.01",
+     "name": "Resume walk-through and story bank",
+     "hours": 3
+    },
+    {
+     "path": "phase-12-interview-mastery/module-02-mock-cpp-coding-rounds.md",
+     "num": "12.02",
+     "name": "Mock: C++ coding rounds",
+     "hours": 6
+    },
+    {
+     "path": "phase-12-interview-mastery/module-03-mock-systems-and-concurrency-rounds.md",
+     "num": "12.03",
+     "name": "Mock: systems and concurrency rounds",
+     "hours": 4
+    },
+    {
+     "path": "phase-12-interview-mastery/module-04-mock-database-rounds.md",
+     "num": "12.04",
+     "name": "Mock: database rounds",
+     "hours": 4
+    }
+   ],
+   "extras": []
+  }
+ ],
+ "other": [
+  {
+   "path": "README.md",
+   "name": "Full syllabus and progress (README)"
+  },
+  {
+   "path": "journal/TEMPLATE.md",
+   "name": "Journal template"
+  }
+ ],
+ "stats": {
+  "programs": 220
+ }
+}

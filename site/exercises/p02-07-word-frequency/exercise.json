@@ -1,0 +1,19 @@
+{
+ "title": "Top-K words with unordered_map and sort",
+ "summary": "Hash maps, copying into a vector, and sorting with a two-key comparator.",
+ "module": "phase-02-cpp17-from-zero-to-modern/module-07-stl-containers-internals.md",
+ "difficulty": "medium",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "ties broken alphabetically", "stdin": ["3", "The loan was approved. The LOAN amount: 500000.", "Approved loans: the best loans!"], "expected": ["the 3", "approved 2", "loan 2"]},
+  {"name": "k larger than the number of words", "stdin": ["10", "a b a"], "expected": ["a 2", "b 1"]},
+  {"name": "no words at all", "stdin": ["5", "12345 ... !!!"], "expected": []}
+ ],
+ "hints": [
+  "Build each word character by character: if `std::isalpha((unsigned char)c)`, append `std::tolower` of it; otherwise, if the current word is not empty, count it and clear it. Do not forget the last word on the line.",
+  "Copy the map into `std::vector<std::pair<std::string, int>>` and sort with a lambda: `a.second != b.second ? a.second > b.second : a.first < b.first`.",
+  "unordered_map has no order at all. Iterating it directly would give a different order on another standard library."
+ ]
+}

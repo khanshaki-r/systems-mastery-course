@@ -1,0 +1,17 @@
+{
+ "title": "Break a shared_ptr cycle",
+ "summary": "Reference counts, the control block, and why back-pointers must be weak_ptr.",
+ "module": "phase-02-cpp17-from-zero-to-modern/module-05-smart-pointers-and-control-block.md",
+ "difficulty": "medium",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "everything is destroyed, at the right time", "expected": ["LN-1 belongs to Asha", "customer use_count = 1", "LN-1 use_count = 2", "customer Asha destroyed", "loan LN-2 destroyed", "after scope, LN-1 belongs to (gone)", "end of main", "loan LN-1 destroyed"]}
+ ],
+ "hints": [
+  "Run the starter. The use_count is 3 and nothing is ever destroyed: Customer holds the Loans, and each Loan holds the Customer. LeakSanitizer reports the leak at exit.",
+  "Make `owner` a `std::weak_ptr<Customer>`. A weak_ptr watches the control block without keeping the object alive.",
+  "To use it: `if (auto c = owner.lock()) return c->name;`. lock() gives a shared_ptr if the object still exists and an empty one if it is gone."
+ ]
+}

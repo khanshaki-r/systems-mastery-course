@@ -261,3 +261,18 @@ what to do differently. These entries become interview stories.
   releases, C++17/20, Linux 6.x kernels, Windows 11). When unsure, say so.
 - Core-banking use case in every module must name the decision it drove.
 - Every module ends with the journal instruction inside `## Lab`.
+
+## COURSE WEBSITE (site/)
+- `site/` is a static site published to GitHub Pages by `.github/workflows/pages.yml`.
+  It renders the modules and makes their code runnable (Compiler Explorer for
+  C/C++, PGlite for PostgreSQL, Pyodide for Python, Python Tutor for memory
+  visualisation). Details: `site/README.md`.
+- Keep modules machine-readable for it: name the file in the first comment of
+  each program (`/* pointers.c ...`), give the compile command in a ```bash
+  block after the program, and put the output in a ```text block after a
+  paragraph saying "Expected output".
+- New exercises go in `site/exercises/<id>/` (format in `site/README.md`).
+  Run `node site/tools/build-manifest.mjs` and
+  `node site/tools/verify-exercises.mjs <id>` before committing; the solution
+  must pass every test and the starter must fail at least one.
+- Commit message for site work: `Site: <change>`.

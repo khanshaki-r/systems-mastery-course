@@ -1,0 +1,17 @@
+{
+ "title": "A move-only buffer (rule of five)",
+ "summary": "Delete copies, write noexcept move constructor and move assignment, keep ownership exact.",
+ "module": "phase-02-cpp17-from-zero-to-modern/module-04-move-semantics.md",
+ "difficulty": "medium",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "moves transfer ownership, nothing leaks or double-frees", "expected": ["live after fill: 4", "taken: bbb, pool[1] empty: true", "pool[0]: ccc, pool[2]: (empty), live: 3", "live after clear: 1"]}
+ ],
+ "hints": [
+  "Move constructor: copy the pointer and size from `other`, then set `other.data_ = nullptr; other.size_ = 0;`. Do not touch `live`: no block was created or destroyed.",
+  "Move assignment: if `this != &other`, release your own block (`if (data_) --live; delete[] data_;`), then steal other's exactly like the move constructor.",
+  "Mark both `noexcept`. std::vector only moves elements when it grows if the move constructor cannot throw; otherwise it copies (and here copying is deleted)."
+ ]
+}

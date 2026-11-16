@@ -1,0 +1,18 @@
+{
+ "title": "Fix the buffer overflow",
+ "summary": "Undefined behaviour from strcpy, and a bounded copy that always terminates.",
+ "module": "phase-01-c-from-zero-to-systems/module-11-undefined-behaviour.md",
+ "difficulty": "medium",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "fits, too long, empty, exactly cap", "stdin": ["SB-1001", "SB-100234", "", "ABCDEFGH"], "expected": ["[SB-1001] -> [SB-1001]", "[SB-100234] -> [SB-1002] (truncated)", "[] -> []", "[ABCDEFGH] -> [ABCDEFG] (truncated)", "cap 0 -> -1"]},
+  {"name": "very long id", "stdin": ["LOAN-ACCOUNT-0000000000000000000000000000000000000001"], "expected": ["[LOAN-ACCOUNT-0000000000000000000000000000000000000001] -> [LOAN-AC] (truncated)", "cap 0 -> -1"]}
+ ],
+ "hints": [
+  "Run the starter on the first test. AddressSanitizer reports `stack-buffer-overflow`, the line that wrote out of bounds, and which variable (`id`) was overrun.",
+  "Compute `n = strlen(src)`. If `n > cap - 1`, copy only `cap - 1` bytes. Then write the terminating `'\\0'` yourself at `dst[n]`.",
+  "Handle `cap == 0` first: then there is no room even for the terminator, so return -1 without writing."
+ ]
+}

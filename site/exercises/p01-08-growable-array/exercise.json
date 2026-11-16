@@ -1,0 +1,19 @@
+{
+ "title": "A growable array with realloc",
+ "summary": "malloc/realloc/free, doubling growth, and leak-free ownership (ASan + LeakSanitizer).",
+ "module": "phase-01-c-from-zero-to-systems/module-08-dynamic-memory.md",
+ "difficulty": "medium",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "ten amounts", "stdin": ["120", "5", "99", "3000", "7", "42", "8", "1", "1000", "64"], "expected": ["count=10 capacity=16 sum=4346 max=3000"]},
+  {"name": "exactly four", "stdin": ["5", "6", "7", "8"], "expected": ["count=4 capacity=4 sum=26 max=8"]},
+  {"name": "empty input", "stdin": [], "expected": ["count=0 capacity=0 sum=0 max=none"]}
+ ],
+ "hints": [
+  "When `v->len == v->cap`, compute `new_cap = v->cap == 0 ? 4 : v->cap * 2`.",
+  "Never write `v->data = realloc(v->data, ...)`. If realloc fails it returns NULL and you lose the old block (a leak). Store the result in a temporary first.",
+  "`vec_free` must call `free(v->data)` and reset all three fields. LeakSanitizer fails the test if any block is still allocated at exit."
+ ]
+}

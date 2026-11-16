@@ -1,0 +1,18 @@
+{
+ "title": "Luhn check for card numbers",
+ "summary": "Strings as char arrays, walking an array backwards, validating input.",
+ "module": "phase-01-c-from-zero-to-systems/module-06-arrays-and-strings.md",
+ "difficulty": "medium",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "valid and invalid numbers", "stdin": ["79927398713", "79927398710", "4539 1488 0343 6467"], "expected": ["79927398713: VALID", "79927398710: INVALID", "4539 1488 0343 6467: VALID"]},
+  {"name": "bad characters and short input", "stdin": ["12a4", "0", "059", ""], "expected": ["12a4: INVALID", "0: INVALID", "059: VALID", ": INVALID"]}
+ ],
+ "hints": [
+  "First copy the digits into an `int digits[128]` array, skipping spaces. Return 0 as soon as you meet any other non-digit.",
+  "Walk from the last digit to the first with a position counter that starts at 0. Double the digit when the position is odd (the 2nd, 4th, ... from the right).",
+  "Guard the array: if there are more than 128 digits, return 0 instead of writing past the end. AddressSanitizer would catch you otherwise."
+ ]
+}

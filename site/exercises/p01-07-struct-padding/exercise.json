@@ -1,0 +1,16 @@
+{
+ "title": "Shrink a struct by reordering fields",
+ "summary": "Alignment, padding and sizeof. Use the Layout button to see every byte.",
+ "module": "phase-01-c-from-zero-to-systems/module-07-structs-unions-packed-layouts.md",
+ "difficulty": "medium",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "no padding left", "expected": ["sizeof(struct LoanRecord) = 24", "bytes of real data        = 24", "bytes of padding          = 0", "loan 900001: A H 250000.00 for 240 months at branch 7"]}
+ ],
+ "hints": [
+  "Press Layout. Each hatched square is a padding byte the compiler inserted so the next field starts at an address that is a multiple of its alignment.",
+  "Order the fields from the largest alignment to the smallest: the two 8-byte fields, then the 4-byte one, then the 2-byte one, then the two 1-byte chars."
+ ]
+}

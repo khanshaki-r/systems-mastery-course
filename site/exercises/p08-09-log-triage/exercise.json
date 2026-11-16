@@ -1,0 +1,18 @@
+{
+ "title": "Triage a log file",
+ "summary": "Parse structured log lines, count by level, find the noisiest service.",
+ "module": "phase-08-debugging-performance-reliability/module-09-incident-triage-and-rca-writing.md",
+ "difficulty": "easy",
+ "lang": "python",
+ "files": ["main.py"],
+ "tests": [
+  {"name": "mixed log with junk lines", "stdin": ["2026-11-16T10:00:01Z INFO auth-svc login ok user=U1", "2026-11-16T10:00:02Z ERROR loan-svc timeout calling cbs", "2026-11-16T10:00:03Z WARN loan-svc slow query 1800ms", "garbage line", "2026-11-16T10:00:04Z ERROR auth-svc db pool exhausted", "2026-11-16T10:00:05Z ERROR loan-svc timeout calling cbs", "2026-11-16T10:00:06Z DEBUG loan-svc noisy"], "expected": ["ERROR 3", "WARN 1", "INFO 1", "skipped 2", "top error service: loan-svc (2)", "first error: 2026-11-16T10:00:02Z loan-svc timeout calling cbs"]},
+  {"name": "a quiet day", "stdin": ["2026-11-16T10:00:01Z INFO api ok", "", "2026-11-16T10:00:02Z INFO api ok"], "expected": ["ERROR 0", "WARN 0", "INFO 2", "skipped 0", "top error service: none", "first error: none"]},
+  {"name": "tie on error count", "stdin": ["t1 ERROR zeta-svc boom", "t2 ERROR alpha-svc boom"], "expected": ["ERROR 2", "WARN 0", "INFO 0", "skipped 0", "top error service: alpha-svc (1)", "first error: t1 zeta-svc boom"]}
+ ],
+ "hints": [
+  "`line.split(maxsplit=3)` gives at most 4 parts: timestamp, level, service and the rest of the message.",
+  "`collections.Counter` counts for you. Missing keys read as 0, so `counts['WARN']` is safe.",
+  "For the top service, pick the highest count and break ties alphabetically: `min(c.items(), key=lambda kv: (-kv[1], kv[0]))`."
+ ]
+}

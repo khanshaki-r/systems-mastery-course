@@ -1,0 +1,17 @@
+{
+ "title": "Branch totals with GROUP BY and HAVING",
+ "summary": "Aggregate per group, filter rows with WHERE and groups with HAVING.",
+ "module": "phase-06-databases-from-zero-to-internals/module-03-data-modelling-and-normalisation.md",
+ "difficulty": "medium",
+ "lang": "sql",
+ "files": ["query.sql"],
+ "setupFile": "setup.sql",
+ "tests": [
+  {"name": "only live loans, only busy branches"}
+ ],
+ "hints": [
+  "WHERE runs before grouping (it removes rows). HAVING runs after grouping (it removes whole groups). The status filter is a WHERE; the 'at least 3 loans' rule is a HAVING.",
+  "`WHERE status IN ('APPROVED', 'DISBURSED')`, `GROUP BY branch_code`, `HAVING count(*) >= 3`.",
+  "Keep `sum(amount)` as it is. Casting it changes how the numbers print, and the check compares them exactly."
+ ]
+}

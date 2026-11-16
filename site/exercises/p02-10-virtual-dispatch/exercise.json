@@ -1,0 +1,17 @@
+{
+ "title": "Virtual functions for loan products",
+ "summary": "virtual, override, virtual destructors and dispatch through a base pointer.",
+ "module": "phase-02-cpp17-from-zero-to-modern/module-10-inheritance-and-virtual-dispatch.md",
+ "difficulty": "easy",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "each product uses its own rate", "stdin": ["home 2500000", "personal 300000", "gold 150000", "car 100000"], "expected": ["home 2500000: 850 bps, yearly interest 212500", "personal 300000: 1399 bps, yearly interest 41970", "gold 150000: 920 bps, yearly interest 13800", "unknown loan type: car", "total yearly interest: 268270"]}
+ ],
+ "hints": [
+  "Run the starter: every loan says `generic` and 1200 bps. Without `virtual`, a call through a `Loan*` is bound at compile time to Loan's version.",
+  "Add `virtual` in the base class and `override` in each derived class. `override` makes the compiler check that you really override something.",
+  "`yearly_interest()` is not virtual, yet it starts returning the right number. It calls `rate_bps()`, and that call now goes through the vtable."
+ ]
+}

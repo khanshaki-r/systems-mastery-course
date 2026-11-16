@@ -1,0 +1,26 @@
+{
+ "title": "A blocking bounded queue",
+ "summary": "mutex + two condition variables, wait with a predicate, and clean shutdown with close().",
+ "module": "phase-04-concurrency-deep-dive/module-04-condition-variables.md",
+ "difficulty": "hard",
+ "lang": "cpp",
+ "compiler": "g152",
+ "files": [
+  "main.cpp"
+ ],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=thread -pthread",
+ "tests": [
+  {
+   "name": "2 producers, 3 consumers, capacity 8",
+   "expected": [
+    "consumed 2000 items, sum = 1001000",
+    "queue never exceeded capacity: yes"
+   ]
+  }
+ ],
+ "hints": [
+  "push: `std::unique_lock<std::mutex> lk(m_); not_full_.wait(lk, [&]{ return closed_ || q_.size() < cap_; });`. The predicate form handles spurious wake-ups for you.",
+  "pop: wait on `not_empty_` until `closed_ || !q_.empty()`. If the queue is still empty after waking, it was closed and drained: return std::nullopt.",
+  "After push adds an item, `not_empty_.notify_one()`. After pop removes one, `not_full_.notify_one()`. close() must `notify_all()` on both, or sleeping threads never wake."
+ ]
+}

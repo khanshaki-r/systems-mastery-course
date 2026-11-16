@@ -1,0 +1,18 @@
+{
+ "title": "Parse the tcpkv line protocol",
+ "summary": "Request parsing, argument validation, error replies and CRLF handling.",
+ "module": "phase-05-networking-and-servers/module-06-wire-protocol-design.md",
+ "difficulty": "medium",
+ "lang": "cpp",
+ "files": ["main.cpp"],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer -pthread",
+ "tests": [
+  {"name": "a full session", "stdin": ["PING", "SET acct:1 balance 2500 INR", "GET acct:1", "get acct:1", "GET acct:2", "SET acct:2 990", "KEYS", "DEL acct:1", "DEL acct:1", "KEYS", "FLY away", "GET", "GET a b", "SET onlykey", "", "PING\r"], "expected": ["PONG", "OK", "balance 2500 INR", "balance 2500 INR", "NOT_FOUND", "OK", "2 acct:1 acct:2", "DELETED", "NOT_FOUND", "1 acct:2", "ERR unknown command 'FLY'", "ERR wrong number of arguments for 'GET'", "ERR wrong number of arguments for 'GET'", "ERR wrong number of arguments for 'SET'", "PONG"]},
+  {"name": "empty store", "stdin": ["KEYS", "DEL nothing", "ping"], "expected": ["0", "NOT_FOUND", "PONG"]}
+ ],
+ "hints": [
+  "Strip one trailing `\\r` first: telnet and many clients send CRLF line endings.",
+  "Read the command and the arguments with a `std::istringstream`. Upper-case the command for matching, but quote the original spelling in `ERR unknown command`.",
+  "For SET, the value is everything after the key, spaces included. Find where the key ends in the original line and take the rest."
+ ]
+}

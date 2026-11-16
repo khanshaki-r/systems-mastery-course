@@ -1,0 +1,18 @@
+{
+ "title": "Classify loan amounts",
+ "summary": "if / else if chains, loops and counters.",
+ "module": "phase-01-c-from-zero-to-systems/module-03-control-flow.md",
+ "difficulty": "easy",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "one of each class", "stdin": ["6", "25000", "50000", "499999", "2500000", "5000000", "-10"], "expected": ["25000: micro", "50000: small", "499999: small", "2500000: medium", "5000000: large", "-10: invalid", "micro=1 small=2 medium=1 large=1 invalid=1"]},
+  {"name": "boundaries", "stdin": ["4", "0", "49999", "4999999", "1"], "expected": ["0: invalid", "49999: micro", "4999999: medium", "1: micro", "micro=2 small=0 medium=1 large=0 invalid=1"]},
+  {"name": "no amounts", "stdin": ["0"], "expected": ["micro=0 small=0 medium=0 large=0 invalid=0"]}
+ ],
+ "hints": [
+  "Test `amount <= 0` first. Then test the upper limits from smallest to largest: `< 50000`, `< 500000`, `< 5000000`, and anything else is large.",
+  "To count, compare the returned string with `strcmp(cls, \"micro\") == 0` (include `<string.h>`), or count inside the same if/else chain."
+ ]
+}

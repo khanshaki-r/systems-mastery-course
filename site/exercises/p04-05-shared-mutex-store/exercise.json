@@ -1,0 +1,28 @@
+{
+ "title": "A reader-writer store with shared_mutex",
+ "summary": "Many readers at once, one writer at a time: the tcpkv store's locking.",
+ "module": "phase-04-concurrency-deep-dive/module-05-shared-mutex.md",
+ "difficulty": "medium",
+ "lang": "cpp",
+ "compiler": "g152",
+ "files": [
+  "main.cpp"
+ ],
+ "flags": "-std=c++17 -Wall -Wextra -Werror -O1 -g -fsanitize=thread -pthread",
+ "tests": [
+  {
+   "name": "2 writers + 4 readers, no race",
+   "expected": [
+    "size = 1000",
+    "acct:1:499 = 499",
+    "missing = (nil)",
+    "reads done = 8000"
+   ]
+  }
+ ],
+ "hints": [
+  "Readers: `std::shared_lock<std::shared_mutex> lk(m_);`. Many threads can hold a shared lock at the same time.",
+  "Writers: `std::unique_lock<std::shared_mutex> lk(m_);`. This waits until no reader or writer holds the lock.",
+  "`m_` is declared `mutable` so that const member functions like get() and size() can still lock it."
+ ]
+}

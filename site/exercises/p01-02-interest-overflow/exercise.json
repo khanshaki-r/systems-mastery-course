@@ -1,0 +1,20 @@
+{
+ "title": "Interest without overflow",
+ "summary": "Integer types, their ranges, and what signed overflow does (UBSan catches it).",
+ "module": "phase-01-c-from-zero-to-systems/module-02-variables-types-and-memory.md",
+ "difficulty": "easy",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "1 lakh at 8.50% for 12 months", "stdin": ["100000 850 12"], "expected": ["interest = 8500.00 rupees"]},
+  {"name": "25 lakh home loan at 9.25% for 20 years", "stdin": ["2500000 925 240"], "expected": ["interest = 4625000.00 rupees"]},
+  {"name": "rounds down to whole paise", "stdin": ["75000 1099 7"], "expected": ["interest = 4808.12 rupees"]},
+  {"name": "tiny amount", "stdin": ["1 1 1"], "expected": ["interest = 0.00 rupees"]}
+ ],
+ "hints": [
+  "Run the starter on the first test. UndefinedBehaviorSanitizer stops it with `signed integer overflow`. An `int` holds at most 2,147,483,647.",
+  "`100000 * 100 * 850` is already 8.5 billion. Use `long long` (at least 64 bits) for every variable in the calculation, and `%lld` in scanf and printf.",
+  "Multiply everything first and divide once at the end, so you only lose the final fraction of a paisa."
+ ]
+}

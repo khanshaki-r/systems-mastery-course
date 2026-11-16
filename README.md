@@ -13,6 +13,20 @@ Learner: MD Shakir Khan. Resume source: [Shakir_Resume_CPP.tex](Shakir_Resume_CP
 - After every lab you write a short journal entry in `journal/` using [journal/TEMPLATE.md](journal/TEMPLATE.md). These entries become your interview stories.
 - To move forward, reply `NEXT`. One module is written per step, committed and pushed.
 
+## Interactive lab (the course website)
+
+**Open: <https://khanshaki-r.github.io/systems-mastery-course/>** (live once GitHub Pages is enabled; see [site/README.md](site/README.md)).
+
+The website shows every module, and the code in it runs with nothing installed:
+
+- **Run** any C or C++ program from a module. It compiles on real GCC 13/15 or Clang 21 with the module's own flags, and your output is checked against the module's expected output.
+- **Visualize** steps through C, C++ or Python line by line, forwards and backwards, drawing stack frames, heap blocks and pointer arrows.
+- **IDE**: a full editor with multi-file projects, compile errors underlined in the code, sanitizer presets (AddressSanitizer, UBSan, ThreadSanitizer), an assembly view, and a byte-by-byte struct layout view.
+- **PostgreSQL 18 in the browser** for every SQL block and exercise: indexes, `EXPLAIN ANALYZE`, PL/pgSQL.
+- **27 self-checking exercises** across C, C++, concurrency, protocols, SQL and Python, with starter code, hints and reference solutions.
+
+Until the Ubuntu lab is set up (module 0.04), use the website for every code example. After that, use both: the website for quick experiments and visualising memory, the lab for networking, Berkeley DB, GDB, Docker and YugabyteDB.
+
 ## Honest time estimate
 
 | Item | Hours |

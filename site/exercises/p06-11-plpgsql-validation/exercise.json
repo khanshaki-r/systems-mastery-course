@@ -1,0 +1,18 @@
+{
+ "title": "Loan validation in PL/pgSQL",
+ "summary": "A stored function with SELECT INTO, FOUND, IF/RETURN and an aggregate check.",
+ "phase": 6,
+ "difficulty": "medium",
+ "lang": "sql",
+ "files": ["validate.sql"],
+ "setupFile": "setup.sql",
+ "tests": [
+  {"name": "every rule, in order", "query": "SELECT t.case_no, validate_loan(t.cust, t.amt, t.term) AS verdict FROM (VALUES (1, 999::bigint, 100000::numeric, 60), (2, 3, 100000, 60), (3, 1, 5000, 60), (4, 1, 100000, 400), (5, 2, 900000, 120), (6, 1, 200000, 120), (7, 1, 5000001, 120), (8, 4, 300000, 6), (9, 4, 300001, 360), (10, 3, 1, 1)) AS t(case_no, cust, amt, term) ORDER BY t.case_no;"},
+  {"name": "written in PL/pgSQL", "query": "SELECT l.lanname FROM pg_proc p JOIN pg_language l ON l.oid = p.prolang WHERE p.proname = 'validate_loan';"}
+ ],
+ "hints": [
+  "`SELECT * INTO v_customer FROM customers WHERE customer_id = p_customer_id;` then `IF NOT FOUND THEN RETURN 'NO_CUSTOMER'; END IF;`.",
+  "The rules are checked in order and the first one that fails wins. A blocked customer asking for 1 rupee is BLOCKED, not AMOUNT_OUT_OF_RANGE.",
+  "A customer with no loans has `sum(amount) = NULL`, and `NULL + amount > limit` is NULL, which IF treats as false. Use `COALESCE(sum(amount), 0)`. Case 9 tests exactly this."
+ ]
+}

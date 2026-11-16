@@ -1,0 +1,16 @@
+{
+ "title": "Find large approved loans",
+ "summary": "SELECT, JOIN, WHERE with two conditions, ORDER BY with a tie-breaker.",
+ "module": "phase-06-databases-from-zero-to-internals/module-02-sql-from-scratch.md",
+ "difficulty": "easy",
+ "lang": "sql",
+ "files": ["query.sql"],
+ "setupFile": "setup.sql",
+ "tests": [
+  {"name": "right rows, right columns, right order"}
+ ],
+ "hints": [
+  "Join the tables on the column they share: `FROM loans l JOIN customers c ON c.customer_id = l.customer_id`.",
+  "Two loans have exactly 5,00,000. Without a second ORDER BY key their order is not defined, and PostgreSQL may return either one first. Add `l.loan_id` as the tie-breaker."
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "title": "Latency percentiles from raw samples",
+ "summary": "Nearest-rank p50/p90/p99 with integer rank maths, in Python.",
+ "module": "phase-08-debugging-performance-reliability/module-08-latency-percentiles-and-benchmarking.md",
+ "difficulty": "easy",
+ "lang": "python",
+ "files": ["main.py"],
+ "tests": [
+  {"name": "ten samples with a long tail", "stdin": ["12", "15", "11", "240", "14", "13", "16", "12", "18", "900"], "expected": ["count = 10", "min = 11.0 ms", "p50 = 14.0 ms", "p90 = 240.0 ms", "p99 = 900.0 ms", "max = 900.0 ms", "mean = 125.1 ms"]},
+  {"name": "a single sample", "stdin": ["5"], "expected": ["count = 1", "min = 5.0 ms", "p50 = 5.0 ms", "p90 = 5.0 ms", "p99 = 5.0 ms", "max = 5.0 ms", "mean = 5.0 ms"]},
+  {"name": "no samples", "stdin": [], "expected": ["no samples"]}
+ ],
+ "hints": [
+  "Nearest rank: rank = ceil(p * n / 100), counting from 1. In integers, `-(-p * n // 100)` is the ceiling without any floating-point surprises.",
+  "Look at the first test: the mean is 125.1 ms but p50 is 14 ms. One slow request in ten ruins the average, which is why latency is reported as percentiles."
+ ]
+}

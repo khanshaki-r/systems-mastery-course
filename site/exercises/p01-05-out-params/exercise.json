@@ -1,0 +1,18 @@
+{
+ "title": "Out-parameters and pointer-to-pointer",
+ "summary": "Return a status, deliver results through pointers; change which object a pointer points at.",
+ "module": "phase-01-c-from-zero-to-systems/module-05-pointers.md",
+ "difficulty": "medium",
+ "lang": "c",
+ "files": ["main.c"],
+ "flags": "-std=c17 -Wall -Wextra -Werror -O1 -g -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer",
+ "tests": [
+  {"name": "valid and invalid splits", "stdin": ["100000 3", "10 0", "7 9", "-5 2", "12 4"], "expected": ["100000 / 3 = 33333 each, remainder 1", "larger of share and remainder: 33333", "invalid: 10 / 0", "7 / 9 = 0 each, remainder 7", "larger of share and remainder: 7", "invalid: -5 / 2", "12 / 4 = 3 each, remainder 0", "larger of share and remainder: 3"]},
+  {"name": "a tie picks the share", "stdin": ["10 3"], "expected": ["10 / 3 = 3 each, remainder 1", "larger of share and remainder: 3"]}
+ ],
+ "hints": [
+  "Inside `divide_paise`, `*share = amount / parts;` writes into the caller's variable. Check the invalid cases first and return -1 before writing anything.",
+  "`point_at_bigger` receives the address of the caller's pointer. Assigning `*biggest = a;` changes what the caller's pointer points at.",
+  "Draw the memory table from module 1.05: `bigger` lives in main's frame, and `biggest` holds its address."
+ ]
+}
